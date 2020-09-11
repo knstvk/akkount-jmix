@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="akkount.web.operation.ShowOperations"
+        messagesPack="akkount.web.operation">
+    <dsContext>
+        <groupDatasource id="operationDs"
+                         class="akkount.entity.Operation"
+                         view="operation-browse">
+            <query>
+                <![CDATA[select o from akk_Operation o order by o.opDate desc, o.createTs desc]]>
+                <filter>
+                    <and>
+                        <c>o.category = :param$category</c>
+                        <c>@dateAfter(o.opDate, :param$fromDate)</c>
+                        <c>@dateBefore(o.opDate, :param$toDate)</c>
+                        <c>o.acc1.currencyCode = :param$currency1</c>
+                        <c>o.acc2.currencyCode = :param$currency2</c>
+                    </and>
+                </filter>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <layout expand="operationTable"
+            spacing="true">
+        <label id="descriptionLab"/>
+        <groupTable id="operationTable"
+                    width="100%">
+            <actions>
+                <action id="excel"/>
+            </actions>
+            <columns>
+                <column id="opType"/>
+                <column id="opDate">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                               format="msg://opDateFormat"/>
+                </column>
+                <column id="acc1"/>
+                <column id="amount1">
+                    <formatter class="akkount.web.DecimalFormatter"/>
+                </column>
+                <column id="acc2"/>
+                <column id="amount2">
+                    <formatter class="akkount.web.DecimalFormatter"/>
+                </column>
+                <column id="category"/>
+                <column id="comments"/>
+                <column id="createdBy"/>
+            </columns>
+            <rows datasource="operationDs"/>
+            <rowsCount/>
+            <buttonsPanel>
+                <button action="operationTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

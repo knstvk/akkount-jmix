@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="akkount.web.report.categories.CategoriesReport"
+        messagesPack="akkount.web.report.categories">
+    <dsContext>
+        <collectionDatasource id="ds1"
+                              class="akkount.entity.CategoryAmount"
+                              datasourceClass="akkount.web.report.categories.CategoryAmountDatasource">
+            <query>
+                <![CDATA[select e from akk_Category e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="ds2"
+                              class="akkount.entity.CategoryAmount"
+                              datasourceClass="akkount.web.report.categories.CategoryAmountDatasource">
+            <query>
+                <![CDATA[select e from akk_Category e]]>
+            </query>
+        </collectionDatasource>
+        <collectionDatasource id="currenciesDs"
+                              class="akkount.entity.Currency"
+                              view="_minimal">
+            <query>
+                <![CDATA[select e from akk_Currency e]]>
+            </query>
+        </collectionDatasource>
+    </dsContext>
+    <layout expand="mainBox"
+            spacing="true">
+        <hbox spacing="true">
+            <label align="MIDDLE_RIGHT"
+                   value="msg://period"/>
+            <lookupField id="periodTypeField"
+                         filterMode="NO"/>
+            <label align="MIDDLE_RIGHT"
+                   value="msg://currency"/>
+            <lookupField id="currencyField"
+                         optionsDatasource="currenciesDs"
+                         required="true"
+                         width="80px"/>
+            <optionsGroup id="categoryTypeGroup"
+                          orientation="horizontal"/>
+        </hbox>
+        <hbox id="mainBox"
+              spacing="true"
+              width="100%">
+            <groupBox caption="msg://period1"
+                      expand="table1"
+                      height="100%"
+                      spacing="true"
+                      stylename="light">
+                <hbox expand="spacer1"
+                      spacing="true"
+                      width="100%">
+                    <dateField id="from1"
+                               resolution="DAY"/>
+                    <label align="MIDDLE_LEFT"
+                           value="-"/>
+                    <dateField id="to1"
+                               resolution="DAY"/>
+                    <label id="spacer1"/>
+                    <button action="table1.showOperations"
+                            caption="msg://operations"/>
+                    <button action="table1.excludeCategory"
+                            caption="msg://exclude"/>
+                </hbox>
+                <table id="table1"
+                       width="100%">
+                    <columns>
+                        <column id="category.name"/>
+                        <column id="amount"/>
+                    </columns>
+                    <rows datasource="ds1"/>
+                </table>
+                <hbox align="MIDDLE_RIGHT"
+                      spacing="true">
+                    <label align="MIDDLE_RIGHT"
+                           value="msg://total"/>
+                    <textField id="totalField1"
+                               datatype="decimal"
+                               editable="false"/>
+                </hbox>
+            </groupBox>
+            <groupBox caption="msg://period2"
+                      expand="table2"
+                      height="100%"
+                      spacing="true"
+                      stylename="light">
+                <hbox expand="spacer2"
+                      spacing="true"
+                      width="100%">
+                    <dateField id="from2"
+                               resolution="DAY"/>
+                    <label align="MIDDLE_LEFT"
+                           value="-"/>
+                    <dateField id="to2"
+                               resolution="DAY"/>
+                    <label id="spacer2"/>
+                    <button action="table2.showOperations"
+                            caption="msg://operations"/>
+                    <button action="table2.excludeCategory"
+                            caption="msg://exclude"/>
+                </hbox>
+                <table id="table2"
+                       width="100%">
+                    <columns>
+                        <column id="category.name"/>
+                        <column id="amount"/>
+                    </columns>
+                    <rows datasource="ds2"/>
+                </table>
+                <hbox align="MIDDLE_RIGHT"
+                      spacing="true">
+                    <label align="MIDDLE_RIGHT"
+                           value="msg://total"/>
+                    <textField id="totalField2"
+                               datatype="decimal"
+                               editable="false"/>
+                </hbox>
+            </groupBox>
+        </hbox>
+        <groupBox caption="msg://excluded"
+                  stylename="light">
+            <hbox id="excludedBox"
+                  spacing="true"/>
+        </groupBox>
+    </layout>
+</window>

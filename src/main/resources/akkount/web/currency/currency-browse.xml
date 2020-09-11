@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://browseCaption"
+        messagesPack="akkount.web.currency">
+    <data>
+        <collection id="currencyDc"
+                              class="akkount.entity.Currency"
+                              view="_local">
+            <loader>
+                <query>
+                    <![CDATA[select e from akk_Currency e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout spacing="true">
+        <table id="currencyTable"
+               height="100%"
+               width="100%" dataContainer="currencyDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn"
+                        action="currencyTable.create"/>
+                <button id="editBtn"
+                        action="currencyTable.edit"/>
+                <button id="removeBtn"
+                        action="currencyTable.remove"/>
+                <button id="refreshBtn"
+                        action="currencyTable.refresh"/>
+            </buttonsPanel>
+        </table>
+    </layout>
+</window>

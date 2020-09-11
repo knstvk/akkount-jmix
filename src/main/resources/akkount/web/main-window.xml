@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        class="akkount.web.MainWindow"
+        xmlns:main="http://schemas.haulmont.com/cuba/mainwindow.xsd">
+    <layout expand="foldersSplit">
+        <hbox id="titleBar"
+              expand="mainMenu"
+              height="40px"
+              margin="false,false,false,true"
+              spacing="true"
+              stylename="c-app-menubar c-inverse-header"
+              width="100%">
+            <image id="logoImage"
+                      align="MIDDLE_LEFT"
+                      stylename="c-app-icon">
+                <theme path="branding/app-icon-menu.png"/>
+            </image>
+            <main:menu id="mainMenu"
+                       align="MIDDLE_LEFT"/>
+            <main:userIndicator id="userIndicator"
+                                align="MIDDLE_LEFT"/>
+            <main:timeZoneIndicator id="timeZoneIndicator"
+                                    align="MIDDLE_LEFT"/>
+            <hbox id="mainButtonsBox"
+                  align="MIDDLE_LEFT"
+                  stylename="c-main-buttons">
+                <main:newWindowButton id="newWindowButton"
+                                      description="msg://newWindowBtnDescription"
+                                      icon="app/images/new-window.png"/>
+                <main:logoutButton id="logoutButton"
+                                   description="msg://logoutBtnDescription"
+                                   icon="app/images/exit.png"/>
+            </hbox>
+        </hbox>
+        <split id="foldersSplit"
+               orientation="horizontal"
+               pos="20"
+               width="100%">
+            <vbox expand="balanceLayout"
+                  height="100%"
+                  stylename="c-folders-pane">
+                <vbox id="balanceLayout"
+                      margin="true">
+                </vbox>
+            </vbox>
+            <main:workArea id="workArea"
+                           height="100%"
+                           width="100%">
+                <main:initialLayout margin="true"
+                                    spacing="true"/>
+            </main:workArea>
+        </split>
+    </layout>
+</window>

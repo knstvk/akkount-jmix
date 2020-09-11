@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://browseCaption"
+        focusComponent="operationTable"
+        messagesPack="akkount.web.operation">
+    <data>
+        <collection id="operationsDc"
+                         class="akkount.entity.Operation"
+                         view="operation-browse">
+            <loader id="operationsDl">
+                <query>
+                    <![CDATA[select e from akk_Operation e order by e.opDate desc, e.createTs desc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout expand="operationTable"
+            spacing="true">
+        <filter id="filter"
+                dataLoader="operationsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="operationTable"
+                    width="100%" dataContainer="operationsDc">
+            <actions>
+                <action id="createExpense" caption="msg://akkount.entity/OperationType.EXPENSE" shortcut="CTRL-SHIFT-KEY1"/>
+                <action id="createIncome" caption="msg://akkount.entity/OperationType.INCOME" shortcut="CTRL-SHIFT-KEY2"/>
+                <action id="createTransfer" caption="msg://akkount.entity/OperationType.TRANSFER" shortcut="CTRL-SHIFT-KEY3"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="opType"/>
+                <column id="opDate">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
+                               format="msg://opDateFormat"/>
+                </column>
+                <column id="acc1"/>
+                <column id="amount1">
+                    <formatter class="akkount.web.DecimalFormatter"/>
+                </column>
+                <column id="acc2"/>
+                <column id="amount2">
+                    <formatter class="akkount.web.DecimalFormatter"/>
+                </column>
+                <column id="category"/>
+                <column id="comments"/>
+                <column id="createdBy"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createExpenseBtn" action="operationTable.createExpense"/>
+                <button id="createIncomeBtn" action="operationTable.createIncome"/>
+                <button id="createTransferBtn" action="operationTable.createTransfer"/>
+                <button id="editBtn"
+                        action="operationTable.edit"/>
+                <button id="removeBtn"
+                        action="operationTable.remove"/>
+                <button action="operationTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

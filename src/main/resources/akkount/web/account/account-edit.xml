@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://editCaption"
+        messagesPack="akkount.web.account">
+    <data>
+        <instance id="accountDc"
+                    class="akkount.entity.Account"
+                    view="account-with-currency">
+            <loader/>
+        </instance>
+        <collection id="currenciesDc"
+                    class="akkount.entity.Currency"
+                    view="_minimal">
+            <loader>
+                <query>
+                    <![CDATA[select e from akk_Currency e order by e.code]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode forceDialog="true"
+                width="AUTO"/>
+    <layout spacing="true">
+        <form id="fieldGroup"
+                    dataContainer="accountDc">
+            <column width="250px">
+                <field property="name"/>
+                <field property="description"/>
+                <lookupPickerField property="currency"
+                       optionsContainer="currenciesDc">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                    </actions>
+                </lookupPickerField>
+                <field property="active"/>
+                <field property="group"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true" align="TOP_CENTER">
+            <button action="windowCommitAndClose"/>
+            <button action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
