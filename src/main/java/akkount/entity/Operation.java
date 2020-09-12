@@ -1,7 +1,7 @@
 package akkount.entity;
 
 import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
+import io.jmix.core.entity.annotation.PublishEntityChangedEvents;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

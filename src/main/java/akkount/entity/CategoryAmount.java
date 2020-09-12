@@ -1,18 +1,18 @@
 package akkount.entity;
 
-import com.haulmont.chile.core.annotations.MetaClass;
-import com.haulmont.chile.core.annotations.MetaProperty;
-import com.haulmont.cuba.core.entity.AbstractNotPersistentEntity;
+import com.haulmont.cuba.core.entity.BaseUuidEntity;
+import io.jmix.core.metamodel.annotation.ModelObject;
+import io.jmix.core.metamodel.annotation.ModelProperty;
 
 import java.math.BigDecimal;
 
-@MetaClass(name = "akk_CategoryBalance")
-public class CategoryAmount extends AbstractNotPersistentEntity {
+@ModelObject(name = "akk_CategoryBalance")
+public class CategoryAmount extends BaseUuidEntity {
 
-    @MetaProperty
+    @ModelProperty
     private Category category;
 
-    @MetaProperty
+    @ModelProperty
     private BigDecimal amount;
 
     public Category getCategory() {

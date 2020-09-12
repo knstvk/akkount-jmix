@@ -7,10 +7,9 @@ import akkount.service.BalanceWorker;
 import akkount.service.OperationWorker;
 import com.haulmont.bali.db.QueryRunner;
 import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.global.Events;
+import io.jmix.core.Events;
 import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.core.global.TimeSource;
-import com.haulmont.cuba.security.app.Authenticated;
+import io.jmix.core.TimeSource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
@@ -67,7 +66,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     }
 
     @Override
-    @Authenticated
+    // todo @Authenticated
     public String generateSampleData(int numberOfDaysBack) {
         if (numberOfDaysBack < 1 || numberOfDaysBack > 1000) {
             return "numberOfDaysBack must be between 1 and 1000";

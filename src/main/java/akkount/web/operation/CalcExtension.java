@@ -1,6 +1,6 @@
 package akkount.web.operation;
 
-import com.haulmont.cuba.web.widgets.WebJarResource;
+import io.jmix.ui.widget.WebJarResource;
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.server.AbstractJavaScriptExtension;
 import com.vaadin.ui.TextField;

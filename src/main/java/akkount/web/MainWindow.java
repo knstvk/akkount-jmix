@@ -5,15 +5,18 @@ import akkount.service.BalanceData;
 import akkount.service.BalanceData.AccountBalance;
 import akkount.service.BalanceService;
 import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.TimeSource;
-import com.haulmont.cuba.gui.UiComponents;
+import io.jmix.core.TimeSource;
+import io.jmix.core.metamodel.datatype.FormatStringsRegistry;
+import io.jmix.core.security.CurrentAuthentication;
+import io.jmix.ui.UiComponents;
 import com.haulmont.cuba.gui.components.AbstractMainWindow;
-import com.haulmont.cuba.gui.components.BoxLayout;
-import com.haulmont.cuba.gui.components.GridLayout;
+import io.jmix.ui.component.BoxLayout;
+import io.jmix.ui.component.GridLayout;
 import com.haulmont.cuba.gui.components.Label;
-import com.haulmont.cuba.gui.components.mainwindow.AppMenu;
+import io.jmix.ui.component.mainwindow.AppMenu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 
 import javax.inject.Inject;
@@ -36,6 +39,11 @@ public class MainWindow extends AbstractMainWindow {
     private UiComponents uiComponents;
 
     private GridLayout balanceGrid;
+
+    @Autowired
+    private CurrentAuthentication currentAuthentication;
+    @Autowired
+    private FormatStringsRegistry formatStringsRegistry;
 
     @Override
     public void init(Map<String, Object> params) {
@@ -67,7 +75,7 @@ public class MainWindow extends AbstractMainWindow {
             balanceGrid.setMargin(true);
             balanceGrid.setSpacing(true);
 
-            DecimalFormatter formatter = new DecimalFormatter();
+            DecimalFormatter formatter = new DecimalFormatter(currentAuthentication, formatStringsRegistry);
 
             int row = 0;
             for (Iterator<BalanceData> iterator = balanceDataList.iterator(); iterator.hasNext(); ) {
@@ -101,7 +109,7 @@ public class MainWindow extends AbstractMainWindow {
         }
 
         Label<String> sumLabel = uiComponents.create(Label.TYPE_STRING);
-        sumLabel.setValue(formatter.format(accountBalance.amount));
+        sumLabel.setValue(formatter.apply(accountBalance.amount));
         sumLabel.setAlignment(Alignment.MIDDLE_RIGHT);
         if (accountBalance.name == null) {
             sumLabel.setStyleName("totals");

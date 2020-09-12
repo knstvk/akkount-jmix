@@ -1,14 +1,15 @@
 package akkount.service;
 
+import akkount.entity.User;
 import akkount.entity.UserData;
 import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.Transaction;
 import com.haulmont.cuba.core.TypedQuery;
-import com.haulmont.cuba.core.entity.Entity;
+import io.jmix.core.JmixEntity;
 import com.haulmont.cuba.core.global.Metadata;
 import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.security.entity.User;
+import io.jmix.core.entity.EntityValues;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class UserDataWorker {
     private Metadata metadata;
 
     @Nullable
-    public <T extends Entity> T loadEntity(String key, Class<T> entityClass) {
+    public <T extends JmixEntity> T loadEntity(String key, Class<T> entityClass) {
         List<String> values = getValues(key);
         if (values.isEmpty())
             return null;
@@ -46,7 +47,7 @@ public class UserDataWorker {
         return getEntity(value, entityClass);
     }
 
-    public <T extends Entity> List<T> loadEntityList(String key, Class<T> entityClass) {
+    public <T extends JmixEntity> List<T> loadEntityList(String key, Class<T> entityClass) {
         ArrayList<T> result = new ArrayList<>();
 
         List<String> values = getValues(key);
@@ -63,8 +64,8 @@ public class UserDataWorker {
         return result;
     }
 
-    public void saveEntity(String key, Entity entity, boolean multipleValues) {
-        String value = entity.getId().toString();
+    public void saveEntity(String key, JmixEntity entity, boolean multipleValues) {
+        String value = EntityValues.getId(entity).toString();
         try (Transaction tx = persistence.createTransaction()) {
             EntityManager em = persistence.getEntityManager();
 
@@ -96,8 +97,8 @@ public class UserDataWorker {
         }
     }
 
-    public void removeEntity(String key, Entity entity) {
-        String value = entity.getId().toString();
+    public void removeEntity(String key, JmixEntity entity) {
+        String value = EntityValues.getId(entity).toString();
         try (Transaction tx = persistence.createTransaction()) {
             EntityManager em = persistence.getEntityManager();
             TypedQuery<UserData> query = em.createQuery(
@@ -115,7 +116,7 @@ public class UserDataWorker {
         }
     }
 
-    private <T extends Entity> T getEntity(String value, Class<T> entityClass) {
+    private <T extends JmixEntity> T getEntity(String value, Class<T> entityClass) {
         UUID entityId;
         try {
             entityId = UUID.fromString(value);
@@ -128,7 +129,7 @@ public class UserDataWorker {
         try (Transaction tx = persistence.createTransaction()) {
             EntityManager em = persistence.getEntityManager();
             //noinspection unchecked
-            entity = (T) em.find((Class<Entity<UUID>>) entityClass, entityId);
+            entity = (T) em.find((Class<JmixEntity>) entityClass, entityId);
             tx.commit();
         }
         return entity;

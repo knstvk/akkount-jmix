@@ -1,13 +1,13 @@
 package akkount.web.operation;
 
-import com.haulmont.chile.core.datatypes.Datatype;
+import io.jmix.core.metamodel.datatype.Datatype;
 import com.haulmont.chile.core.datatypes.DatatypeRegistry;
 import com.haulmont.chile.core.datatypes.Datatypes;
 import com.haulmont.cuba.core.global.Scripting;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.TextField;
-import com.haulmont.cuba.gui.components.ValidationErrors;
-import com.haulmont.cuba.web.gui.components.WebComponentsHelper;
+import io.jmix.ui.component.ValidationErrors;
+import io.jmix.ui.component.impl.WebComponentsHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 

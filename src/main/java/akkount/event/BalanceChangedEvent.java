@@ -4,10 +4,10 @@
 
 package akkount.event;
 
-import com.haulmont.addon.globalevents.GlobalApplicationEvent;
-import com.haulmont.addon.globalevents.GlobalUiEvent;
+import io.jmix.ui.event.UiEvent;
+import org.springframework.context.ApplicationEvent;
 
-public class BalanceChangedEvent extends GlobalApplicationEvent implements GlobalUiEvent {
+public class BalanceChangedEvent extends ApplicationEvent implements UiEvent {
 
     public BalanceChangedEvent(Object source) {
         super(source);

@@ -3,11 +3,11 @@ package akkount.web.operation;
 import akkount.entity.Operation;
 import com.haulmont.cuba.gui.components.Label;
 import com.haulmont.cuba.gui.components.TextField;
-import com.haulmont.cuba.gui.components.ValidationErrors;
-import com.haulmont.cuba.gui.model.InstanceContainer;
-import com.haulmont.cuba.gui.screen.ScreenFragment;
-import com.haulmont.cuba.gui.screen.UiController;
-import com.haulmont.cuba.gui.screen.UiDescriptor;
+import io.jmix.ui.component.ValidationErrors;
+import io.jmix.ui.model.InstanceContainer;
+import io.jmix.ui.screen.ScreenFragment;
+import io.jmix.ui.screen.UiController;
+import io.jmix.ui.screen.UiDescriptor;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;

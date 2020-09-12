@@ -2,6 +2,14 @@
 <menu-config xmlns="http://jmix.io/schema/ui/menu">
 
     <menu id="application" caption="msg://akkount/menu.application" insertBefore="security">
+        <item id="akk_Operation.lookup"
+              shortcut="Ctrl-Shift-O"/>
+        <separator/>
+        <item id="categories-report"/>
+        <separator/>
+        <item id="akk_Currency.lookup"/>
+        <item id="akk_Category.lookup"/>
+        <item id="akk_Account.lookup"/>
         <item screen="akk_User.browse" caption="msg://akkount.screen.user/UserBrowse.caption"/>
     </menu>
 

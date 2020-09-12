@@ -2,12 +2,13 @@ package akkount.web.operation;
 
 import akkount.entity.Operation;
 import akkount.entity.OperationType;
-import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Button;
+import io.jmix.ui.ScreenBuilders;
+import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
+import io.jmix.ui.action.Action;
+import io.jmix.ui.component.Button;
 import com.haulmont.cuba.gui.components.Table;
-import com.haulmont.cuba.gui.model.CollectionLoader;
-import com.haulmont.cuba.gui.screen.*;
+import io.jmix.ui.model.CollectionLoader;
+import io.jmix.ui.screen.*;
 
 import javax.inject.Inject;
 

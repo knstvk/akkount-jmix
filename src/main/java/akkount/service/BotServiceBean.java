@@ -8,7 +8,7 @@ import akkount.entity.OperationType;
 import com.google.common.base.Splitter;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.core.global.TimeSource;
+import io.jmix.core.TimeSource;
 import com.haulmont.cuba.core.global.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

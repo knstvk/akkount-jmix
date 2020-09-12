@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 @Entity(name = "akk_User")
-@Table(name = "AKK_USER")
+@Table(name = "SEC_USER")
 public class User implements JmixEntity, BaseUser {
 
     @Id

@@ -2,12 +2,13 @@ package akkount.web.account;
 
 import akkount.entity.Account;
 import akkount.service.BalanceService;
-import com.haulmont.cuba.gui.Dialogs;
-import com.haulmont.cuba.gui.components.Action;
-import com.haulmont.cuba.gui.components.Component;
-import com.haulmont.cuba.gui.components.DialogAction;
+import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
+import io.jmix.ui.Dialogs;
+import io.jmix.ui.action.Action;
+import io.jmix.ui.component.Component;
+import io.jmix.ui.action.DialogAction;
 import com.haulmont.cuba.gui.components.Table;
-import com.haulmont.cuba.gui.screen.*;
+import io.jmix.ui.screen.*;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class AccountBrowse extends StandardLookup<Account> {
     public void onAccountTableRecalcBalance(Action.ActionPerformedEvent event) {
         Set<Account> selected = accountTable.getSelected();
         if (!selected.isEmpty()) {
-            dialogs.createOptionDialog(Dialogs.MessageType.CONFIRMATION)
+            dialogs.createOptionDialog()
                     .withCaption(messageBundle.getMessage("recalcBalance.title"))
                     .withMessage(messageBundle.getMessage("recalcBalance.msg"))
                     .withActions(

@@ -1,8 +1,8 @@
 package akkount.web.operation;
 
 import akkount.entity.Operation;
-import com.haulmont.cuba.gui.components.Fragment;
-import com.haulmont.cuba.gui.components.ValidationErrors;
+import io.jmix.ui.component.Fragment;
+import io.jmix.ui.component.ValidationErrors;
 
 public interface OperationFrame {
 

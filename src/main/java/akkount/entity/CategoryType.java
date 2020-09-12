@@ -1,6 +1,6 @@
 package akkount.entity;
 
-import com.haulmont.chile.core.datatypes.impl.EnumClass;
+import io.jmix.core.metamodel.datatype.impl.EnumClass;
 
 public enum CategoryType implements EnumClass<String>{
 

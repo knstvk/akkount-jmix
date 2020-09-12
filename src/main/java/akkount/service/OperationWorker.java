@@ -7,9 +7,9 @@ import akkount.event.BalanceChangedEvent;
 import com.haulmont.cuba.core.TransactionalDataManager;
 import com.haulmont.cuba.core.app.events.AttributeChanges;
 import com.haulmont.cuba.core.app.events.EntityChangedEvent;
-import com.haulmont.cuba.core.entity.Entity;
+import io.jmix.core.JmixEntity;
 import com.haulmont.cuba.core.entity.contracts.Id;
-import com.haulmont.cuba.core.global.Events;
+import io.jmix.core.Events;
 import com.haulmont.cuba.core.global.Metadata;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
@@ -180,7 +180,7 @@ public class OperationWorker {
     }
 
     @Nullable
-    private <T extends Entity<K>,K> Id<T,K> idOfNullable(@Nullable T entity) {
+    private <T extends JmixEntity, K> Id<T,K> idOfNullable(@Nullable T entity) {
         return entity == null ? null : Id.of(entity);
     }
 }

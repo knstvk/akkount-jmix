@@ -8,9 +8,17 @@ import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
 import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.DateField;
+import com.haulmont.cuba.gui.components.Label;
+import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.TextField;
 import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
+import io.jmix.ui.action.AbstractAction;
+import io.jmix.ui.component.*;
+import io.jmix.ui.gui.OpenType;
+import io.jmix.ui.screen.OpenMode;
 import org.apache.commons.lang3.time.DateUtils;
 
 import javax.inject.Inject;
@@ -297,7 +305,7 @@ public class CategoriesReport extends AbstractWindow {
                 } else {
                     params.put("currency2", ((Currency) currencyField.getValue()).getCode());
                 }
-                openWindow("show-operations", WindowManager.OpenType.NEW_TAB, params);
+                openWindow("show-operations", OpenType.NEW_TAB, params);
             }
         }
     }

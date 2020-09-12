@@ -1,6 +1,6 @@
 package akkount.service;
 
-import com.haulmont.cuba.core.entity.Entity;
+import io.jmix.core.JmixEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -15,27 +15,27 @@ public class UserDataServiceBean implements UserDataService {
 
     @Override
     @Nullable
-    public <T extends Entity> T loadEntity(String key, Class<T> entityClass) {
+    public <T extends JmixEntity> T loadEntity(String key, Class<T> entityClass) {
         return worker.loadEntity(key, entityClass);
     }
 
     @Override
-    public <T extends Entity> List<T> loadEntityList(String key, Class<T> entityClass) {
+    public <T extends JmixEntity> List<T> loadEntityList(String key, Class<T> entityClass) {
         return worker.loadEntityList(key, entityClass);
     }
 
     @Override
-    public void saveEntity(String key, Entity entity) {
+    public void saveEntity(String key, JmixEntity entity) {
         worker.saveEntity(key, entity, false);
     }
 
     @Override
-    public void addEntity(String key, Entity entity) {
+    public void addEntity(String key, JmixEntity entity) {
         worker.saveEntity(key, entity, true);
     }
 
     @Override
-    public void removeEntity(String key, Entity entity) {
+    public void removeEntity(String key, JmixEntity entity) {
         worker.removeEntity(key, entity);
     }
 }

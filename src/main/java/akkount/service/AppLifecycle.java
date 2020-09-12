@@ -4,9 +4,10 @@ import com.haulmont.bali.db.QueryRunner;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.sys.AppContext;
 import com.haulmont.cuba.core.sys.events.AppContextStoppedEvent;
-import com.haulmont.cuba.core.sys.persistence.DbmsType;
+import io.jmix.data.persistence.DbmsType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +21,12 @@ public class AppLifecycle {
 
     @Inject
     protected Persistence persistence;
+    @Autowired
+    private DbmsType dbmsType;
 
     @EventListener(AppContextStoppedEvent.class)
     public void applicationStopped() {
-        if ("hsql".equals(DbmsType.getType()) && Boolean.valueOf(AppContext.getProperty("akk.shutdownDatabaseOnExit"))) {
+        if ("hsql".equals(dbmsType.getType()) && Boolean.valueOf(AppContext.getProperty("akk.shutdownDatabaseOnExit"))) {
             log.info("Shutting down the HSQL database");
             QueryRunner queryRunner = new QueryRunner(persistence.getDataSource());
             try {
