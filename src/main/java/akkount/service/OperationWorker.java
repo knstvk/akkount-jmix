@@ -7,7 +7,7 @@ import akkount.event.BalanceChangedEvent;
 import com.haulmont.cuba.core.TransactionalDataManager;
 import com.haulmont.cuba.core.app.events.AttributeChanges;
 import com.haulmont.cuba.core.app.events.EntityChangedEvent;
-import io.jmix.core.JmixEntity;
+import io.jmix.core.Entity;
 import com.haulmont.cuba.core.entity.contracts.Id;
 import io.jmix.core.Events;
 import com.haulmont.cuba.core.global.Metadata;
@@ -180,7 +180,7 @@ public class OperationWorker {
     }
 
     @Nullable
-    private <T extends JmixEntity, K> Id<T,K> idOfNullable(@Nullable T entity) {
+    private <T extends Entity, K> Id<T,K> idOfNullable(@Nullable T entity) {
         return entity == null ? null : Id.of(entity);
     }
 }

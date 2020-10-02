@@ -1,5 +1,5 @@
 plugins {
-    id 'io.jmix' version '0.1.11'
+    id 'io.jmix' version '0.1.13'
     id 'java'
 }
 
@@ -35,7 +35,7 @@ dependencies {
     implementation 'io.jmix.cuba:jmix-cuba-starter'
     implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
     implementation 'org.apache.httpcomponents:httpclient'
-    implementation 'org.json:json'
+    implementation 'org.json:json:20200518'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 

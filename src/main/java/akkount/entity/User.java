@@ -1,6 +1,5 @@
 package akkount.entity;
 
-import io.jmix.core.JmixEntity;
 import io.jmix.core.entity.BaseUser;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
@@ -15,7 +14,7 @@ import java.util.UUID;
 
 @Entity(name = "akk_User")
 @Table(name = "SEC_USER")
-public class User implements JmixEntity, BaseUser {
+public class User implements io.jmix.core.Entity, BaseUser {
 
     @Id
     @Column(name = "ID")
@@ -134,11 +133,6 @@ public class User implements JmixEntity, BaseUser {
     @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    @Override
-    public String getKey() {
-        return username;
     }
 
     @InstanceName
