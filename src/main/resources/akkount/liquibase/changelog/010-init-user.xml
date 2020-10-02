@@ -15,6 +15,16 @@
     </changeSet>
 
     <changeSet id="2" author="akkount">
+        <!-- reset password to '1' for users with old SHA-1 encryption -->
+        <update tableName="SEC_USER">
+            <column name="PASSWORD_ENCRYPTION" valueComputed="'noop'"/>
+            <column name="PASSWORD" valueComputed="'1'"/>
+            <where>PASSWORD_ENCRYPTION is null</where>
+        </update>
+
+    </changeSet>
+
+    <changeSet id="3" author="akkount">
 
         <update tableName="SEC_USER">
             <column name="USERNAME" valueComputed="LOGIN_LC"/>
@@ -24,27 +34,12 @@
 
     </changeSet>
 
-    <changeSet id="3" author="akkount">
-
-        <insert tableName="SEC_USER">
-            <column name="ID" value="a0eab5b0-0e93-4390-8a3e-132b605550d9"/>
-            <column name="VERSION" value="1"/>
-            <column name="USERNAME" value="jmix"/>
-            <column name="PASSWORD" value="{noop}jmix"/>
-            <column name="ENABLED" value="true"/>
-
-            <column name="LOGIN" value="jmix"/>
-            <column name="LOGIN_LC" value="jmix"/>
-        </insert>
-
-    </changeSet>
-
     <changeSet id="4" author="akkount">
 
         <insert tableName="SEC_ROLE_ASSIGNMENT_ENTITY">
             <column name="ID" value="b44d6d0f-98ce-4e15-806f-f0062d5d49ad"/>
             <column name="VERSION" value="1"/>
-            <column name="USER_KEY" value="jmix"/>
+            <column name="USERNAME" value="admin"/>
             <column name="ROLE_CODE" value="system-full-access"/>
         </insert>
 
