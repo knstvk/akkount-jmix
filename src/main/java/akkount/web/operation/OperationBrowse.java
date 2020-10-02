@@ -6,7 +6,7 @@ import io.jmix.ui.ScreenBuilders;
 import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.Button;
-import com.haulmont.cuba.gui.components.Table;
+import io.jmix.ui.component.Table;
 import io.jmix.ui.model.CollectionLoader;
 import io.jmix.ui.screen.*;
 

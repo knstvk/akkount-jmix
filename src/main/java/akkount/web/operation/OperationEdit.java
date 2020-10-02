@@ -6,6 +6,7 @@ import akkount.entity.OperationType;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
 import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
 import io.jmix.core.TimeSource;
 import io.jmix.ui.Fragments;
@@ -16,6 +17,7 @@ import io.jmix.ui.model.DataContext;
 import io.jmix.ui.screen.*;
 import com.haulmont.cuba.security.global.UserSession;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.util.Calendar;
@@ -38,8 +40,8 @@ public class OperationEdit extends StandardEditor<Operation> {
     @Inject
     private UserDataService userDataService;
 
-    @Inject
-    private UserSession userSession;
+    @Autowired
+    private UserSessionSource userSessionSource;
 
     private OperationFrame operationFrame;
 
@@ -92,7 +94,7 @@ public class OperationEdit extends StandardEditor<Operation> {
 
     @Subscribe(target = Target.DATA_CONTEXT)
     protected void postCommit(DataContext.PostCommitEvent postCommitEvent) {
-        userSession.setAttribute(LAST_OPERATION_DATE_ATTR, getEditedEntity().getOpDate());
+        userSessionSource.getUserSession().setAttribute(LAST_OPERATION_DATE_ATTR, getEditedEntity().getOpDate());
     }
 
     private Account loadAccount(String key) {
@@ -100,7 +102,7 @@ public class OperationEdit extends StandardEditor<Operation> {
     }
 
     private Date loadDate() {
-        Date date = userSession.getAttribute(LAST_OPERATION_DATE_ATTR);
+        Date date = userSessionSource.getUserSession().getAttribute(LAST_OPERATION_DATE_ATTR);
         return date != null ? date : DateUtils.truncate(timeSource.currentTimestamp(), Calendar.DAY_OF_MONTH);
     }
 }

@@ -33,6 +33,7 @@ dependencies {
     implementation 'io.jmix.security:jmix-security-data-starter'
 
     implementation 'io.jmix.cuba:jmix-cuba-starter'
+    implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
     implementation 'org.apache.httpcomponents:httpclient'
     implementation 'org.json:json'
 

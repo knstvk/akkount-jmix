@@ -16,7 +16,7 @@
         <collection id="accountsDc" class="akkount.entity.Account" view="_local" provided="true"/>
     </data>
     <layout>
-        <grid spacing="true" width="100%">
+        <gridLayout spacing="true" width="100%">
             <columns>
                 <column flex="0.0"/>
                 <column flex="1.0"/>
@@ -53,6 +53,6 @@
                     <textArea dataContainer="operationDc" property="comments" rows="3" width="100%"/>
                 </row>
             </rows>
-        </grid>
+        </gridLayout>
     </layout>
 </window>

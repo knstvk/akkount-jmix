@@ -7,43 +7,44 @@
 
     <changeSet id="1" author="akkount">
 
-        <createTable tableName="AKK_USER">
-            <column name="ID" type="uuid">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="VERSION" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="USERNAME" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="FIRST_NAME" type="varchar(255)"/>
-            <column name="LAST_NAME" type="varchar(255)"/>
-            <column name="PASSWORD" type="varchar(255)"/>
-            <column name="EMAIL" type="varchar(255)"/>
+        <addColumn tableName="SEC_USER" >
+            <column name="USERNAME" type="varchar(255)"/>
             <column name="ENABLED" type="boolean"/>
-        </createTable>
+        </addColumn>
 
     </changeSet>
 
     <changeSet id="2" author="akkount">
 
-        <insert tableName="AKK_USER">
-            <column name="ID" value="60885987-1b61-4247-94c7-dff348347f93"/>
-            <column name="VERSION" value="1"/>
-            <column name="USERNAME" value="admin"/>
-            <column name="PASSWORD" value="{noop}admin"/>
-            <column name="ENABLED" value="true"/>
-        </insert>
+        <update tableName="SEC_USER">
+            <column name="USERNAME" valueComputed="LOGIN_LC"/>
+            <column name="ENABLED" valueComputed="ACTIVE"/>
+            <column name="PASSWORD" valueComputed="'{' || PASSWORD_ENCRYPTION || '}' || PASSWORD"/>
+        </update>
 
     </changeSet>
 
     <changeSet id="3" author="akkount">
 
-        <insert tableName="SEC_ROLE_ASSIGNMENT_ENTITY">
-            <column name="ID" value="6c9e420a-2b7a-4c42-8654-a9027ee14083"/>
+        <insert tableName="SEC_USER">
+            <column name="ID" value="a0eab5b0-0e93-4390-8a3e-132b605550d9"/>
             <column name="VERSION" value="1"/>
-            <column name="USER_KEY" value="admin"/>
+            <column name="USERNAME" value="jmix"/>
+            <column name="PASSWORD" value="{noop}jmix"/>
+            <column name="ENABLED" value="true"/>
+
+            <column name="LOGIN" value="jmix"/>
+            <column name="LOGIN_LC" value="jmix"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="4" author="akkount">
+
+        <insert tableName="SEC_ROLE_ASSIGNMENT_ENTITY">
+            <column name="ID" value="b44d6d0f-98ce-4e15-806f-f0062d5d49ad"/>
+            <column name="VERSION" value="1"/>
+            <column name="USER_KEY" value="jmix"/>
             <column name="ROLE_CODE" value="system-full-access"/>
         </insert>
 

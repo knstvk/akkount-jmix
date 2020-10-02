@@ -16,10 +16,10 @@
     </data>
     <layout expand="operationTable"
             spacing="true">
-        <filter id="filter"
-                dataLoader="operationsDl">
-            <properties include=".*"/>
-        </filter>
+<!--        <filter id="filter"-->
+<!--                dataLoader="operationsDl">-->
+<!--            <properties include=".*"/>-->
+<!--        </filter>-->
         <groupTable id="operationTable"
                     width="100%" dataContainer="operationsDc">
             <actions>
@@ -28,7 +28,7 @@
                 <action id="createTransfer" caption="msg://akkount.entity/OperationType.TRANSFER" shortcut="CTRL-SHIFT-KEY3"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
-                <action id="excel" type="excel"/>
+                <action id="excel" type="export"/>
             </actions>
             <columns>
                 <column id="opType"/>
