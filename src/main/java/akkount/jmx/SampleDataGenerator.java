@@ -7,7 +7,7 @@ import akkount.service.BalanceWorker;
 import akkount.service.OperationWorker;
 import com.haulmont.bali.db.QueryRunner;
 import com.haulmont.cuba.core.Persistence;
-import io.jmix.core.Events;
+import com.haulmont.cuba.core.global.Events;
 import com.haulmont.cuba.core.global.Metadata;
 import io.jmix.core.TimeSource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
