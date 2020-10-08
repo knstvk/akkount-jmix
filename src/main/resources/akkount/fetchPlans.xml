@@ -31,14 +31,14 @@
         <property name="category"
                   fetchPlan="_minimal"/>
     </fetchPlan>
-    <fetchPlan class="akkount.entity.Operation"
-          extends="_local"
-          name="operation-with-accounts">
-        <property name="acc1"
-                  fetchPlan="_minimal"/>
-        <property name="acc2"
-                  fetchPlan="_minimal"/>
-    </fetchPlan>
+<!--    <fetchPlan class="akkount.entity.Operation"-->
+<!--          extends="_local"-->
+<!--          name="operation-with-accounts">-->
+<!--        <property name="acc1"-->
+<!--                  fetchPlan="_minimal"/>-->
+<!--        <property name="acc2"-->
+<!--                  fetchPlan="_minimal"/>-->
+<!--    </fetchPlan>-->
     <fetchPlan class="akkount.entity.Operation"
           name="operation-recalc-balance">
         <property name="opDate"/>

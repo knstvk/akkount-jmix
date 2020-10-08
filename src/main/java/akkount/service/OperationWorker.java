@@ -12,6 +12,8 @@ import io.jmix.core.Entity;
 import com.haulmont.cuba.core.entity.contracts.Id;
 import com.haulmont.cuba.core.global.Metadata;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -29,6 +31,8 @@ public class OperationWorker {
 
     public static final String NAME = "akk_OperationWorker";
 
+    private static final Logger log = LoggerFactory.getLogger(OperationWorker.class);
+
     @Inject
     private Metadata metadata;
 
@@ -45,6 +49,8 @@ public class OperationWorker {
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void onOperationChanged(EntityChangedEvent<Operation, UUID> event) {
+        log.debug("onOperationChanged: event={}", event);
+
         AttributeChanges changes = event.getChanges();
         if (event.getType() == DELETED) {
             removeOperation(
@@ -55,7 +61,7 @@ public class OperationWorker {
                     changes.getOldValue("amount2")
             );
         } else {
-            Operation operation = tdm.load(event.getEntityId()).view("operation-with-accounts").one();
+            Operation operation = tdm.load(event.getEntityId())/*.view("operation-with-accounts")*/.one();
             if (event.getType() == UPDATED) {
                 removeOperation(
                         changes.isChanged("opDate") ? changes.getOldValue("opDate") : operation.getOpDate(),
@@ -83,6 +89,8 @@ public class OperationWorker {
 
     private void removeOperation(Date opDate, Id<Account, UUID> acc1Id, Id<Account, UUID> acc2Id,
                                  BigDecimal amount1, BigDecimal amount2) {
+        log.debug("removeOperation: opDate={}, acc1Id={}, acc2Id={}, amount1={}, amount2={}", opDate, acc1Id, acc2Id, amount1, amount2);
+
         if (acc1Id != null) {
             List<Balance> list = getBalanceRecords(opDate, acc1Id);
             if (!list.isEmpty()) {
@@ -105,6 +113,8 @@ public class OperationWorker {
     }
 
     private void addOperation(Operation operation) {
+        log.debug("addOperation: {}", operation);
+
         if (operation.getAcc1() != null) {
             List<Balance> list = getBalanceRecords(operation.getOpDate(), Id.of(operation.getAcc1()));
             if (list.isEmpty()) {
@@ -141,6 +151,8 @@ public class OperationWorker {
     }
 
     private List<Balance> getBalanceRecords(Date opDate, Id<Account, UUID> accId) {
+        log.debug("getBalanceRecords: opDate={}, accId={}", opDate, accId);
+
         return tdm.load(Balance.class)
                 .query("select b from akk_Balance b " +
                         "where b.account.id = :accountId and b.balanceDate > :balanceDate order by b.balanceDate")
@@ -150,6 +162,8 @@ public class OperationWorker {
     }
 
     private BigDecimal previousBalanceAmount(Account account, Date opDate) {
+        log.debug("previousBalanceAmount: acccount={}, opDate={}", account, opDate);
+
         Optional<Balance> optBalance = tdm.load(Balance.class)
                 .query("select b from akk_Balance b " +
                         "where b.account.id = :accountId and b.balanceDate <= :balanceDate order by b.balanceDate desc")
