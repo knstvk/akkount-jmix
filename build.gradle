@@ -1,16 +1,16 @@
 plugins {
-    id 'io.jmix' version '0.1.13'
+    id 'io.jmix' version '0.1.18'
     id 'java'
 }
 
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '0.1.0-SNAPSHOT'
+    bomVersion = '0.2.0-SNAPSHOT'
 }
 
-group = 'com.company'
-version = '0.0.1-SNAPSHOT'
+group = 'xyz.knstvk'
+version = '0.3-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {

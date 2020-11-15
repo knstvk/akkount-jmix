@@ -4,6 +4,7 @@ import io.jmix.core.entity.BaseUser;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
 import io.jmix.core.metamodel.annotation.InstanceName;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+@JmixEntity
 @Entity(name = "akk_User")
 @Table(name = "SEC_USER")
 public class User implements io.jmix.core.Entity, BaseUser {

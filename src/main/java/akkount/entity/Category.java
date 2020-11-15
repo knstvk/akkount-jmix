@@ -5,7 +5,9 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.chile.core.annotations.NamePattern;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 
+@JmixEntity
 @NamePattern("%s|name")
 @Table(name = "AKK_CATEGORY")
 @Entity(name = "akk_Category")

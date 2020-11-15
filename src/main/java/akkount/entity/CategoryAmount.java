@@ -1,18 +1,15 @@
 package akkount.entity;
 
 import com.haulmont.cuba.core.entity.BaseUuidEntity;
-import io.jmix.core.metamodel.annotation.ModelObject;
-import io.jmix.core.metamodel.annotation.ModelProperty;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import java.math.BigDecimal;
 
-@ModelObject(name = "akk_CategoryBalance")
+@JmixEntity(name = "akk_CategoryBalance")
 public class CategoryAmount extends BaseUuidEntity {
 
-    @ModelProperty
     private Category category;
 
-    @ModelProperty
     private BigDecimal amount;
 
     public Category getCategory() {

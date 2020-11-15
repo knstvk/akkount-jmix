@@ -7,11 +7,13 @@ import akkount.entity.Currency;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
 import com.haulmont.cuba.gui.WindowManager;
+import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.components.BoxLayout;
 import com.haulmont.cuba.gui.components.DateField;
+import com.haulmont.cuba.gui.components.HBoxLayout;
 import com.haulmont.cuba.gui.components.Label;
 import com.haulmont.cuba.gui.components.Table;
 import com.haulmont.cuba.gui.components.TextField;
-import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
 import com.haulmont.cuba.gui.data.CollectionDatasource;
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
@@ -63,7 +65,7 @@ public class CategoriesReport extends AbstractWindow {
 
     private boolean doNotRefresh;
 
-    private Map<Category, Component> excludedCategories = new HashMap<>();
+    private Map<Category, BoxLayout> excludedCategories = new HashMap<>();
 
     @Override
     public void init(Map<String, Object> params) {
@@ -236,9 +238,9 @@ public class CategoriesReport extends AbstractWindow {
         button.setIcon("icons/remove.png");
         button.setAction(new AbstractAction("") {
             @Override
-            public void actionPerform(Component component) {
-                for (Iterator<Map.Entry<Category, Component>> it = excludedCategories.entrySet().iterator(); it.hasNext(); ) {
-                    Map.Entry<Category, Component> entry = it.next();
+            public void actionPerform(io.jmix.ui.component.Component component) {
+                for (Iterator<Map.Entry<Category, BoxLayout>> it = excludedCategories.entrySet().iterator(); it.hasNext(); ) {
+                    Map.Entry<Category, BoxLayout> entry = it.next();
                     if (entry.getValue() == box) {
                         excludedBox.remove(box);
                         it.remove();
@@ -268,7 +270,7 @@ public class CategoriesReport extends AbstractWindow {
         }
 
         @Override
-        public void actionPerform(Component component) {
+        public void actionPerform(io.jmix.ui.component.Component component) {
             CategoryAmount categoryAmount = (CategoryAmount) table.getDatasource().getItem();
             if (categoryAmount != null) {
                 excludeCategory(categoryAmount.getCategory());
@@ -291,7 +293,7 @@ public class CategoriesReport extends AbstractWindow {
         }
 
         @Override
-        public void actionPerform(Component component) {
+        public void actionPerform(io.jmix.ui.component.Component component) {
             CategoryAmount categoryAmount = (CategoryAmount) table.getDatasource().getItem();
             if (categoryAmount != null) {
                 Map<String, Object> params = new HashMap<>();

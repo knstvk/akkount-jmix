@@ -5,7 +5,6 @@ import akkount.service.BalanceData;
 import akkount.service.BalanceService;
 import akkount.web.DecimalFormatter;
 import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.gui.components.Label;
 import io.jmix.core.TimeSource;
 import io.jmix.core.metamodel.datatype.FormatStringsRegistry;
 import io.jmix.core.security.CurrentAuthentication;

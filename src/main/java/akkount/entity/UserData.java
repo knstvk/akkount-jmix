@@ -8,8 +8,11 @@ import javax.persistence.ManyToOne;
 import com.haulmont.cuba.core.entity.BaseUuidEntity;
 import javax.persistence.Column;
 import com.haulmont.cuba.core.entity.Creatable;
+import io.jmix.core.metamodel.annotation.JmixEntity;
+
 import java.util.Date;
 
+@JmixEntity
 @Table(name = "AKK_USER_DATA")
 @Entity(name = "akk_UserData")
 public class UserData extends BaseUuidEntity implements Creatable {

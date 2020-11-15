@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 
+@JmixEntity
 @Table(name = "AKK_BALANCE")
 @Entity(name = "akk_Balance")
 public class Balance extends StandardEntity {

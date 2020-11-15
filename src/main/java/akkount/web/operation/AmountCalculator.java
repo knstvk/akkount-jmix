@@ -7,7 +7,6 @@ import com.haulmont.cuba.core.global.Scripting;
 import com.haulmont.cuba.core.global.UserSessionSource;
 import com.haulmont.cuba.gui.components.TextField;
 import io.jmix.ui.component.ValidationErrors;
-import io.jmix.ui.component.impl.WebComponentsHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,7 @@ public class AmountCalculator {
     private DatatypeRegistry datatypeRegistry;
 
     public void initAmount(TextField amountField, BigDecimal value) {
-        com.vaadin.ui.TextField vTextField = (com.vaadin.ui.TextField) WebComponentsHelper.unwrap(amountField);
+        com.vaadin.ui.TextField vTextField = amountField.unwrap(com.vaadin.ui.TextField.class);
         new CalcExtension(vTextField);
 
         Datatype<BigDecimal> decimalDatatype = datatypeRegistry.getNN(BigDecimal.class);

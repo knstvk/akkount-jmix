@@ -1,12 +1,14 @@
 package akkount.entity;
 
 import com.haulmont.cuba.core.entity.StandardEntity;
-import io.jmix.core.entity.annotation.PublishEntityChangedEvents;
+import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@JmixEntity
 @Table(name = "AKK_OPERATION")
 @Entity(name = "akk_Operation")
 @PublishEntityChangedEvents

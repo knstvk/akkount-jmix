@@ -4,7 +4,7 @@ import akkount.entity.Account;
 import akkount.entity.Currency;
 import com.haulmont.cuba.core.TransactionalDataManager;
 import com.haulmont.cuba.core.app.events.EntityChangedEvent;
-import io.jmix.data.event.EntityPersistingEvent;
+import com.haulmont.cuba.core.app.events.EntityPersistingEvent;
 import com.haulmont.cuba.core.entity.contracts.Id;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

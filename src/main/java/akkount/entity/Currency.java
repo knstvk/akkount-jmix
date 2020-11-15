@@ -2,12 +2,14 @@ package akkount.entity;
 
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+@JmixEntity
 @NamePattern("%s|code")
 @Table(name = "AKK_CURRENCY")
 @Entity(name = "akk_Currency")
