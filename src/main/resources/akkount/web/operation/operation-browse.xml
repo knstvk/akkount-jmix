@@ -16,10 +16,10 @@
     </data>
     <layout expand="operationTable"
             spacing="true">
-<!--        <filter id="filter"-->
-<!--                dataLoader="operationsDl">-->
-<!--            <properties include=".*"/>-->
-<!--        </filter>-->
+        <filter id="filter"
+                dataLoader="operationsDl">
+            <properties include=".*"/>
+        </filter>
         <groupTable id="operationTable"
                     width="100%" dataContainer="operationsDc">
             <actions>

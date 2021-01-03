@@ -8,6 +8,8 @@ import com.haulmont.cuba.core.global.AppBeans;
 import io.jmix.core.TimeSource;
 import io.jmix.core.metamodel.datatype.FormatStringsRegistry;
 import io.jmix.core.security.CurrentAuthentication;
+import io.jmix.security.constraint.PolicyStore;
+import io.jmix.security.constraint.SecureOperations;
 import io.jmix.ui.UiComponents;
 import io.jmix.ui.component.*;
 import io.jmix.ui.component.mainwindow.AppMenu;
@@ -40,6 +42,9 @@ public class MainScreen extends Screen implements Window.HasWorkArea {
     @Inject
     private BoxLayout balanceLayout;
 
+    @Autowired
+    private SplitPanel foldersSplit;
+
     @Inject
     private UiComponents uiComponents;
 
@@ -51,6 +56,12 @@ public class MainScreen extends Screen implements Window.HasWorkArea {
     @Autowired
     private FormatStringsRegistry formatStringsRegistry;
 
+    @Autowired
+    private PolicyStore policyStore;
+
+    @Autowired
+    private SecureOperations secureOperations;
+
     @Override
     public AppWorkArea getWorkArea() {
         return workArea;
@@ -59,7 +70,12 @@ public class MainScreen extends Screen implements Window.HasWorkArea {
     @Subscribe
     public void onInit(InitEvent event) {
         mainMenu.focus();
-        refreshBalance();
+        if (secureOperations.isSpecificPermitted("get-balance", policyStore)) {
+            refreshBalance();
+        } else {
+            foldersSplit.setSplitPosition(0);
+            balanceLayout.setVisible(false);
+        }
     }
 
     @EventListener(BalanceChangedEvent.class)

@@ -1,11 +1,13 @@
 package akkount.entity;
 
-import io.jmix.core.entity.BaseUser;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.security.GrantedAuthorityContainer;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -16,7 +18,8 @@ import java.util.UUID;
 @JmixEntity
 @Entity(name = "akk_User")
 @Table(name = "SEC_USER")
-public class User implements io.jmix.core.Entity, BaseUser {
+public class User implements UserDetails, GrantedAuthorityContainer,
+        io.jmix.core.Entity /*for compatibility with old EntityManager methods */ {
 
     @Id
     @Column(name = "ID")
@@ -46,6 +49,9 @@ public class User implements io.jmix.core.Entity, BaseUser {
 
     @Column(name = "ENABLED")
     protected Boolean enabled = true;
+
+    @Transient
+    protected Collection<? extends GrantedAuthority> authorities;
 
     public UUID getId() {
         return id;
@@ -114,22 +120,27 @@ public class User implements io.jmix.core.Entity, BaseUser {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return authorities != null ? authorities : Collections.emptyList();
+    }
+
+    @Override
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return enabled;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return enabled;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return enabled;
+        return true;
     }
 
     @Override
@@ -138,8 +149,9 @@ public class User implements io.jmix.core.Entity, BaseUser {
     }
 
     @InstanceName
-    @Override
+    @DependsOnProperties({"firstName", "lastName", "username"})
     public String getDisplayName() {
-        return String.join(" ", firstName, lastName);
+        return String.format("%s %s [%s]", (firstName != null ? firstName : ""),
+                (lastName != null ? lastName : ""), username);
     }
 }

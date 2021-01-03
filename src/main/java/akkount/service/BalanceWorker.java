@@ -3,7 +3,10 @@ package akkount.service;
 import akkount.entity.Balance;
 import akkount.entity.Operation;
 import com.haulmont.cuba.core.*;
+import io.jmix.security.constraint.PolicyStore;
+import io.jmix.security.constraint.SecureOperations;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -18,7 +21,16 @@ public class BalanceWorker {
     @Inject
     protected Persistence persistence;
 
+    @Autowired
+    private PolicyStore policyStore;
+
+    @Autowired
+    private SecureOperations secureOperations;
+
     public BigDecimal getBalance(final UUID accountId, final Date date) {
+        if (!secureOperations.isSpecificPermitted("get-balance", policyStore)) {
+            return BigDecimal.ZERO;
+        }
         try (Transaction tx = persistence.createTransaction()) {
             EntityManager em = persistence.getEntityManager();
 
