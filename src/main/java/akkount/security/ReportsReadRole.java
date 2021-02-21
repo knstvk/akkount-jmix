@@ -1,10 +1,10 @@
 package akkount.security;
 
-import io.jmix.security.role.annotation.Role;
+import io.jmix.security.role.annotation.ResourceRole;
 import io.jmix.securityui.role.annotation.MenuPolicy;
 import io.jmix.securityui.role.annotation.ScreenPolicy;
 
-@Role(name = "Reports Read", code = "reports-read")
+@ResourceRole(name = "Reports Read", code = "reports-read")
 public interface ReportsReadRole {
 
     @MenuPolicy(menuIds = {"application"})

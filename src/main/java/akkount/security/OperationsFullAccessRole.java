@@ -5,11 +5,11 @@ import io.jmix.security.model.EntityAttributePolicyAction;
 import io.jmix.security.model.EntityPolicyAction;
 import io.jmix.security.role.annotation.EntityAttributePolicy;
 import io.jmix.security.role.annotation.EntityPolicy;
-import io.jmix.security.role.annotation.Role;
+import io.jmix.security.role.annotation.ResourceRole;
 import io.jmix.securityui.role.annotation.MenuPolicy;
 import io.jmix.securityui.role.annotation.ScreenPolicy;
 
-@Role(name = "Operations Full Access", code = "operations-full-access")
+@ResourceRole(name = "Operations Full Access", code = "operations-full-access")
 public interface OperationsFullAccessRole {
 
     @MenuPolicy(menuIds = {"application"})

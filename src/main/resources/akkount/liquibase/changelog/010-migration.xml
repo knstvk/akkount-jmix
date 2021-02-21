@@ -43,11 +43,12 @@
 
     <changeSet id="5" author="migrator">
 
-        <insert tableName="SEC_ROLE_ASSIGNMENT_ENTITY">
+        <insert tableName="SEC_ROLE_ASSIGNMENT">
             <column name="ID" value="b44d6d0f-98ce-4e15-806f-f0062d5d49ad"/>
             <column name="VERSION" value="1"/>
             <column name="USERNAME" value="admin"/>
             <column name="ROLE_CODE" value="system-full-access"/>
+            <column name="ROLE_TYPE" value="resource"/>
         </insert>
 
     </changeSet>

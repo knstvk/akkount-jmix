@@ -1,12 +1,13 @@
 plugins {
-    id 'io.jmix' version '0.2.0'
+    id 'io.jmix' version '0.3.0'
     id 'java'
 }
 
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '0.3.0-SNAPSHOT'
+    bomVersion = '1.0.0-SNAPSHOT'
+    projectId = 'akk'
 }
 
 group = 'xyz.knstvk'
@@ -23,7 +24,7 @@ repositories {
 
 dependencies {
     implementation 'io.jmix.core:jmix-core-starter'
-    implementation 'io.jmix.data:jmix-data-starter'
+    implementation 'io.jmix.data:jmix-eclipselink-starter'
     implementation 'io.jmix.ui:jmix-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-data-starter'
     implementation 'io.jmix.ui:jmix-ui-themes-compiled'
@@ -34,6 +35,7 @@ dependencies {
 
     implementation 'io.jmix.cuba:jmix-cuba-starter'
     implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
+    implementation 'io.jmix.ui:jmix-ui-export-starter'
     implementation 'org.apache.httpcomponents:httpclient'
     implementation 'org.json:json:20200518'
 

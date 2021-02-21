@@ -28,7 +28,7 @@
                 <action id="createTransfer" caption="msg://akkount.entity/OperationType.TRANSFER" shortcut="CTRL-SHIFT-KEY3"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
-                <action id="excel" type="export"/>
+                <action id="excel" type="excelExport"/>
             </actions>
             <columns>
                 <column id="opType"/>
