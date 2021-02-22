@@ -36,6 +36,8 @@ dependencies {
     implementation 'io.jmix.cuba:jmix-cuba-starter'
     implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-export-starter'
+    implementation 'io.jmix.rest:jmix-rest-starter'
+
     implementation 'org.apache.httpcomponents:httpclient'
     implementation 'org.json:json:20200518'
 
