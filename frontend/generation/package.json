@@ -1,6 +1,6 @@
 {
   "name": "akkount-generation",
   "devDependencies": {
-    "@haulmont/jmix-front-generator": "^0.3.0-beta.0"
+    "@cuba-platform/front-generator": "^2.0.0-beta.4"
   }
 }

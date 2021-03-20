@@ -2,42 +2,33 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./app/App";
 // import registerServiceWorker from './registerServiceWorker';
-import { CubaAppProvider } from "@haulmont/jmix-react-core";
-import { I18nProvider } from "@haulmont/jmix-react-ui";
+import { CubaAppProvider } from "@cuba-platform/react";
+
 import { HashRouter, Route } from "react-router-dom";
-import { initializeApp } from "@haulmont/jmix-rest";
-import { CUBA_APP_URL, REST_CLIENT_ID, REST_CLIENT_SECRET } from "./config";
-import "mobx-react-lite/batchingForReactDom";
+import { initializeApp } from "@cuba-platform/rest";
+import { CUBA_APP_URL } from "./config";
+
 import "antd/dist/antd.min.css";
-import "@haulmont/jmix-react-ui/dist/index.min.css";
+import "@cuba-platform/react/dist/index.min.css";
 import "./index.css";
 import { antdLocaleMapping, messagesMapping } from "./i18n/i18nMappings";
-import { ApolloProvider } from "@apollo/client";
-import { createApolloClient } from "./graphql/graphql";
+import "moment/locale/ru";
 
 export const cubaREST = initializeApp({
-  name: "",
+  name: "akk",
   apiUrl: CUBA_APP_URL,
-  restClientId: REST_CLIENT_ID,
-  restClientSecret: REST_CLIENT_SECRET,
-  storage: window.localStorage,
-  defaultLocale: "en"
+  storage: window.localStorage
 });
 
-const client = createApolloClient();
-
 ReactDOM.render(
-  <CubaAppProvider cubaREST={cubaREST}>
-    <ApolloProvider client={client}>
-      <I18nProvider
-        messagesMapping={messagesMapping}
-        antdLocaleMapping={antdLocaleMapping}
-      >
-        <HashRouter>
-          <Route component={App} />
-        </HashRouter>
-      </I18nProvider>
-    </ApolloProvider>
+  <CubaAppProvider
+    cubaREST={cubaREST}
+    messagesMapping={messagesMapping}
+    antdLocaleMapping={antdLocaleMapping}
+  >
+    <HashRouter>
+      <Route component={App} />
+    </HashRouter>
   </CubaAppProvider>,
   document.getElementById("root") as HTMLElement
 );

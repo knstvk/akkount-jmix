@@ -1,6 +1,6 @@
-# React Front-end Client for Jmix
+# React Front-end Client for CUBA Platform 
 
-This project was generated with [@haulmont/jmix-front-generator](https://docs.jmix.io/jmix/0.x/frontend-ui/index.html).
+This project was generated with [@cuba-platform/front-generator](https://github.com/cuba-platform/frontend).
 
 Install dependencies:
 
@@ -18,4 +18,4 @@ This will launch a dev server and allow you to access your app at `localhost:300
 
 ### Learn More
 
-React client documentation is available [here](https://docs.jmix.io/jmix/0.x/frontend-ui/index.html).
+React client documentation is available [here](https://github.com/cuba-platform/frontend#react-client).

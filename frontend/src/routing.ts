@@ -1,4 +1,8 @@
-import { getMenuItems } from "@haulmont/jmix-react-core";
+import { OperationManagement } from "./app/operation/OperationManagement";
+import { AccountManagement } from "./app/account/AccountManagement";
+import { CurrencyManagement } from "./app/currency/CurrencyManagement";
+import { CategoryManagement } from "./app/category/CategoryManagement";
+import { getMenuItems } from "@cuba-platform/react";
 
 export const menuItems = getMenuItems();
 
@@ -20,3 +24,31 @@ const userSettingsSubMenu = {
 // Add sub menu item to menu config
 menuItems.push(userSettingsSubMenu);
 */
+
+menuItems.push({
+  pathPattern: "/operationManagement/:entityId?",
+  menuLink: "/operationManagement",
+  component: OperationManagement,
+  caption: "OperationManagement"
+});
+
+menuItems.push({
+  pathPattern: "/accountManagement/:entityId?",
+  menuLink: "/accountManagement",
+  component: AccountManagement,
+  caption: "AccountManagement"
+});
+
+menuItems.push({
+  pathPattern: "/categoryManagement/:entityId?",
+  menuLink: "/categoryManagement",
+  component: CategoryManagement,
+  caption: "CategoryManagement"
+});
+
+menuItems.push({
+  pathPattern: "/currencyManagement/:entityId?",
+  menuLink: "/currencyManagement",
+  component: CurrencyManagement,
+  caption: "CurrencyManagement"
+});

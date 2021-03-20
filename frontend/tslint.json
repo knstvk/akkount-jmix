@@ -11,9 +11,6 @@
       "coverage/lcov-report/*.js"
     ]
   },
-  "plugins": [
-    "react-hooks"
-  ],
   "rules": {
     "ordered-imports": false,
     "interface-name": false,
@@ -23,8 +20,6 @@
     "max-classes-per-file": false,
     "member-ordering": false,
     "variable-name": false,
-    "interface-over-type-literal": false,
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "interface-over-type-literal": false
   }
 }

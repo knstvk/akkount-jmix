@@ -1,5 +1,10 @@
-.language-switcher.-header.ant-select {
+.language-switcher .ant-select-selection {
+  border: none;
+}
+
+.language-switcher.-header .ant-select-selection {
   background: none;
+  border: none;
   color: #CCCCCC;
 }
 
