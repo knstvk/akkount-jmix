@@ -12,7 +12,6 @@ const categoryTypes = [
 export const CategoryList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
-            <TextField source="id" />
             <TextField source="name" />
             <SelectField source="catType" choices={categoryTypes} />
         </Datagrid>
