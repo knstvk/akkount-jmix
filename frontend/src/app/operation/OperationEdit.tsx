@@ -20,13 +20,13 @@ import {
 } from "@cuba-platform/react";
 
 import "../../app/App.css";
-import {Operation} from "../../cuba/entities/akk_Operation";
+import {Operation} from "../../jmix/entities/akk_Operation";
 
-import {Account} from "../../cuba/entities/akk_Account";
+import {Account} from "../../jmix/entities/akk_Account";
 
-import {Category} from "../../cuba/entities/akk_Category";
+import {Category} from "../../jmix/entities/akk_Category";
 import Title from "antd/lib/typography/Title";
-import {OperationType} from "../../cuba/enums/enums";
+import {OperationType} from "../../jmix/enums/enums";
 
 type Props = FormComponentProps & EditorProps;
 

@@ -23,7 +23,7 @@ import {
 } from "@cuba-platform/react";
 
 import "../../app/App.css";
-import { Category } from "../../cuba/entities/akk_Category";
+import { Category } from "../../jmix/entities/akk_Category";
 
 type Props = FormComponentProps & EditorProps;
 

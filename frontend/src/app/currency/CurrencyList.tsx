@@ -4,12 +4,12 @@ import {observer} from "mobx-react";
 
 import {Button, Icon, List, Modal, Spin} from "antd";
 
-import {Currency} from "../../cuba/entities/akk_Currency";
+import {Currency} from "../../jmix/entities/akk_Currency";
 import {Link} from "react-router-dom";
 
 import {collection, EntityProperty, injectMainStore, MainStoreInjected} from "@cuba-platform/react";
 
-import {SerializedEntity} from "@cuba-platform/rest";
+import {SerializedEntity} from "@haulmont/jmix-rest";
 import {CurrencyManagement} from "./CurrencyManagement";
 import {injectIntl, WrappedComponentProps} from "react-intl";
 

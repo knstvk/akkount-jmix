@@ -1,4 +1,4 @@
-import { CubaApp, FetchOptions } from "@cuba-platform/rest";
+import { CubaApp, FetchOptions } from "@haulmont/jmix-rest";
 
 export type akk_BalanceService_getBalanceData_params = {
   date: any;

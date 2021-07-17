@@ -1,6 +1,6 @@
 import React from "react";
-import {restServices} from "../../cuba/services"
-import {cubaREST} from "../../index"
+import {restServices} from "../../jmix/services"
+import {jmixREST} from "../../index"
 import {Card} from "antd";
 
 interface State {
@@ -44,7 +44,7 @@ class Balance extends React.Component<any, State> {
   }
 
   componentDidMount(): void {
-    restServices.akk_BalanceService.getBalanceData(cubaREST)({date: new Date()}).then((value: string) => {
+    restServices.akk_BalanceService.getBalanceData(jmixREST)({date: new Date()}).then((value: string) => {
       console.log(value);
       this.setState({balance: JSON.parse(value)});
     });

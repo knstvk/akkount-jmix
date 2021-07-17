@@ -4,15 +4,15 @@ import {observer} from "mobx-react";
 
 import {Button, Card, Icon, Modal, Pagination, Spin} from "antd";
 
-import {Operation} from "../../cuba/entities/akk_Operation";
+import {Operation} from "../../jmix/entities/akk_Operation";
 import {Link} from "react-router-dom";
 
 import {collection, EntityProperty, injectMainStore, MainStoreInjected} from "@cuba-platform/react";
 
-import {SerializedEntity} from "@cuba-platform/rest";
+import {SerializedEntity} from "@haulmont/jmix-rest";
 import {OperationManagement} from "./OperationManagement";
 import {FormattedMessage, injectIntl, WrappedComponentProps} from "react-intl";
-import {OperationType} from "../../cuba/enums/enums";
+import {OperationType} from "../../jmix/enums/enums";
 
 const PAGE_SIZE = 20;
 

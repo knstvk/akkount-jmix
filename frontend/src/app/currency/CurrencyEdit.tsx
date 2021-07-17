@@ -23,7 +23,7 @@ import {
 } from "@cuba-platform/react";
 
 import "../../app/App.css";
-import { Currency } from "../../cuba/entities/akk_Currency";
+import { Currency } from "../../jmix/entities/akk_Currency";
 
 type Props = FormComponentProps & EditorProps;
 
