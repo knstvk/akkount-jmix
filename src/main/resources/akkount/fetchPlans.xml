@@ -49,4 +49,9 @@
         <property name="amount1"/>
         <property name="amount2"/>
     </fetchPlan>
+    <fetchPlan entity="akk_Account" name="api" extends="_base">
+        <property name="currency" fetchPlan="_instance_name">
+            <property name="code"/>
+        </property>
+    </fetchPlan>
 </fetchPlans>
