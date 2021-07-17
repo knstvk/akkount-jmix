@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react'
+import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin'
+import { jmixAuthProvider } from './jmix-ra/jmixAuthProvider'
+import { jmixDataProvider } from './jmix-ra/jmixDataProvider'
+// import { FooCreate, FooEdit, FooList } from './foo'
+// import { BarList } from "./bar"
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <Admin dataProvider={jmixDataProvider} authProvider={jmixAuthProvider}>
+        <Resource name="akk_User" list={ListGuesser} />
+        {/*<Resource name="Foo-api" options={{label: "Foo"}} list={FooList} edit={FooEdit} create={FooCreate} />*/}
+        {/*<Resource name="Bar" list={BarList} />*/}
+      </Admin>
+  )
 }
 
 export default App;
