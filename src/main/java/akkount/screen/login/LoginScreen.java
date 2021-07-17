@@ -1,34 +1,29 @@
 package akkount.screen.login;
 
-import com.vaadin.server.VaadinServletRequest;
-import com.vaadin.server.VaadinServletResponse;
-import io.jmix.core.CoreProperties;
+import io.jmix.core.MessageTools;
 import io.jmix.core.Messages;
-import io.jmix.core.security.ClientDetails;
+import io.jmix.securityui.authentication.AuthDetails;
+import io.jmix.securityui.authentication.LoginScreenSupport;
+import io.jmix.ui.JmixApp;
 import io.jmix.ui.Notifications;
-import io.jmix.ui.ScreenBuilders;
-import io.jmix.ui.UiProperties;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.CheckBox;
 import io.jmix.ui.component.ComboBox;
 import io.jmix.ui.component.PasswordField;
 import io.jmix.ui.component.TextField;
 import io.jmix.ui.navigation.Route;
-import io.jmix.ui.screen.*;
+import io.jmix.ui.screen.Screen;
+import io.jmix.ui.screen.Subscribe;
+import io.jmix.ui.screen.UiController;
+import io.jmix.ui.screen.UiDescriptor;
+import io.jmix.ui.security.UiLoginProperties;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Locale;
-
-import static org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices.DEFAULT_PARAMETER;
 
 @UiController("akk_LoginScreen")
 @UiDescriptor("login-screen.xml")
@@ -54,19 +49,16 @@ public class LoginScreen extends Screen {
     private Messages messages;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private MessageTools messageTools;
 
     @Autowired
-    private CoreProperties coreProperties;
+    private UiLoginProperties loginProperties;
 
     @Autowired
-    private UiProperties uiProperties;
+    private LoginScreenSupport authenticationSupport;
 
     @Autowired
-    private ScreenBuilders screenBuilders;
-
-    @Autowired
-    private CompositeSessionAuthenticationStrategy authenticationStrategy;
+    private JmixApp app;
 
     @Subscribe
     private void onInit(InitEvent event) {
@@ -76,13 +68,24 @@ public class LoginScreen extends Screen {
     }
 
     private void initLocalesField() {
-        localesField.setOptionsMap(coreProperties.getAvailableLocales());
-        localesField.setValue(coreProperties.getAvailableLocales().values().iterator().next());
+        localesField.setOptionsMap(messageTools.getAvailableLocalesMap());
+        localesField.setValue(app.getLocale());
     }
 
     private void initDefaultCredentials() {
-        usernameField.setValue("admin");
-        passwordField.setValue("admin");
+        String defaultUsername = loginProperties.getDefaultUsername();
+        if (!StringUtils.isBlank(defaultUsername) && !"<disabled>".equals(defaultUsername)) {
+            usernameField.setValue(defaultUsername);
+        } else {
+            usernameField.setValue("");
+        }
+
+        String defaultPassword = loginProperties.getDefaultPassword();
+        if (!StringUtils.isBlank(defaultPassword) && !"<disabled>".equals(defaultPassword)) {
+            passwordField.setValue(defaultPassword);
+        } else {
+            passwordField.setValue("");
+        }
     }
 
     @Subscribe("submit")
@@ -102,34 +105,15 @@ public class LoginScreen extends Screen {
         }
 
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-            ClientDetails clientDetails = ClientDetails.builder()
-                    .locale(localesField.getValue())
-                    .build();
-            authenticationToken.setDetails(clientDetails);
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-            onSuccessfulAuthentication(authentication);
-
-            String mainScreenId = uiProperties.getMainScreenId();
-            screenBuilders.screen(this)
-                    .withScreenId(mainScreenId)
-                    .withOpenMode(OpenMode.ROOT)
-                    .build()
-                    .show();
-        } catch (BadCredentialsException e) {
+            authenticationSupport.authenticate(
+                    AuthDetails.of(username, password)
+                            .withLocale(localesField.getValue())
+                            .withRememberMe(rememberMeCheckBox.isChecked()), this);
+        } catch (BadCredentialsException | DisabledException | LockedException e) {
             notifications.create(Notifications.NotificationType.ERROR)
                     .withCaption(messages.getMessage(getClass(), "loginFailed"))
                     .withDescription(e.getMessage())
                     .show();
         }
-    }
-
-    protected void onSuccessfulAuthentication(Authentication authentication) {
-        VaadinServletRequest request = VaadinServletRequest.getCurrent();
-        VaadinServletResponse response = VaadinServletResponse.getCurrent();
-        request.setAttribute(DEFAULT_PARAMETER, rememberMeCheckBox.isChecked());
-
-        authenticationStrategy.onAuthentication(authentication, request, response);
     }
 }

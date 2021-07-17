@@ -5,9 +5,8 @@ import io.jmix.core.entity.annotation.SystemLevel;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.security.authentication.GrantedAuthorityContainer;
+import io.jmix.security.authentication.JmixUserDetails;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @JmixEntity
 @Entity(name = "akk_User")
 @Table(name = "SEC_USER")
-public class User implements UserDetails, GrantedAuthorityContainer,
+public class User implements JmixUserDetails,
         io.jmix.core.Entity /*for compatibility with old EntityManager methods */ {
 
     @Id

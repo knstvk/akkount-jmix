@@ -3,7 +3,7 @@
 
     <layout expand="foldersSplit">
         <hbox id="titleBar"
-              stylename="c-app-menubar"
+              stylename="jmix-app-menubar"
               expand="mainMenu"
               width="100%"
               spacing="true"
@@ -11,8 +11,10 @@
             <image id="logoImage"
                    align="MIDDLE_LEFT"
                    scaleMode="SCALE_DOWN"
-                   stylename="c-app-icon">
-                <theme path="branding/app-icon-menu.svg"/>
+                   stylename="jmix-app-icon">
+                <resource>
+                    <theme path="branding/app-icon-menu.svg"/>
+                </resource>
             </image>
             <menu id="mainMenu"
                   align="MIDDLE_LEFT"/>
@@ -21,7 +23,7 @@
             <timeZoneIndicator id="timeZoneIndicator"
                                align="MIDDLE_LEFT"/>
             <hbox id="mainButtonsBox"
-                  stylename="c-main-buttons"
+                  stylename="jmix-main-buttons"
                   align="MIDDLE_LEFT">
                 <logoutButton id="logoutButton"
                               icon="SIGN_OUT"
@@ -34,13 +36,13 @@
                width="100%">
             <vbox expand="balanceLayout"
                   height="100%"
-                  stylename="c-folders-pane">
+                  stylename="jmix-folders-pane">
                 <vbox id="balanceLayout"
                       margin="true">
                 </vbox>
             </vbox>
             <workArea id="workArea"
-                      stylename="c-workarea"
+                      stylename="jmix-workarea"
                       width="100%" height="100%">
                 <initialLayout spacing="true" margin="true">
                 </initialLayout>

@@ -1,12 +1,12 @@
 plugins {
-    id 'io.jmix' version '0.3.0'
+    id 'io.jmix' version '1.0.0'
     id 'java'
 }
 
 apply plugin: 'org.springframework.boot'
 
 jmix {
-    bomVersion = '1.0.0-SNAPSHOT'
+    bomVersion = '1.0.0'
     projectId = 'akk'
 }
 
@@ -15,7 +15,7 @@ version = '0.3-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-    mavenLocal()
+//    mavenLocal()
     mavenCentral()
     maven {
         url 'https://nexus.jmix.io/repository/public'
@@ -32,6 +32,7 @@ dependencies {
     implementation 'io.jmix.security:jmix-security-starter'
     implementation 'io.jmix.security:jmix-security-ui-starter'
     implementation 'io.jmix.security:jmix-security-data-starter'
+    implementation 'io.jmix.security:jmix-security-oauth2-starter'
 
     implementation 'io.jmix.cuba:jmix-cuba-starter'
     implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
