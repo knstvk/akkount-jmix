@@ -1,9 +1,0 @@
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  color: #CCCCCC;
-}
-
-.user-panel > .panelelement {
-  margin: 6px;
-}
