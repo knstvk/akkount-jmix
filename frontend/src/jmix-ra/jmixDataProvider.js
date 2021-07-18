@@ -13,7 +13,7 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options)
 }
 
-const createFilter = raFilter => {
+const createFilter = (raFilter) => {
     const entries = Object.entries(raFilter)
     if (!entries.length) {
         return null
@@ -31,7 +31,7 @@ const createFilter = raFilter => {
     }
 }
 
-const getEntityAndFetchPlan = resource => {
+const getEntityAndFetchPlan = (resource) => {
     const sepIdx = resource.indexOf("-")
     return {
         entity: sepIdx > -1 ? resource.slice(0, sepIdx) : resource,

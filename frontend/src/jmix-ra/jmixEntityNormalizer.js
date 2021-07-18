@@ -1,9 +1,9 @@
 
-export const normalizeEntities = entities => {
+export const normalizeEntities = (entities) => {
     return entities.map(entity => normalizeEntity(entity))
 }
 
-export const normalizeEntity = entity => {
+export const normalizeEntity = (entity) => {
     delete entity["_entityName"]
     delete entity["_instanceName"]
 

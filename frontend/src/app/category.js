@@ -9,7 +9,7 @@ const categoryTypes = [
     {id: "INCOME", name: "Income"}
 ]
 
-export const CategoryList = props => (
+export const CategoryList = (props) => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="name" />
@@ -18,19 +18,19 @@ export const CategoryList = props => (
     </List>
 )
 
-export const CategoryEdit = props => (
+export const CategoryEdit = (props) => (
     <Edit {...props}>
         <CategoryForm />
     </Edit>
 )
 
-export const CategoryCreate = props => (
+export const CategoryCreate = (props) => (
     <Create {...props}>
         <CategoryForm />
     </Create>
 )
 
-const CategoryForm = props => (
+const CategoryForm = (props) => (
     <SimpleForm {...props} redirect="list">
         <TextInput source="name"/>
         <SelectInput source="catType" choices={categoryTypes}/>

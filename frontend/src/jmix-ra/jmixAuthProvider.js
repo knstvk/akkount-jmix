@@ -31,7 +31,7 @@ export const jmixAuthProvider = {
         return Promise.resolve()
     },
 
-    checkAuth: params => {
+    checkAuth: (params) => {
         return localStorage.getItem('auth')
             ? Promise.resolve()
             : Promise.reject()
@@ -44,5 +44,5 @@ export const jmixAuthProvider = {
 
     getIdentity: () => Promise.resolve(),
 
-    getPermissions: params => Promise.resolve(),
+    getPermissions: (params) => Promise.resolve(),
 }

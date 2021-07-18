@@ -42,7 +42,7 @@ const ListActions = (props) => (
     </TopToolbar>
 )
 
-export const OperationList = props => (
+export const OperationList = (props) => (
     <List {...props} actions={<ListActions/>}>
         <Datagrid rowClick="edit">
             <SelectField source="opType" choices={opTypes} label="Type" />
@@ -58,7 +58,7 @@ export const OperationList = props => (
     </List>
 )
 
-export const OperationEdit = props => (
+export const OperationEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <SelectField source="opType" choices={opTypes} label="Type" />
@@ -68,7 +68,7 @@ export const OperationEdit = props => (
     </Edit>
 )
 
-export const OperationCreate = props => (
+export const OperationCreate = (props) => (
     <Create {...props}>
         <SimpleForm redirect="list">
             <SelectField source="opType" choices={opTypes} label="Type" />
@@ -78,7 +78,7 @@ export const OperationCreate = props => (
     </Create>
 )
 
-const OpForm = props => {
+const OpForm = (props) => {
     if (!props.record) {
         return null
     }
@@ -107,7 +107,7 @@ const OpForm = props => {
     }
 }
 
-const ExpenseForm = props => (
+const ExpenseForm = (props) => (
     <>
         <div>
             <ReferenceInput reference="akk_Account-api" source="acc1.id" label="Expense account">
@@ -120,7 +120,7 @@ const ExpenseForm = props => (
     </>
 )
 
-const IncomeForm = props => (
+const IncomeForm = (props) => (
     <>
         <div>
             <ReferenceInput reference="akk_Account-api" source="acc2.id" label="Imcome account">
@@ -133,7 +133,7 @@ const IncomeForm = props => (
     </>
 )
 
-const CategoryInput = props => (
+const CategoryInput = (props) => (
     <ReferenceInput reference="akk_Category" source="category.id" label="Category">
         <SelectInput optionText="name" />
     </ReferenceInput>

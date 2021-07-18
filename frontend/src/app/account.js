@@ -4,7 +4,7 @@ import {
     Edit, Create, SimpleForm, TextInput, BooleanInput, NumberInput, ReferenceInput, SelectInput
 } from "react-admin"
 
-export const AccountList = props => (
+export const AccountList = (props) => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="name" />
@@ -16,19 +16,19 @@ export const AccountList = props => (
     </List>
 )
 
-export const AccountEdit = props => (
+export const AccountEdit = (props) => (
     <Edit {...props}>
         <AccountForm />
     </Edit>
 )
 
-export const AccountCreate = props => (
+export const AccountCreate = (props) => (
     <Create {...props}>
         <AccountForm />
     </Create>
 )
 
-const AccountForm = props => (
+const AccountForm = (props) => (
     <SimpleForm {...props} redirect="list">
         <TextInput source="name" />
         <TextInput source="description" />
