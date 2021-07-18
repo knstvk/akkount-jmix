@@ -15,7 +15,7 @@ const opTypes = [
     {id: "TRANSFER", name: "Transfer"}
 ]
 
-const OperationExpenseButton = (props) => (
+const OperationCreateButton = (props) => (
     <Button
         component={Link}
         to={{
@@ -34,9 +34,9 @@ const OperationExpenseButton = (props) => (
 const ListActions = (props) => (
     <TopToolbar>
         {/*{cloneElement(props.filters, { context: 'button' })}*/}
-        <OperationExpenseButton type="EXPENSE"/>
-        <OperationExpenseButton type="INCOME"/>
-        <OperationExpenseButton type="TRANSFER"/>
+        <OperationCreateButton type="EXPENSE"/>
+        <OperationCreateButton type="INCOME"/>
+        <OperationCreateButton type="TRANSFER"/>
         {/*<CreateButton/>*/}
         <ExportButton/>
     </TopToolbar>
@@ -70,7 +70,7 @@ export const OperationEdit = props => (
 
 export const OperationCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
             <SelectField source="opType" choices={opTypes} label="Type" />
             <DateInput source="opDate" label="Date" />
             <OpForm />
