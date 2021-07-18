@@ -49,9 +49,24 @@
         <property name="amount1"/>
         <property name="amount2"/>
     </fetchPlan>
-    <fetchPlan entity="akk_Account" name="api" extends="_base">
+    <fetchPlan entity="akk_Account" name="api">
         <property name="currency" fetchPlan="_instance_name">
             <property name="code"/>
         </property>
+        <property name="name"/>
+        <property name="description"/>
+        <property name="active"/>
+        <property name="group"/>
+    </fetchPlan>
+    <fetchPlan entity="akk_Operation" name="api">
+        <property name="opType"/>
+        <property name="opDate"/>
+        <property name="acc1" fetchPlan="api"/>
+        <property name="acc2" fetchPlan="api"/>
+        <property name="amount1"/>
+        <property name="amount2"/>
+        <property name="category" fetchPlan="_instance_name"/>
+        <property name="comments"/>
+        <property name="createdBy"/>
     </fetchPlan>
 </fetchPlans>

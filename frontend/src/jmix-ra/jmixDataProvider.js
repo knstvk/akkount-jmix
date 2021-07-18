@@ -1,5 +1,6 @@
 import { fetchUtils } from "react-admin"
 import { stringify } from "query-string"
+import { normalizeEntity, normalizeEntities } from "./jmixEntityNormalizer"
 
 const apiUrl = "/rest/entities"
 
@@ -36,16 +37,6 @@ const getEntityAndFetchPlan = resource => {
         entity: sepIdx > -1 ? resource.slice(0, sepIdx) : resource,
         fetchPlan: sepIdx > -1 ? resource.slice(sepIdx + 1) : null
     }
-}
-
-const normalizeEntities = entities => {
-    return entities.map(entity => normalizeEntity(entity))
-}
-
-const normalizeEntity = entity => {
-    delete entity["_entityName"]
-    delete entity["_instanceName"]
-    return entity
 }
 
 export const jmixDataProvider = {
@@ -109,11 +100,34 @@ export const jmixDataProvider = {
     getMany: (resource, params) => {
         console.debug("getMany:", resource, params)
 
-        const query = {
-            filter: JSON.stringify({id: params.ids}),
+        const { entity, fetchPlan } = getEntityAndFetchPlan(resource)
+
+        const url = `${apiUrl}/${entity}/search`
+
+        const query = fetchPlan ? { fetchPlan: fetchPlan } : {}
+
+        const filter = {
+            conditions: [
+                {
+                    property: "id",
+                    operator: "in",
+                    value: params.ids
+                }
+            ]
         }
-        const url = `${apiUrl}/${resource}?${stringify(query)}`
-        return httpClient(url).then(({json}) => ({data: json}))
+
+        const options = {
+            method: "POST",
+            body: JSON.stringify({
+                ...query,
+                filter: filter
+            })
+        }
+
+        return httpClient(url, options)
+            .then(({headers, json}) => ({
+                data: normalizeEntities(json)
+            }))
     },
 
     getManyReference: (resource, params) => {

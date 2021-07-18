@@ -5,14 +5,15 @@ import { jmixDataProvider } from './jmix-ra/jmixDataProvider'
 import { CategoryList, CategoryEdit, CategoryCreate } from "./category"
 import { CurrencyCreate, CurrencyEdit, CurrencyList } from "./currency"
 import { AccountCreate, AccountEdit, AccountList } from "./account"
-
+import { OperationCreate, OperationEdit, OperationList } from "./operation"
 
 const App = () => {
     return (
         <Admin dataProvider={jmixDataProvider} authProvider={jmixAuthProvider}>
-            <Resource name="akk_Account-api" options={{label: "Account"}} list={AccountList} edit={AccountEdit} create={AccountCreate}/>
-            <Resource name="akk_Category" options={{label: "Category"}} list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
-            <Resource name="akk_Currency" options={{label: "Currency"}} list={CurrencyList} edit={CurrencyEdit} create={CurrencyCreate}/>
+            <Resource name="akk_Operation-api" options={{label: "Operations"}} list={OperationList} edit={OperationEdit} create={OperationCreate}/>
+            <Resource name="akk_Account-api" options={{label: "Accounts"}} list={AccountList} edit={AccountEdit} create={AccountCreate}/>
+            <Resource name="akk_Category" options={{label: "Categories"}} list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
+            <Resource name="akk_Currency" options={{label: "Currencies"}} list={CurrencyList} edit={CurrencyEdit} create={CurrencyCreate}/>
             <Resource name="akk_User" list={ListGuesser} />
         </Admin>
     )
