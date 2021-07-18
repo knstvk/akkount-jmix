@@ -7,7 +7,7 @@ import {
 } from "react-admin"
 
 import Button from "@material-ui/core/Button"
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
 const opTypes = [
     {id: "EXPENSE", name: "Expense"},
@@ -86,15 +86,23 @@ const OpForm = (props) => {
         case "EXPENSE": return (
             <>
                 <ExpenseForm/>
-                <div><CategoryInput/></div>
-                <div><TextInput source="comments"/></div>
+                <div>
+                    <CategoryInput catType="EXPENSE"/>
+                </div>
+                <div>
+                    <TextInput source="comments"/>
+                </div>
             </>
         )
         case "INCOME": return (
             <>
                 <IncomeForm/>
-                <div><CategoryInput/></div>
-                <div><TextInput source="comments"/></div>
+                <div>
+                    <CategoryInput catType="INCOME"/>
+                </div>
+                <div>
+                    <TextInput source="comments"/>
+                </div>
             </>
         )
         default: return (
@@ -123,7 +131,7 @@ const ExpenseForm = (props) => (
 const IncomeForm = (props) => (
     <>
         <div>
-            <ReferenceInput reference="akk_Account-api" source="acc2.id" label="Imcome account">
+            <ReferenceInput reference="akk_Account-api" source="acc2.id" label="Income account">
                 <SelectInput optionText="name"/>
             </ReferenceInput>
         </div>
@@ -134,7 +142,8 @@ const IncomeForm = (props) => (
 )
 
 const CategoryInput = (props) => (
-    <ReferenceInput reference="akk_Category" source="category.id" label="Category">
-        <SelectInput optionText="name" />
+    <ReferenceInput reference="akk_Category" source="category.id" label="Category"
+                    filter={{catType: props.catType}}>
+        <SelectInput optionText="name"/>
     </ReferenceInput>
 )
