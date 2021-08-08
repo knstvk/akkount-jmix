@@ -1,6 +1,7 @@
 plugins {
     id 'io.jmix' version '1.1.0-M2'
     id 'java'
+    id "com.github.node-gradle.node" version '3.1.0'
 }
 
 apply plugin: 'org.springframework.boot'
@@ -54,3 +55,15 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+node {
+    nodeProjectDir = file("$rootDir/frontend")
+}
+
+task copyWebApp(type: Copy) {
+    from "$rootDir/frontend/build"
+    into "$buildDir/resources/main/static/front"
+}
+
+copyWebApp.dependsOn(yarn_build)
+bootJar.dependsOn(copyWebApp)
