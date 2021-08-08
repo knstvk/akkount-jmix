@@ -19,13 +19,35 @@ export const jmixAuthProvider = {
         .then(auth => {
             localStorage.setItem('auth', JSON.stringify(auth))
         })
+        .then(() => {
+            const {access_token} = JSON.parse(localStorage.getItem("auth"))
+            return fetch("/rest/permissions", {
+                headers: {
+                    "Authorization": `Bearer ${access_token}`
+                }
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                return Promise.reject("cannot get permissions")
+            }
+        })
+        .then(permissions => {
+            console.log(">>> set permissions:", permissions)
+            localStorage.setItem("permissions", JSON.stringify(permissions))
+        })
     },
 
     checkError: (error) => {
         const status = error.status;
-        if (status === 401 || status === 403) {
+        if (status === 401) {
             localStorage.removeItem('auth')
             return Promise.reject()
+        }
+        if (status === 403) {
+            return Promise.reject({ logoutUser: false })
         }
         // other error code (404, 500, etc): no need to log out
         return Promise.resolve()
@@ -44,5 +66,8 @@ export const jmixAuthProvider = {
 
     getIdentity: () => Promise.resolve(),
 
-    getPermissions: (params) => Promise.resolve(),
+    getPermissions: (params) => {
+        const permissions = localStorage.getItem("permissions")
+        return permissions ? Promise.resolve(JSON.parse(permissions)) : Promise.reject()
+    },
 }

@@ -10,7 +10,7 @@ const categoryTypes = [
 ]
 
 export const CategoryList = (props) => (
-    <List {...props}>
+    <List {...props} sort={{ field: 'name', order: 'ASC' }}>
         <Datagrid rowClick="edit">
             <TextField source="name" />
             <SelectField source="catType" choices={categoryTypes} />

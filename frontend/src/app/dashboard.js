@@ -3,6 +3,10 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import { Title, useAuthenticated } from "react-admin"
 import { useState, useEffect } from "react"
+import { jmixAuthorization } from "../jmix-ra/jmixAuthorization"
+import Typography from "@material-ui/core/Typography"
+import Link from "@material-ui/core/Link"
+import Box from "@material-ui/core/Box"
 
 const fetchBalance = () => {
     console.debug("fetching balance")
@@ -14,21 +18,21 @@ const fetchBalance = () => {
                 "Authorization": `Bearer ${access_token}`
             }
         })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json()
-                } else {
-                    return Promise.reject(response.status)
-                }
-            })
+        .then((response) => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                return Promise.reject(response.status)
+            }
+        })
     } else {
         return Promise.reject("not authenticated")
     }
 }
-
-export const Dashboard = () => {
+export const Dashboard = ({ permissions }) => {
 
     useAuthenticated()
+    const auth = jmixAuthorization(permissions)
 
     const [ balanceData, setBalanceData ] = useState([])
     const [ hasError, setHasError ] = useState(false)
@@ -46,12 +50,26 @@ export const Dashboard = () => {
     }, [])
 
     return (
-        <>
-            <Title title="Balance"/>
-            <div>
-                { hasError ? <div>Cannot fetch balance</div> : balanceData.map((groupData) => <BalanceGroup data={groupData}/>)}
-            </div>
-        </>
+            auth.hasAuthority("parents") || auth.hasAuthority("system-full-access") ?
+                <>
+                    <Title title="Balance"/>
+                    <div>
+                        {hasError ? <div>Cannot fetch balance</div> : balanceData.map((groupData) => <BalanceGroup
+                            data={groupData}/>)}
+                    </div>
+                </>
+                :
+                <>
+                    <Title title="Welcome"/>
+                    <Box textAlign="center" m={1}>
+                        <Typography variant="h4" paragraph>
+                            Hi kid!
+                        </Typography>
+                        <Typography variant="body1">
+                            Go add some <Link href="/#/akk_Operation-api">operations</Link>
+                        </Typography>
+                    </Box>
+                </>
     )
 }
 

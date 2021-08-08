@@ -5,7 +5,7 @@ import {
 } from "react-admin"
 
 export const CurrencyList = (props) => (
-    <List {...props}>
+    <List {...props} sort={{ field: 'name', order: 'ASC' }}>
         <Datagrid rowClick="edit">
             <TextField source="code" />
             <TextField source="name" />
