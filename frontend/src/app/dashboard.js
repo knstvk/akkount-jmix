@@ -3,17 +3,22 @@ import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import { Title, useAuthenticated } from "react-admin"
 import { useState, useEffect } from "react"
-import { jmixAuthorization } from "../jmix-ra/jmixAuthorization"
+import { getAuthorization } from "../jmix-ra/authorization"
 import Typography from "@material-ui/core/Typography"
 import Link from "@material-ui/core/Link"
 import Box from "@material-ui/core/Box"
+import { stringify } from "query-string"
+import { appConfig } from "../appConfig"
 
 const fetchBalance = () => {
     console.debug("fetching balance")
     const auth = localStorage.getItem("auth")
     if (auth) {
         const {access_token} = JSON.parse(auth)
-        return fetch("/rest/services/akk_BalanceService/getBalanceData?date=2021-07-25", {
+        const query = {
+            date: new Date().toISOString()
+        }
+        return fetch(`${appConfig.restUrl}/services/akk_BalanceService/getBalanceData?${stringify(query)}`, {
             headers: {
                 "Authorization": `Bearer ${access_token}`
             }
@@ -32,7 +37,7 @@ const fetchBalance = () => {
 export const Dashboard = ({ permissions }) => {
 
     useAuthenticated()
-    const auth = jmixAuthorization(permissions)
+    const auth = getAuthorization(permissions)
 
     const [ balanceData, setBalanceData ] = useState([])
     const [ hasError, setHasError ] = useState(false)

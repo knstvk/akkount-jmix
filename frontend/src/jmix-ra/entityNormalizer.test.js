@@ -1,4 +1,4 @@
-import { normalizeEntities } from "./jmixEntityNormalizer"
+import { normalizeEntities } from "./entityNormalizer"
 
 const customer1 = {
     _entityName: "Customer",

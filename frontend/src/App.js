@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { Admin, Resource } from 'react-admin'
-import { jmixAuthProvider } from './jmix-ra/jmixAuthProvider'
-import { jmixDataProvider } from './jmix-ra/jmixDataProvider'
-import { jmixAuthorization } from './jmix-ra/jmixAuthorization'
+import { appConfig } from './appConfig'
+import { getAuthProvider } from './jmix-ra/authProvider'
+import { getDataProvider } from './jmix-ra/dataProvider'
+import { getAuthorization } from './jmix-ra/authorization'
 import { CategoryList, CategoryEdit, CategoryCreate } from "./app/category"
 import { CurrencyCreate, CurrencyEdit, CurrencyList } from "./app/currency"
 import { AccountCreate, AccountEdit, AccountList } from "./app/account"
@@ -17,12 +18,12 @@ import CategoryIcon from "@material-ui/icons/Category"
 const App = () => {
     return (
         <Admin
-            dataProvider={jmixDataProvider}
-            authProvider={jmixAuthProvider}
+            dataProvider={getDataProvider(appConfig)}
+            authProvider={getAuthProvider(appConfig)}
             dashboard={Dashboard}>
 
             {permissions => {
-                const auth = jmixAuthorization(permissions)
+                const auth = getAuthorization(permissions)
                 return [
                     <Resource
                         name="akk_Operation-api"

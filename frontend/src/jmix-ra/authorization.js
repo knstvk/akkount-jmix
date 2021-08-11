@@ -1,5 +1,5 @@
 
-export const jmixAuthorization = (permissions) => {
+export const getAuthorization = (permissions) => {
     const p = getPermissionsObject(permissions)
     return {
         getAuthorities() {
