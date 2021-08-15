@@ -7,15 +7,14 @@ import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.UserSessionSource;
+import com.haulmont.cuba.gui.components.GroupBoxLayout;
 import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
+import com.vaadin.server.VaadinSession;
 import io.jmix.core.TimeSource;
 import io.jmix.ui.Fragments;
-import com.haulmont.cuba.gui.components.GroupBoxLayout;
 import io.jmix.ui.component.ValidationErrors;
-import io.jmix.ui.model.CollectionLoader;
 import io.jmix.ui.model.DataContext;
 import io.jmix.ui.screen.*;
-import com.haulmont.cuba.security.global.UserSession;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -94,7 +93,7 @@ public class OperationEdit extends StandardEditor<Operation> {
 
     @Subscribe(target = Target.DATA_CONTEXT)
     protected void postCommit(DataContext.PostCommitEvent postCommitEvent) {
-        userSessionSource.getUserSession().setAttribute(LAST_OPERATION_DATE_ATTR, getEditedEntity().getOpDate());
+        VaadinSession.getCurrent().setAttribute(LAST_OPERATION_DATE_ATTR, getEditedEntity().getOpDate());
     }
 
     private Account loadAccount(String key) {
@@ -102,7 +101,7 @@ public class OperationEdit extends StandardEditor<Operation> {
     }
 
     private Date loadDate() {
-        Date date = userSessionSource.getUserSession().getAttribute(LAST_OPERATION_DATE_ATTR);
+        Date date = (Date) VaadinSession.getCurrent().getAttribute(LAST_OPERATION_DATE_ATTR);
         return date != null ? date : DateUtils.truncate(timeSource.currentTimestamp(), Calendar.DAY_OF_MONTH);
     }
 }
