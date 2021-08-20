@@ -68,15 +68,17 @@ const getSimpleOpAmount = (record) => {
     }
 }
 
+const sortByName = { field: 'name', order: 'ASC' }
+
 const OpFilter = props => (
     <Filter {...props}>
-        <ReferenceInput source="acc1" label="From" reference="akk_Account-api" allowEmpty>
+        <ReferenceInput source="acc1" label="From" reference="akk_Account-api" sort={sortByName} allowEmpty>
            <SelectInput optionText="name" />
         </ReferenceInput>
-        <ReferenceInput source="acc2" label="To" reference="akk_Account-api" allowEmpty>
+        <ReferenceInput source="acc2" label="To" reference="akk_Account-api" sort={sortByName} allowEmpty>
            <SelectInput optionText="name" />
         </ReferenceInput>
-        <ReferenceInput source="category" label="Category" reference="akk_Category" allowEmpty>
+        <ReferenceInput source="category" label="Category" reference="akk_Category" sort={sortByName} allowEmpty>
            <SelectInput optionText="name" />
         </ReferenceInput>
         <TextInput label="Comments" source="comments" />
@@ -193,7 +195,8 @@ const OpForm = (props) => {
 const ExpenseForm = (props) => (
     <>
         <div>
-            <ReferenceInput reference="akk_Account-api" source="acc1.id" label="Expense account">
+            <ReferenceInput reference="akk_Account-api" source="acc1.id" label="Expense account" sort={sortByName}
+                            filter={{active: true}}>
                 <SelectInput optionText="name"/>
             </ReferenceInput>
         </div>
@@ -206,7 +209,8 @@ const ExpenseForm = (props) => (
 const IncomeForm = (props) => (
     <>
         <div>
-            <ReferenceInput reference="akk_Account-api" source="acc2.id" label="Income account">
+            <ReferenceInput reference="akk_Account-api" source="acc2.id" label="Income account" sort={sortByName}
+                            filter={{active: true}}>
                 <SelectInput optionText="name"/>
             </ReferenceInput>
         </div>
@@ -217,7 +221,7 @@ const IncomeForm = (props) => (
 )
 
 const CategoryInput = (props) => (
-    <ReferenceInput reference="akk_Category" source="category.id" label="Category"
+    <ReferenceInput reference="akk_Category" source="category.id" label="Category" sort={sortByName}
                     filter={{catType: props.catType}}>
         <SelectInput optionText="name"/>
     </ReferenceInput>

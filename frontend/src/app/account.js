@@ -32,7 +32,7 @@ const AccountForm = (props) => (
     <SimpleForm {...props} redirect="list">
         <TextInput source="name" />
         <TextInput source="description" />
-        <ReferenceInput source="currency.id" reference="akk_Currency" label="Currency">
+        <ReferenceInput source="currency.id" reference="akk_Currency" label="Currency" sort={{ field: 'name', order: 'ASC' }}>
             <SelectInput optionText="code" />
         </ReferenceInput>
         <NumberInput source="group" />
