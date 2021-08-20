@@ -10,6 +10,8 @@
         <item id="akk_Currency.lookup"/>
         <item id="akk_Category.lookup"/>
         <item id="akk_Account.lookup"/>
+        <separator/>
+        <item screen="akk_PreferencesScreen" caption="msg://akkount.screen.preferences/preferencesScreen.caption"/>
     </menu>
 
     <item screen="akk_User.browse" caption="msg://akkount.screen.user/UserBrowse.caption" insertBefore="ui_JmxConsoleScreen"/>
