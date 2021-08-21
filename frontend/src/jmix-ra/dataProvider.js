@@ -170,15 +170,8 @@ export function getDataProvider(appConfig) {
         },
 
         updateMany: (resource, params) => {
-            console.debug("updateMany:", resource, params)
-
-            const query = {
-                filter: JSON.stringify({id: params.ids}),
-            }
-            return httpClient(`${entitiesApi}/${resource}?${stringify(query)}`, {
-                method: "PUT",
-                body: JSON.stringify(params.data),
-            }).then(({json}) => ({data: json}))
+            console.debug("updateMany (not supported yet):", resource, params)
+            return Promise.reject()
         },
 
         create: (resource, params) => {
@@ -193,9 +186,7 @@ export function getDataProvider(appConfig) {
             return httpClient(`${entitiesApi}/${entity}?${stringify(query)}`, {
                 method: "POST",
                 body: JSON.stringify(params.data),
-            }).then(({json}) => ({
-                data: {...params.data, id: json.id},
-            }))
+            }).then(({json}) => ({ data: json }))
         },
 
         delete: (resource, params) => {
