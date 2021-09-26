@@ -27,7 +27,7 @@
         <groupTable id="operationTable"
                     width="100%">
             <actions>
-                <action id="excel"/>
+                <action id="excel" type="excelExport"/>
             </actions>
             <columns>
                 <column id="opType"/>

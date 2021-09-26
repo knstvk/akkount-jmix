@@ -235,7 +235,7 @@ public class CategoriesReport extends AbstractWindow {
         box.add(label);
 
         LinkButton button = componentsFactory.createComponent(LinkButton.class);
-        button.setIcon("icons/remove.png");
+        button.setIcon("font-icon:REMOVE");
         button.setAction(new AbstractAction("") {
             @Override
             public void actionPerform(io.jmix.ui.component.Component component) {

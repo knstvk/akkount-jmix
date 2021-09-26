@@ -21,7 +21,7 @@
             <properties include=".*"/>
         </filter>
         <groupTable id="operationTable"
-                    width="100%" dataContainer="operationsDc">
+                    width="100%" dataContainer="operationsDc" multiselect="true">
             <actions>
                 <action id="createExpense" caption="msg://akkount.entity/OperationType.EXPENSE" shortcut="CTRL-SHIFT-KEY1"/>
                 <action id="createIncome" caption="msg://akkount.entity/OperationType.INCOME" shortcut="CTRL-SHIFT-KEY2"/>
@@ -35,17 +35,14 @@
                 <column id="opDate">
                     <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
                                format="msg://opDateFormat"/>
-<!--                    <formatter>-->
-<!--                        <date />-->
-<!--                    </formatter>-->
                 </column>
                 <column id="acc1"/>
                 <column id="amount1">
-<!--                    <formatter class="akkount.web.DecimalFormatter"/>-->
+                    <formatter class="akkount.web.DecimalFormatter"/>
                 </column>
                 <column id="acc2"/>
                 <column id="amount2">
-<!--                    <formatter class="akkount.web.DecimalFormatter"/>-->
+                    <formatter class="akkount.web.DecimalFormatter"/>
                 </column>
                 <column id="category"/>
                 <column id="comments"/>

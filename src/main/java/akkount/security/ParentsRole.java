@@ -1,5 +1,10 @@
 package akkount.security;
 
+import akkount.entity.CategoryAmount;
+import io.jmix.security.model.EntityAttributePolicyAction;
+import io.jmix.security.model.EntityPolicyAction;
+import io.jmix.security.role.annotation.EntityAttributePolicy;
+import io.jmix.security.role.annotation.EntityPolicy;
 import io.jmix.security.role.annotation.ResourceRole;
 import io.jmix.security.role.annotation.SpecificPolicy;
 import io.jmix.securityui.role.UiFilterRole;
@@ -18,4 +23,9 @@ public interface ParentsRole extends
     @ScreenPolicy(screenIds = "akk_PreferencesScreen")
     @MenuPolicy(menuIds = {"akk_PreferencesScreen"})
     void screens();
+
+
+    @EntityPolicy(entityClass = CategoryAmount.class, actions = {EntityPolicyAction.READ})
+    @EntityAttributePolicy(entityClass = CategoryAmount.class, attributes = "*", action = EntityAttributePolicyAction.VIEW)
+    void categoryReport();
 }
