@@ -13,10 +13,39 @@
                 </query>
             </loader>
         </collection>
+        <collection id="accountsDc" class="akkount.entity.Account">
+            <loader id="accountsDl">
+                <query>
+                    select e from akk_Account e where e.active = true order by e.name
+                </query>
+            </loader>
+        </collection>
+        <collection id="categoriesDc" class="akkount.entity.Category">
+            <loader id="categoriesDl">
+                <query>
+                    select e from akk_Category e order by e.name
+                </query>
+            </loader>
+        </collection>
     </data>
     <layout expand="operationTable"
             spacing="true">
-        <filter id="filter"
+        <hbox spacing="true" width="100%" expand="filterSpacer">
+            <label value="Filter by" align="MIDDLE_LEFT"/>
+            <lookupPickerField id="accFilterField" optionsContainer="accountsDc" inputPrompt="Account" width="200">
+                <actions>
+                    <action id="clear" type="picker_clear"/>
+                </actions>
+            </lookupPickerField>
+            <lookupPickerField id="categoryFilterField" optionsContainer="categoriesDc" inputPrompt="Category" width="200">
+                <actions>
+                    <action id="clear" type="picker_clear"/>
+                </actions>
+            </lookupPickerField>
+            <label id="filterSpacer"/>
+            <checkBox id="showGenericFilterCheckbox" caption="Show generic filter" align="MIDDLE_RIGHT"/>
+        </hbox>
+        <filter id="filter" caption="Generic filter" collapsed="true" visible="false"
                 dataLoader="operationsDl">
             <properties include=".*"/>
         </filter>

@@ -50,6 +50,12 @@ public class OperationEdit extends StandardEditor<Operation> {
     @Inject
     private Fragments fragments;
 
+    private Account accountByFilter;
+
+    public void setAccountByFilter(Account accountByFilter) {
+        this.accountByFilter = accountByFilter;
+    }
+
     @Subscribe
     public void onBeforeShow(BeforeShowEvent beforeShowEvent) {
         getScreenData().loadAll();
@@ -72,13 +78,25 @@ public class OperationEdit extends StandardEditor<Operation> {
         operation.setOpDate(loadDate());
         switch (operation.getOpType()) {
             case EXPENSE:
-                operation.setAcc1(loadAccount(UserDataKeys.OP_EXPENSE_ACCOUNT));
+                if (accountByFilter != null) {
+                    operation.setAcc1(accountByFilter);
+                } else {
+                    operation.setAcc1(loadAccount(UserDataKeys.OP_EXPENSE_ACCOUNT));
+                }
                 break;
             case INCOME:
-                operation.setAcc2(loadAccount(UserDataKeys.OP_INCOME_ACCOUNT));
+                if (accountByFilter != null) {
+                    operation.setAcc2(accountByFilter);
+                } else {
+                    operation.setAcc2(loadAccount(UserDataKeys.OP_INCOME_ACCOUNT));
+                }
                 break;
             case TRANSFER:
-                operation.setAcc1(loadAccount(UserDataKeys.OP_TRANSFER_EXPENSE_ACCOUNT));
+                if (accountByFilter != null) {
+                    operation.setAcc1(accountByFilter);
+                } else {
+                    operation.setAcc1(loadAccount(UserDataKeys.OP_TRANSFER_EXPENSE_ACCOUNT));
+                }
                 operation.setAcc2(loadAccount(UserDataKeys.OP_TRANSFER_INCOME_ACCOUNT));
                 break;
         }
