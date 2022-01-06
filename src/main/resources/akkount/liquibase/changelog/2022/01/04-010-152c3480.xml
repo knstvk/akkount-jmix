@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1" author="akk">
+    <changeSet id="1" author="akk" context="!cuba">
         <createTable tableName="AKK_ACCOUNT">
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_ACCOUNT"/>
@@ -33,7 +33,7 @@
             <column name="GROUP_" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet id="2" author="akk">
+    <changeSet id="2" author="akk" context="!cuba">
         <createTable tableName="AKK_BALANCE">
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_BALANCE"/>
@@ -56,7 +56,7 @@
             <column name="AMOUNT" type="DECIMAL"/>
         </createTable>
     </changeSet>
-    <changeSet id="3" author="akk">
+    <changeSet id="3" author="akk" context="!cuba">
         <createTable tableName="AKK_CATEGORY">
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_CATEGORY"/>
@@ -79,7 +79,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="4" author="akk">
+    <changeSet id="4" author="akk" context="!cuba">
         <createTable tableName="AKK_CURRENCY">
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_CURRENCY"/>
@@ -99,7 +99,7 @@
             <column name="NAME" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet id="5" author="akk">
+    <changeSet id="5" author="akk" context="!cuba">
         <createTable tableName="AKK_OPERATION">
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_OPERATION"/>
@@ -127,7 +127,7 @@
             <column name="COMMENTS" type="VARCHAR(200)"/>
         </createTable>
     </changeSet>
-    <changeSet id="6" author="akk">
+    <changeSet id="6" author="akk" context="!cuba">
         <createTable tableName="AKK_USER_DATA">
             <column name="ID" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_USER_DATA"/>
@@ -143,38 +143,38 @@
             <column name="CREATED_BY" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet id="7" author="akk">
+    <changeSet id="7" author="akk" context="!cuba">
         <createIndex indexName="IDX_UC_AKK_ACCOUNT_NAME" tableName="AKK_ACCOUNT" unique="true">
             <column name="NAME"/>
             <column name="DELETE_TS"/>
         </createIndex>
     </changeSet>
-    <changeSet id="8" author="akk">
+    <changeSet id="8" author="akk" context="!cuba">
         <addForeignKeyConstraint baseColumnNames="CURRENCY_ID" baseTableName="AKK_ACCOUNT"
                                  constraintName="FK_AKK_ACCOUNT_ON_CURRENCY" referencedColumnNames="ID"
                                  referencedTableName="AKK_CURRENCY"/>
     </changeSet>
-    <changeSet id="9" author="akk">
+    <changeSet id="9" author="akk" context="!cuba">
         <addForeignKeyConstraint baseColumnNames="ACCOUNT_ID" baseTableName="AKK_BALANCE"
                                  constraintName="FK_AKK_BALANCE_ON_ACCOUNT" referencedColumnNames="ID"
                                  referencedTableName="AKK_ACCOUNT"/>
     </changeSet>
-    <changeSet id="10" author="akk">
+    <changeSet id="10" author="akk" context="!cuba">
         <addForeignKeyConstraint baseColumnNames="ACC1_ID" baseTableName="AKK_OPERATION"
                                  constraintName="FK_AKK_OPERATION_ON_ACC1" referencedColumnNames="ID"
                                  referencedTableName="AKK_ACCOUNT"/>
     </changeSet>
-    <changeSet id="11" author="akk">
+    <changeSet id="11" author="akk" context="!cuba">
         <addForeignKeyConstraint baseColumnNames="ACC2_ID" baseTableName="AKK_OPERATION"
                                  constraintName="FK_AKK_OPERATION_ON_ACC2" referencedColumnNames="ID"
                                  referencedTableName="AKK_ACCOUNT"/>
     </changeSet>
-    <changeSet id="12" author="akk">
+    <changeSet id="12" author="akk" context="!cuba">
         <addForeignKeyConstraint baseColumnNames="CATEGORY_ID" baseTableName="AKK_OPERATION"
                                  constraintName="FK_AKK_OPERATION_ON_CATEGORY" referencedColumnNames="ID"
                                  referencedTableName="AKK_CATEGORY"/>
     </changeSet>
-    <changeSet id="13" author="akk">
+    <changeSet id="13" author="akk" context="!cuba">
         <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="AKK_USER_DATA"
                                  constraintName="FK_AKK_USER_DATA_ON_USER" referencedColumnNames="ID"
                                  referencedTableName="SEC_USER"/>

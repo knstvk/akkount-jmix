@@ -50,9 +50,6 @@ public class User implements JmixUserDetails {
     @Column(name = "ENABLED")
     protected Boolean enabled = true;
 
-    @Column(name = "TIME_ZONE_ID")
-    protected String timeZoneId;
-
     @Transient
     protected Collection<? extends GrantedAuthority> authorities;
 
@@ -149,14 +146,6 @@ public class User implements JmixUserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public String getTimeZoneId() {
-        return timeZoneId;
-    }
-
-    public void setTimeZoneId(String timeZoneId) {
-        this.timeZoneId = timeZoneId;
     }
 
     @InstanceName
