@@ -1,4 +1,4 @@
-package akkount.web.operation;
+package akkount.screen.operation;
 
 import akkount.entity.Category;
 import io.jmix.core.metamodel.datatype.Datatype;

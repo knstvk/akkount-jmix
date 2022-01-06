@@ -1,4 +1,4 @@
-package akkount.web.account;
+package akkount.screen.account;
 
 import akkount.entity.Account;
 import io.jmix.ui.screen.*;

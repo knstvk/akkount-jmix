@@ -1,4 +1,4 @@
-package akkount.web.operation;
+package akkount.screen.operation;
 
 import akkount.entity.Operation;
 import io.jmix.ui.component.Label;
@@ -12,9 +12,9 @@ import io.jmix.ui.screen.UiDescriptor;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 
-@UiController("expense-frame")
-@UiDescriptor("expense-frame.xml")
-public class ExpenseFrame extends ScreenFragment implements OperationFrame {
+@UiController("income-frame")
+@UiDescriptor("income-frame.xml")
+public class IncomeFrame extends ScreenFragment implements OperationFrame {
 
     @Inject
     private InstanceContainer<Operation> operationDc;
@@ -28,17 +28,16 @@ public class ExpenseFrame extends ScreenFragment implements OperationFrame {
     @Inject
     private AmountCalculator amountCalculator;
 
-
     @Override
     public void postInit(Operation item) {
         getScreenData().loadAll();
 
-        amountCalculator.initAmount(amountField, item.getAmount1());
+        amountCalculator.initAmount(amountField, item.getAmount2());
 
         setCurrencyLabel(item);
 
         operationDc.addItemPropertyChangeListener(e -> {
-            if ("acc1".equals(e.getProperty())) {
+            if ("acc2".equals(e.getProperty())) {
                 setCurrencyLabel(e.getItem());
             }
         });
@@ -48,13 +47,13 @@ public class ExpenseFrame extends ScreenFragment implements OperationFrame {
     public void postValidate(ValidationErrors errors) {
         BigDecimal value = amountCalculator.calculateAmount(amountField, errors);
         if (value != null)
-            operationDc.getItem().setAmount1(value);
+            operationDc.getItem().setAmount2(value);
 
-        operationDc.getItem().setAmount2(BigDecimal.ZERO);
+        operationDc.getItem().setAmount1(BigDecimal.ZERO);
     }
 
     private void setCurrencyLabel(Operation operation) {
-        String currency = operation.getAcc1() != null ? operation.getAcc1().getCurrencyCode() : "";
+        String currency = operation.getAcc2() != null ? operation.getAcc2().getCurrencyCode() : "";
         currencyLab.setValue(currency);
     }
 }

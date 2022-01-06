@@ -1,4 +1,4 @@
-package akkount.web.operation;
+package akkount.screen.operation;
 
 import io.jmix.core.metamodel.datatype.Datatype;
 import io.jmix.core.metamodel.datatype.DatatypeRegistry;

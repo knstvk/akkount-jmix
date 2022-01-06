@@ -1,4 +1,4 @@
-package akkount.web.category;
+package akkount.screen.category;
 
 import akkount.entity.Category;
 import io.jmix.ui.screen.EditedEntityContainer;

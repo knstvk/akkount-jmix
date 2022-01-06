@@ -3,7 +3,7 @@ package akkount.screen.main;
 import akkount.event.BalanceChangedEvent;
 import akkount.service.BalanceData;
 import akkount.service.BalanceService;
-import akkount.web.DecimalFormatter;
+import akkount.screen.DecimalFormatter;
 import io.jmix.core.TimeSource;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;

@@ -1,4 +1,4 @@
-package akkount.web.slack;
+package akkount.slack;
 
 import akkount.config.AkkConfig;
 import akkount.service.BotService;

@@ -1,4 +1,4 @@
-package akkount.web.report.categories;
+package akkount.screen.report.categories;
 
 import akkount.entity.Category;
 import akkount.entity.CategoryAmount;
@@ -7,7 +7,7 @@ import akkount.entity.Currency;
 import akkount.service.ReportService;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
-import akkount.web.operation.ShowOperations;
+import akkount.screen.operation.ShowOperations;
 import io.jmix.core.LoadContext;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.UiComponents;

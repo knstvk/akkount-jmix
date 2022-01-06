@@ -1,4 +1,4 @@
-package akkount.web.currency;
+package akkount.screen.currency;
 
 import akkount.entity.Currency;
 import io.jmix.ui.screen.LookupComponent;

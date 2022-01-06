@@ -1,4 +1,4 @@
-package akkount.web.operation;
+package akkount.screen.operation;
 
 import io.jmix.ui.widget.WebJarResource;
 import com.vaadin.annotations.JavaScript;

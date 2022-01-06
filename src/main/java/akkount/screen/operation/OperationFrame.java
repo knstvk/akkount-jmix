@@ -1,4 +1,4 @@
-package akkount.web.operation;
+package akkount.screen.operation;
 
 import akkount.entity.Operation;
 import io.jmix.ui.component.Fragment;

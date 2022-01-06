@@ -1,4 +1,4 @@
-package akkount.web;
+package akkount.screen;
 
 import io.jmix.core.metamodel.datatype.FormatStrings;
 import io.jmix.core.metamodel.datatype.FormatStringsRegistry;
