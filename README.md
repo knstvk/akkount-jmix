@@ -4,7 +4,7 @@ A simple personal finance application built with [Jmix](https://jmix.io) framewo
 
 ![desktop-ui](img/ops-desktop.png)
 
-<p style="text-align: center">
+<p align="center">
     <img src="img/ops-mobile.png" width="300" alt="mobile"/>
 </p>
 
