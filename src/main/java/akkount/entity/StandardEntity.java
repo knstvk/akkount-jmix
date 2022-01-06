@@ -24,17 +24,10 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * The most widely used base class for entities. <br>
- * Optimistically locked, implements Updatable and SoftDelete.
- */
 @MappedSuperclass
 @JmixEntity(name = "akk_StandardEntity")
 public abstract class StandardEntity {
@@ -42,7 +35,7 @@ public abstract class StandardEntity {
     private static final long serialVersionUID = 5642226839555253331L;
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     @JmixGeneratedValue
     protected UUID id;
 
@@ -50,6 +43,7 @@ public abstract class StandardEntity {
     @Column(name = "VERSION", nullable = false)
     protected Integer version;
 
+    @Temporal(TemporalType.DATE)
     @CreatedDate
     @Column(name = "CREATE_TS")
     protected Date createTs;
@@ -58,6 +52,7 @@ public abstract class StandardEntity {
     @Column(name = "CREATED_BY", length = 50)
     protected String createdBy;
 
+    @Temporal(TemporalType.DATE)
     @LastModifiedDate
     @Column(name = "UPDATE_TS")
     protected Date updateTs;
@@ -66,6 +61,7 @@ public abstract class StandardEntity {
     @Column(name = "UPDATED_BY", length = 50)
     protected String updatedBy;
 
+    @Temporal(TemporalType.DATE)
     @DeletedDate
     @Column(name = "DELETE_TS")
     protected Date deleteTs;
