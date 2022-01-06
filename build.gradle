@@ -26,7 +26,6 @@ dependencies {
     implementation 'io.jmix.data:jmix-eclipselink-starter'
     implementation 'io.jmix.ui:jmix-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-data-starter'
-    implementation 'io.jmix.ui:jmix-ui-themes-compiled'
     implementation 'io.jmix.ui:jmix-ui-widgets-compiled'
     implementation 'io.jmix.security:jmix-security-starter'
     implementation 'io.jmix.security:jmix-security-ui-starter'
@@ -36,6 +35,9 @@ dependencies {
     implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-export-starter'
     implementation 'io.jmix.rest:jmix-rest-starter'
+
+    themes("io.jmix.ui:jmix-ui-themes")
+    implementation("io.jmix.ui:jmix-ui-themes")
 
     implementation 'org.apache.httpcomponents:httpclient'
     implementation 'org.json:json:20200518'

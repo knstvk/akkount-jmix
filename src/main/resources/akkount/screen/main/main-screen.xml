@@ -13,7 +13,7 @@
                    scaleMode="SCALE_DOWN"
                    stylename="jmix-app-icon">
                 <resource>
-                    <theme path="branding/app-icon-menu.svg"/>
+                    <theme path="branding/icon-64x64.png"/>
                 </resource>
             </image>
             <menu id="mainMenu"
