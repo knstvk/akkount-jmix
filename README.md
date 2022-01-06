@@ -36,7 +36,7 @@ You can generate some test data:
 - Open *Administration > JMX Console*, find `akkount.jmx:type=akk_SampleDataGenerator` MBean and open it.
 - Enter the number of days to generate (e.g. 100) in the parameter field of the `generateSampleData` method and click *Invoke*.     
 
-Open the terminal in the `frontend` directory and run `yarn start`. The frontend UI will be available at http://localhost:3000.
+Open the terminal in the `frontend` directory and run `npm run start`. The frontend UI will be available at http://localhost:3000.
 
 
 ## Building and running
