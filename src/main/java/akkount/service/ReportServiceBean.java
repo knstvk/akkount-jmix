@@ -1,23 +1,28 @@
 package akkount.service;
 
-import akkount.entity.*;
-import com.haulmont.cuba.core.EntityManager;
-import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.Query;
-import com.haulmont.cuba.core.TypedQuery;
+import akkount.entity.Category;
+import akkount.entity.CategoryAmount;
+import akkount.entity.CategoryType;
+import io.jmix.core.DataManager;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service(ReportService.NAME)
 public class ReportServiceBean implements ReportService {
 
-    @Inject
-    protected Persistence persistence;
+    @PersistenceContext
+    protected EntityManager entityManager;
+    @Autowired
+    protected DataManager dataManager;
 
     @Override
     @Transactional
@@ -26,13 +31,11 @@ public class ReportServiceBean implements ReportService {
                                                         List<UUID> excludedCategories) {
         List<CategoryAmount> list = new ArrayList<>();
 
-        EntityManager em = persistence.getEntityManager();
-
         String catQueryString = "select c from akk_Category c where c.catType = ?1";
         if (!excludedCategories.isEmpty())
             catQueryString += " and c.id not in ?2";
 
-        TypedQuery<Category> catQuery = em.createQuery(catQueryString, Category.class);
+        TypedQuery<Category> catQuery = entityManager.createQuery(catQueryString, Category.class);
 
         catQuery.setParameter(1, categoryType.getId());
         if (!excludedCategories.isEmpty())
@@ -41,7 +44,7 @@ public class ReportServiceBean implements ReportService {
         for (Category category : catQuery.getResultList()) {
 
             String suffix = categoryType == CategoryType.EXPENSE ? "1" : "2";
-            Query amountQuery = em.createQuery(
+            Query amountQuery = entityManager.createQuery(
                     "select sum(o.amount" + suffix + ") from akk_Operation o " +
                             "where @dateAfter(o.opDate, :fromDate) and @dateBefore(o.opDate, :toDate) " +
                             " and o.category.id = :category " +
@@ -51,10 +54,10 @@ public class ReportServiceBean implements ReportService {
                     .setParameter("category", category.getId())
                     .setParameter("currency", currencyCode);
 
-            BigDecimal amount = (BigDecimal) amountQuery.getFirstResult();
+            BigDecimal amount = (BigDecimal) amountQuery.getSingleResult();
             if (amount == null)
                 amount = BigDecimal.ZERO;
-            CategoryAmount categoryAmount = new CategoryAmount();
+            CategoryAmount categoryAmount = dataManager.create(CategoryAmount.class);
             categoryAmount.setCategory(category);
             categoryAmount.setAmount(amount.abs());
             list.add(categoryAmount);

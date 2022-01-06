@@ -4,48 +4,47 @@
           extends="_local"
           name="account-with-currency">
         <property name="currency"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
     </fetchPlan>
     <fetchPlan class="akkount.entity.Operation"
           extends="_local"
-          name="operation-browse"
-          systemProperties="true">
+          name="operation-browse">
         <property name="acc1"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
         <property name="acc2"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
         <property name="category"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
     </fetchPlan>
     <fetchPlan class="akkount.entity.Operation"
           extends="_local"
           name="operation-edit">
         <property name="acc1"
-                  fetchPlan="_minimal">
+                  fetchPlan="_instance_name">
             <property name="currencyCode"/>
         </property>
         <property name="acc2"
-                  fetchPlan="_minimal">
+                  fetchPlan="_instance_name">
             <property name="currencyCode"/>
         </property>
         <property name="category"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
     </fetchPlan>
 <!--    <fetchPlan class="akkount.entity.Operation"-->
 <!--          extends="_local"-->
 <!--          name="operation-with-accounts">-->
 <!--        <property name="acc1"-->
-<!--                  fetchPlan="_minimal"/>-->
+<!--                  fetchPlan="_instance_name"/>-->
 <!--        <property name="acc2"-->
-<!--                  fetchPlan="_minimal"/>-->
+<!--                  fetchPlan="_instance_name"/>-->
 <!--    </fetchPlan>-->
     <fetchPlan class="akkount.entity.Operation"
           name="operation-recalc-balance">
         <property name="opDate"/>
         <property name="acc1"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
         <property name="acc2"
-                  fetchPlan="_minimal"/>
+                  fetchPlan="_instance_name"/>
         <property name="amount1"/>
         <property name="amount2"/>
     </fetchPlan>

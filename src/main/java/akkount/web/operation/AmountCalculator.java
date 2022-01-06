@@ -1,20 +1,20 @@
 package akkount.web.operation;
 
 import io.jmix.core.metamodel.datatype.Datatype;
-import com.haulmont.chile.core.datatypes.DatatypeRegistry;
-import com.haulmont.chile.core.datatypes.Datatypes;
-import com.haulmont.cuba.core.global.Scripting;
-import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.gui.components.TextField;
+import io.jmix.core.metamodel.datatype.DatatypeRegistry;
+import io.jmix.core.security.CurrentAuthentication;
+import io.jmix.ui.component.TextField;
 import io.jmix.ui.component.ValidationErrors;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scripting.ScriptEvaluator;
+import org.springframework.scripting.support.StaticScriptSource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,11 +24,11 @@ public class AmountCalculator {
     private static final Pattern EXPR_PATTERN = Pattern.compile(
             "([-+]?[0-9]*\\.?[0-9]+[\\-\\+\\*/])+([-+]?[0-9]*\\.?[0-9]+)");
 
-    @Inject
-    private Scripting scripting;
+    @Autowired
+    protected ScriptEvaluator scriptEvaluator;
 
     @Inject
-    private UserSessionSource userSessionSource;
+    private CurrentAuthentication currentAuthentication;
 
     @Inject
     private DatatypeRegistry datatypeRegistry;
@@ -37,8 +37,8 @@ public class AmountCalculator {
         com.vaadin.ui.TextField vTextField = amountField.unwrap(com.vaadin.ui.TextField.class);
         new CalcExtension(vTextField);
 
-        Datatype<BigDecimal> decimalDatatype = datatypeRegistry.getNN(BigDecimal.class);
-        amountField.setValue(decimalDatatype.format(value, userSessionSource.getUserSession().getLocale()));
+        Datatype<BigDecimal> decimalDatatype = datatypeRegistry.get(BigDecimal.class);
+        amountField.setValue(decimalDatatype.format(value, currentAuthentication.getLocale()));
     }
 
     @Nullable
@@ -49,11 +49,11 @@ public class AmountCalculator {
 
         Matcher matcher = EXPR_PATTERN.matcher(text);
         if (matcher.matches()) {
-            Number number = scripting.evaluateGroovy(text, new HashMap<String, Object>());
+            Number number = (Number) scriptEvaluator.evaluate(new StaticScriptSource(text));
             return BigDecimal.valueOf(number.doubleValue());
         } else {
             try {
-                return Datatypes.getNN(BigDecimal.class).parse(text, userSessionSource.getUserSession().getLocale());
+                return datatypeRegistry.get(BigDecimal.class).parse(text, currentAuthentication.getLocale());
             } catch (ParseException e) {
                 errors.add(amountField, e.getMessage());
                 return null;

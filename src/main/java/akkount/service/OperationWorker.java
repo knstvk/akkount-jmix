@@ -4,27 +4,34 @@ import akkount.entity.Account;
 import akkount.entity.Balance;
 import akkount.entity.Operation;
 import akkount.event.BalanceChangedEvent;
-import com.haulmont.cuba.core.TransactionalDataManager;
-import com.haulmont.cuba.core.app.events.AttributeChanges;
-import com.haulmont.cuba.core.app.events.EntityChangedEvent;
-import com.haulmont.cuba.core.global.Events;
-import io.jmix.core.Entity;
-import com.haulmont.cuba.core.entity.contracts.Id;
-import com.haulmont.cuba.core.global.Metadata;
+import io.jmix.core.DataManager;
+import io.jmix.core.Id;
+import io.jmix.core.Metadata;
+import io.jmix.core.event.AttributeChanges;
+import io.jmix.core.event.EntityChangedEvent;
+import io.jmix.ui.UiEventPublisher;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-import static com.haulmont.cuba.core.app.events.EntityChangedEvent.Type.DELETED;
-import static com.haulmont.cuba.core.app.events.EntityChangedEvent.Type.UPDATED;
+import static io.jmix.core.event.EntityChangedEvent.Type.DELETED;
+import static io.jmix.core.event.EntityChangedEvent.Type.UPDATED;
 
 @Component(OperationWorker.NAME)
 public class OperationWorker {
@@ -37,18 +44,21 @@ public class OperationWorker {
     private Metadata metadata;
 
     @Inject
-    private TransactionalDataManager tdm;
+    private DataManager tdm;
 
     @Inject
     private UserDataWorker userDataWorker;
 
-    @Inject
-    private Events events;
+    @Autowired
+    private UiEventPublisher uiEventPublisher;
+
+    @Autowired
+    private PlatformTransactionManager transactionManager;
 
     private volatile boolean balanceChangedEventsEnabled = true;
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
-    public void onOperationChanged(EntityChangedEvent<Operation, UUID> event) {
+    public void onOperationChanged(EntityChangedEvent<Operation> event) {
         log.debug("onOperationChanged: event={}", event);
 
         AttributeChanges changes = event.getChanges();
@@ -77,9 +87,13 @@ public class OperationWorker {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onOperationChangedAndCommitted(EntityChangedEvent<Operation, UUID> event) {
+    public void onOperationChangedAndCommitted(EntityChangedEvent<Operation> event) {
         if (balanceChangedEventsEnabled) {
-            events.publish(new BalanceChangedEvent(this));
+            TransactionTemplate transactionTemplate = new TransactionTemplate(
+                    transactionManager, new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
+            transactionTemplate.executeWithoutResult(transactionStatus -> {
+                uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
+            });
         }
     }
 
@@ -87,7 +101,7 @@ public class OperationWorker {
         balanceChangedEventsEnabled = enable;
     }
 
-    private void removeOperation(Date opDate, Id<Account, UUID> acc1Id, Id<Account, UUID> acc2Id,
+    private void removeOperation(Date opDate, Id<Account> acc1Id, Id<Account> acc2Id,
                                  BigDecimal amount1, BigDecimal amount2) {
         log.debug("removeOperation: opDate={}, acc1Id={}, acc2Id={}, amount1={}, amount2={}", opDate, acc1Id, acc2Id, amount1, amount2);
 
@@ -150,7 +164,7 @@ public class OperationWorker {
         }
     }
 
-    private List<Balance> getBalanceRecords(Date opDate, Id<Account, UUID> accId) {
+    private List<Balance> getBalanceRecords(Date opDate, Id<Account> accId) {
         log.debug("getBalanceRecords: opDate={}, accId={}", opDate, accId);
 
         return tdm.load(Balance.class)
@@ -194,7 +208,7 @@ public class OperationWorker {
     }
 
     @Nullable
-    private <T extends Entity, K> Id<T,K> idOfNullable(@Nullable T entity) {
+    private <T> Id<T> idOfNullable(@Nullable T entity) {
         return entity == null ? null : Id.of(entity);
     }
 }

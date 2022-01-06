@@ -1,7 +1,7 @@
 package akkount.service;
 
 import akkount.entity.Account;
-import com.haulmont.cuba.core.global.DataManager;
+import io.jmix.core.DataManager;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;

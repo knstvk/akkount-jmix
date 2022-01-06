@@ -2,20 +2,22 @@ package akkount.service;
 
 import akkount.entity.User;
 import akkount.entity.UserData;
-import com.haulmont.cuba.core.EntityManager;
-import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.Transaction;
-import com.haulmont.cuba.core.TypedQuery;
 import io.jmix.core.Entity;
-import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.core.global.UserSessionSource;
+import io.jmix.core.Metadata;
 import io.jmix.core.entity.EntityValues;
+import io.jmix.core.usersubstitution.CurrentUserSubstitution;
+import io.jmix.security.authentication.JmixUserDetails;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,17 +29,18 @@ public class UserDataWorker {
 
     private Log log = LogFactory.getLog(UserDataWorker.class);
 
-    @Inject
-    protected Persistence persistence;
+    @PersistenceContext
+    protected EntityManager entityManager;
 
     @Inject
-    protected UserSessionSource userSessionSource;
+    protected CurrentUserSubstitution currentUserSubstitution;
 
     @Inject
     private Metadata metadata;
 
     @Nullable
-    public <T extends Entity> T loadEntity(String key, Class<T> entityClass) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public <T> T loadEntity(String key, Class<T> entityClass) {
         List<String> values = getValues(key);
         if (values.isEmpty())
             return null;
@@ -47,7 +50,8 @@ public class UserDataWorker {
         return getEntity(value, entityClass);
     }
 
-    public <T extends Entity> List<T> loadEntityList(String key, Class<T> entityClass) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public <T> List<T> loadEntityList(String key, Class<T> entityClass) {
         ArrayList<T> result = new ArrayList<>();
 
         List<String> values = getValues(key);
@@ -64,59 +68,50 @@ public class UserDataWorker {
         return result;
     }
 
-    public void saveEntity(String key, Entity entity, boolean multipleValues) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveEntity(String key, Object entity, boolean multipleValues) {
         String value = EntityValues.getId(entity).toString();
-        try (Transaction tx = persistence.createTransaction()) {
-            EntityManager em = persistence.getEntityManager();
+        String queryString = "select d from akk_UserData d where d.user = ?1 and d.key = ?2";
+        if (multipleValues)
+            queryString += " and d.value = ?3";
 
-            String queryString = "select d from akk_UserData d where d.user.id = ?1 and d.key = ?2";
-            if (multipleValues)
-                queryString += " and d.value = ?3";
+        TypedQuery<UserData> query = entityManager.createQuery(
+                queryString, UserData.class);
 
-            TypedQuery<UserData> query = em.createQuery(
-                    queryString, UserData.class);
-
-            query.setParameter(1, userSessionSource.currentOrSubstitutedUserId());
-            query.setParameter(2, key);
-            if (multipleValues)
-                query.setParameter(3, value);
-
-            UserData userData = query.getFirstResult();
-
-            if (userData == null) {
-                userData = metadata.create(UserData.class);
-                userData.setUser(em.getReference(User.class, userSessionSource.currentOrSubstitutedUserId()));
-                userData.setKey(key);
-                userData.setValue(value);
-                em.persist(userData);
-            } else {
-                userData.setValue(value);
-            }
-
-            tx.commit();
-        }
-    }
-
-    public void removeEntity(String key, Entity entity) {
-        String value = EntityValues.getId(entity).toString();
-        try (Transaction tx = persistence.createTransaction()) {
-            EntityManager em = persistence.getEntityManager();
-            TypedQuery<UserData> query = em.createQuery(
-                    "select d from akk_UserData d where d.user.id = ?1 and d.key = ?2 and d.value = ?3", UserData.class);
-            query.setParameter(1, userSessionSource.currentOrSubstitutedUserId());
-            query.setParameter(2, key);
+        query.setParameter(1, currentUserSubstitution.getEffectiveUser());
+        query.setParameter(2, key);
+        if (multipleValues)
             query.setParameter(3, value);
-            UserData userData = query.getFirstResult();
 
-            if (userData != null) {
-                em.remove(userData);
-            }
-
-            tx.commit();
+        List<UserData> resultList = query.getResultList();
+        UserData userData;
+        if (resultList.isEmpty()) {
+            userData = metadata.create(UserData.class);
+            userData.setUser(entityManager.getReference(User.class, ((User) currentUserSubstitution.getEffectiveUser()).getId()));
+            userData.setKey(key);
+            userData.setValue(value);
+            entityManager.persist(userData);
+        } else {
+            userData = resultList.get(0);
+            userData.setValue(value);
         }
     }
 
-    private <T extends Entity> T getEntity(String value, Class<T> entityClass) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void removeEntity(String key, Object entity) {
+        String value = EntityValues.getId(entity).toString();
+        TypedQuery<UserData> query = entityManager.createQuery(
+                "select d from akk_UserData d where d.user = ?1 and d.key = ?2 and d.value = ?3", UserData.class);
+        query.setParameter(1, currentUserSubstitution.getEffectiveUser());
+        query.setParameter(2, key);
+        query.setParameter(3, value);
+        List<UserData> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            entityManager.remove(resultList.get(0));
+        }
+    }
+
+    private <T> T getEntity(String value, Class<T> entityClass) {
         UUID entityId;
         try {
             entityId = UUID.fromString(value);
@@ -125,27 +120,15 @@ public class UserDataWorker {
             return null;
         }
 
-        T entity;
-        try (Transaction tx = persistence.createTransaction()) {
-            EntityManager em = persistence.getEntityManager();
-            //noinspection unchecked
-            entity = (T) em.find((Class<Entity>) entityClass, entityId);
-            tx.commit();
-        }
-        return entity;
+        //noinspection unchecked
+        return (T) entityManager.find((Class<Entity>) entityClass, entityId);
     }
 
     private List<String> getValues(String key) {
-        List<String> list;
-        try (Transaction tx = persistence.createTransaction()) {
-            EntityManager em = persistence.getEntityManager();
-            TypedQuery<String> query = em.createQuery(
-                    "select d.value from akk_UserData d where d.user.id = ?1 and d.key = ?2", String.class);
-            query.setParameter(1, userSessionSource.currentOrSubstitutedUserId());
-            query.setParameter(2, key);
-            list = query.getResultList();
-            tx.commit();
-        }
-        return list;
+        TypedQuery<String> query = entityManager.createQuery(
+                "select d.value from akk_UserData d where d.user = ?1 and d.key = ?2", String.class);
+        query.setParameter(1, currentUserSubstitution.getEffectiveUser());
+        query.setParameter(2, key);
+        return query.getResultList();
     }
 }

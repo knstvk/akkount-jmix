@@ -1,18 +1,16 @@
 package akkount.entity;
 
-import com.haulmont.chile.core.annotations.NamePattern;
-import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 
 @JmixEntity
-@NamePattern("%s|name")
 @Table(name = "AKK_ACCOUNT")
 @Entity(name = "akk_Account")
-@PublishEntityChangedEvents
 public class Account extends StandardEntity {
+
+    @InstanceName
     @Column(name = "NAME", nullable = false, length = 20, unique = true)
     protected String name;
 

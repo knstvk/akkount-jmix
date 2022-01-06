@@ -4,10 +4,7 @@ import akkount.event.BalanceChangedEvent;
 import akkount.service.BalanceData;
 import akkount.service.BalanceService;
 import akkount.web.DecimalFormatter;
-import com.haulmont.cuba.core.global.AppBeans;
 import io.jmix.core.TimeSource;
-import io.jmix.core.metamodel.datatype.FormatStringsRegistry;
-import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;
 import io.jmix.ui.UiComponents;
@@ -51,16 +48,19 @@ public class MainScreen extends Screen implements Window.HasWorkArea {
     private GridLayout balanceGrid;
 
     @Autowired
-    private CurrentAuthentication currentAuthentication;
-
-    @Autowired
-    private FormatStringsRegistry formatStringsRegistry;
+    private DecimalFormatter decimalFormatter;
 
     @Autowired
     private PolicyStore policyStore;
 
     @Autowired
     private SecureOperations secureOperations;
+
+    @Autowired
+    private BalanceService balanceService;
+
+    @Autowired
+    private TimeSource timeSource;
 
     @Override
     public AppWorkArea getWorkArea() {
@@ -81,54 +81,55 @@ public class MainScreen extends Screen implements Window.HasWorkArea {
     @EventListener(BalanceChangedEvent.class)
     public void refreshBalance() {
         log.info("Refreshing balance");
-        BalanceService balanceService = AppBeans.get(BalanceService.class);
-        Date currentDate = AppBeans.get(TimeSource.class).currentTimestamp();
+        try {
+            Date currentDate = timeSource.currentTimestamp();
 
-        List<BalanceData> balanceDataList = balanceService.getBalanceData(currentDate);
+            List<BalanceData> balanceDataList = balanceService.getBalanceData(currentDate);
 
-        if (balanceGrid != null) {
-            balanceLayout.remove(balanceGrid);
-        }
-
-        balanceGrid = uiComponents.create(GridLayout.class);
-
-        if (!balanceDataList.isEmpty()) {
-            Integer rows = balanceDataList.stream()
-                    .map(balanceData -> balanceData.accounts.size() + balanceData.totals.size() + 2)
-                    .reduce(0, Integer::sum);
-
-            balanceGrid.setColumns(3);
-            balanceGrid.setRows(rows);
-            balanceGrid.setMargin(true);
-            balanceGrid.setSpacing(true);
-
-            DecimalFormatter formatter = new DecimalFormatter(currentAuthentication, formatStringsRegistry);
-
-            int row = 0;
-            for (Iterator<BalanceData> iterator = balanceDataList.iterator(); iterator.hasNext(); ) {
-                BalanceData balanceData = iterator.next();
-                for (BalanceData.AccountBalance accountBalance : balanceData.accounts) {
-                    addAccountBalance(accountBalance, formatter, row++);
-                }
-                for (BalanceData.AccountBalance accountBalance : balanceData.totals) {
-                    addAccountBalance(accountBalance, formatter, row++);
-                }
-                if (iterator.hasNext())
-                    addSeparator("<hr>", row++);
+            if (balanceGrid != null) {
+                balanceLayout.remove(balanceGrid);
             }
 
-        } else {
-            balanceGrid.setColumns(1);
-            balanceGrid.setRows(1);
+            balanceGrid = uiComponents.create(GridLayout.class);
 
-            Label<String> label = uiComponents.create(Label.TYPE_STRING);
-            label.setValue("No data");
-            balanceGrid.add(label, 0, 0);
+            if (!balanceDataList.isEmpty()) {
+                Integer rows = balanceDataList.stream()
+                        .map(balanceData -> balanceData.accounts.size() + balanceData.totals.size() + 2)
+                        .reduce(0, Integer::sum);
+
+                balanceGrid.setColumns(3);
+                balanceGrid.setRows(rows);
+                balanceGrid.setMargin(true);
+                balanceGrid.setSpacing(true);
+
+                int row = 0;
+                for (Iterator<BalanceData> iterator = balanceDataList.iterator(); iterator.hasNext(); ) {
+                    BalanceData balanceData = iterator.next();
+                    for (BalanceData.AccountBalance accountBalance : balanceData.accounts) {
+                        addAccountBalance(accountBalance, row++);
+                    }
+                    for (BalanceData.AccountBalance accountBalance : balanceData.totals) {
+                        addAccountBalance(accountBalance, row++);
+                    }
+                    if (iterator.hasNext())
+                        addSeparator("<hr>", row++);
+                }
+
+            } else {
+                balanceGrid.setColumns(1);
+                balanceGrid.setRows(1);
+
+                Label<String> label = uiComponents.create(Label.TYPE_STRING);
+                label.setValue("No data");
+                balanceGrid.add(label, 0, 0);
+            }
+            balanceLayout.add(balanceGrid);
+        } catch (Exception e) {
+            log.error("Error refreshing balance", e);
         }
-        balanceLayout.add(balanceGrid);
     }
 
-    private void addAccountBalance(BalanceData.AccountBalance accountBalance, DecimalFormatter formatter, int row) {
+    private void addAccountBalance(BalanceData.AccountBalance accountBalance, int row) {
         if (accountBalance.name != null) {
             Label<String> label = uiComponents.create(Label.TYPE_STRING);
             label.setValue(accountBalance.name);
@@ -136,7 +137,7 @@ public class MainScreen extends Screen implements Window.HasWorkArea {
         }
 
         Label<String> sumLabel = uiComponents.create(Label.TYPE_STRING);
-        sumLabel.setValue(formatter.apply(accountBalance.amount));
+        sumLabel.setValue(decimalFormatter.apply(accountBalance.amount));
         sumLabel.setAlignment(Component.Alignment.MIDDLE_RIGHT);
         if (accountBalance.name == null) {
             sumLabel.setStyleName("totals");

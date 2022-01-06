@@ -12,8 +12,7 @@ jmix {
 }
 
 group = 'xyz.knstvk'
-version = '0.3-SNAPSHOT'
-sourceCompatibility = '1.8'
+version = '0.4-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -34,7 +33,6 @@ dependencies {
     implementation 'io.jmix.security:jmix-security-data-starter'
     implementation 'io.jmix.security:jmix-security-oauth2-starter'
 
-    implementation 'io.jmix.cuba:jmix-cuba-starter'
     implementation 'io.jmix.datatools:jmix-datatools-ui-starter'
     implementation 'io.jmix.ui:jmix-ui-export-starter'
     implementation 'io.jmix.rest:jmix-rest-starter'

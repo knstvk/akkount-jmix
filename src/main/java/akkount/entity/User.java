@@ -16,9 +16,10 @@ import java.util.UUID;
 
 @JmixEntity
 @Entity(name = "akk_User")
-@Table(name = "SEC_USER")
-public class User implements JmixUserDetails,
-        io.jmix.core.Entity /*for compatibility with old EntityManager methods */ {
+@Table(name = "SEC_USER", indexes = {
+        @Index(name = "IDX_USER__ON_USERNAME", columnList = "USERNAME", unique = true)
+})
+public class User implements JmixUserDetails {
 
     @Id
     @Column(name = "ID")
@@ -48,6 +49,9 @@ public class User implements JmixUserDetails,
 
     @Column(name = "ENABLED")
     protected Boolean enabled = true;
+
+    @Column(name = "TIME_ZONE_ID")
+    protected String timeZoneId;
 
     @Transient
     protected Collection<? extends GrantedAuthority> authorities;
@@ -145,6 +149,14 @@ public class User implements JmixUserDetails,
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public String getTimeZoneId() {
+        return timeZoneId;
+    }
+
+    public void setTimeZoneId(String timeZoneId) {
+        this.timeZoneId = timeZoneId;
     }
 
     @InstanceName

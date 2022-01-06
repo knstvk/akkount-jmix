@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        caption="msg://editCaption"
-        messagesPack="akkount.web.account">
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://editCaption">
     <data>
         <instance id="accountDc"
                     class="akkount.entity.Account"
-                    view="account-with-currency">
+                    fetchPlan="account-with-currency">
             <loader/>
         </instance>
         <collection id="currenciesDc"
                     class="akkount.entity.Currency"
-                    view="_minimal">
+                    fetchPlan="_instance_name">
             <loader>
                 <query>
                     <![CDATA[select e from akk_Currency e order by e.code]]>
@@ -20,18 +19,21 @@
     </data>
     <dialogMode forceDialog="true"
                 width="AUTO"/>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
     <layout spacing="true">
         <form id="fieldGroup"
                     dataContainer="accountDc">
             <column width="250px">
                 <field property="name"/>
                 <field property="description"/>
-                <lookupPickerField property="currency"
+                <entityComboBox property="currency"
                        optionsContainer="currenciesDc">
                     <actions>
-                        <action id="lookup" type="picker_lookup"/>
+                        <action id="lookup" type="entity_lookup"/>
                     </actions>
-                </lookupPickerField>
+                </entityComboBox>
                 <field property="active"/>
                 <field property="group"/>
             </column>

@@ -1,29 +1,25 @@
 package akkount.web;
 
-import com.haulmont.cuba.core.global.AppBeans;
 import io.jmix.core.metamodel.datatype.FormatStrings;
 import io.jmix.core.metamodel.datatype.FormatStringsRegistry;
 import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.ui.component.formatter.Formatter;
-import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+@Component("akk_DecimalFormatter")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class DecimalFormatter implements Formatter<BigDecimal> {
 
+    @Autowired
     private CurrentAuthentication currentAuthentication;
+    @Autowired
     private FormatStringsRegistry formatStringsRegistry;
-
-    public DecimalFormatter(CurrentAuthentication currentAuthentication, FormatStringsRegistry formatStringsRegistry) {
-        this.currentAuthentication = currentAuthentication;
-        this.formatStringsRegistry = formatStringsRegistry;
-    }
-
-    public DecimalFormatter(Element element) {
-        this.currentAuthentication = AppBeans.get(CurrentAuthentication.class);
-        this.formatStringsRegistry = AppBeans.get(FormatStringsRegistry.class);
-    }
 
     @Override
     public String apply(BigDecimal value) {

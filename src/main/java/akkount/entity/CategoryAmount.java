@@ -1,16 +1,30 @@
 package akkount.entity;
 
-import com.haulmont.cuba.core.entity.BaseUuidEntity;
+import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.JmixId;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @JmixEntity(name = "akk_CategoryBalance")
-public class CategoryAmount extends BaseUuidEntity {
+public class CategoryAmount {
+
+    @JmixId
+    @JmixGeneratedValue
+    protected UUID id;
 
     private Category category;
 
     private BigDecimal amount;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public Category getCategory() {
         return category;

@@ -4,30 +4,51 @@
 
 package akkount.config;
 
-import com.haulmont.cuba.core.config.Config;
-import com.haulmont.cuba.core.config.Property;
-import com.haulmont.cuba.core.config.Source;
-import com.haulmont.cuba.core.config.SourceType;
-import com.haulmont.cuba.core.config.defaults.Default;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
-@Source(type = SourceType.DATABASE)
-public interface AkkConfig extends Config {
+@ConfigurationProperties(prefix = "akk")
+@ConstructorBinding
+public class AkkConfig {
 
-    @Property("akk.slackToken")
-    String getSlackToken();
+    private String slackToken;
+    private String slackVerificationToken;
+    private String slackUserLogin;
+    private String defaultAccount;
+    private String defaultCategory;
 
-    @Property("akk.slackVerificationToken")
-    String getSlackVerificationToken();
+    public AkkConfig(
+            String slackToken,
+            String slackVerificationToken,
+            @DefaultValue("slack") String slackUserLogin,
+            @DefaultValue("cash") String defaultAccount,
+            @DefaultValue("food") String defaultCategory
+    ) {
+        this.slackToken = slackToken;
+        this.slackVerificationToken = slackVerificationToken;
+        this.slackUserLogin = slackUserLogin;
+        this.defaultAccount = defaultAccount;
+        this.defaultCategory = defaultCategory;
+    }
 
-    @Property("akk.slackUserLogin")
-    @Default("slack")
-    String getSlackUserLogin();
+    public String getSlackToken() {
+        return slackToken;
+    }
 
-    @Property("akk.defaultAccount")
-    @Default("cash")
-    String getDefaultAccount();
+    public String getSlackVerificationToken() {
+        return slackVerificationToken;
+    }
 
-    @Property("akk.defaultCategory")
-    @Default("food")
-    String getDefaultCategory();
+    public String getSlackUserLogin() {
+        return slackUserLogin;
+    }
+
+    public String getDefaultAccount() {
+        return defaultAccount;
+    }
+
+    public String getDefaultCategory() {
+        return defaultCategory;
+    }
 }

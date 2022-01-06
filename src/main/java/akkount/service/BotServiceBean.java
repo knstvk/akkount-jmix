@@ -6,10 +6,10 @@ import akkount.entity.Category;
 import akkount.entity.Operation;
 import akkount.entity.OperationType;
 import com.google.common.base.Splitter;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.Metadata;
+import io.jmix.core.DataManager;
+import io.jmix.core.FetchPlan;
+import io.jmix.core.Metadata;
 import io.jmix.core.TimeSource;
-import com.haulmont.cuba.core.global.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -73,7 +73,7 @@ public class BotServiceBean implements BotService {
         Optional<Account> optionalAccount = dataManager.load(Account.class)
                 .query("select a from akk_Account a where lower(a.name) = :name")
                 .parameter("name", acc.toLowerCase())
-                .view(View.MINIMAL)
+                .fetchPlan(FetchPlan.INSTANCE_NAME)
                 .optional();
         if (!optionalAccount.isPresent())
             return String.format("Account %s not found", acc);
@@ -82,7 +82,7 @@ public class BotServiceBean implements BotService {
         Optional<Category> optionalCategory = dataManager.load(Category.class)
                 .query("select c from akk_Category c where lower(c.name) = :name")
                 .parameter("name", cat.toLowerCase())
-                .view(View.MINIMAL)
+                .fetchPlan(FetchPlan.INSTANCE_NAME)
                 .optional();
         if (!optionalCategory.isPresent())
             return String.format("Category %s not found", cat);
@@ -94,7 +94,7 @@ public class BotServiceBean implements BotService {
         operation.setAcc1(account);
         operation.setCategory(category);
         operation.setAmount1(amount);
-        dataManager.commit(operation);
+        dataManager.save(operation);
         return String.format("Spent %.2f from %s on %s", amount, account.getName(), category.getName());
     }
 

@@ -1,12 +1,13 @@
 package akkount.web.category;
 
 import akkount.entity.Category;
-import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
-import io.jmix.ui.screen.*;
+import io.jmix.ui.screen.LookupComponent;
+import io.jmix.ui.screen.StandardLookup;
+import io.jmix.ui.screen.UiController;
+import io.jmix.ui.screen.UiDescriptor;
 
 @UiController("akk_Category.lookup")
 @UiDescriptor("category-browse.xml")
 @LookupComponent("categoryTable")
-@LoadDataBeforeShow
 public class CategoryBrowse extends StandardLookup<Category> {
 }

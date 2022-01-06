@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd" caption="msg://browseCaption"
-        messagesPack="akkount.web.account">
+<window xmlns="http://jmix.io/schema/ui/window" caption="msg://browseCaption">
     <data>
-        <collection id="accountDs" class="akkount.entity.Account" view="account-with-currency">
+        <collection id="accountDs" class="akkount.entity.Account" fetchPlan="account-with-currency">
             <loader>
                 <query><![CDATA[select e from akk_Account e]]></query>
             </loader>
         </collection>
     </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
     <layout spacing="true">
         <table id="accountTable" height="100%" multiselect="true" width="100%" dataContainer="accountDs">
             <actions>
@@ -24,7 +26,7 @@
                 <column id="active"/>
                 <column id="group"/>
             </columns>
-            <rowsCount/>
+            <simplePagination/>
             <buttonsPanel id="buttonsPanel" alwaysVisible="true">
                 <button id="createBtn" action="accountTable.create"/>
                 <button id="editBtn" action="accountTable.edit"/>

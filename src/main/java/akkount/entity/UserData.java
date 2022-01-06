@@ -1,22 +1,23 @@
 package akkount.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import com.haulmont.cuba.core.entity.BaseUuidEntity;
-import javax.persistence.Column;
-import com.haulmont.cuba.core.entity.Creatable;
+import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @JmixEntity
 @Table(name = "AKK_USER_DATA")
 @Entity(name = "akk_UserData")
-public class UserData extends BaseUuidEntity implements Creatable {
-    private static final long serialVersionUID = 3110000356480013115L;
+public class UserData {
+
+    @Id
+    @Column(name = "ID")
+    @JmixGeneratedValue
+    protected UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID")
@@ -28,28 +29,34 @@ public class UserData extends BaseUuidEntity implements Creatable {
     @Column(name = "VALUE_", length = 500)
     protected String value;
 
+    @CreatedDate
     @Column(name = "CREATE_TS")
     protected Date createTs;
 
+    @CreatedBy
     @Column(name = "CREATED_BY", length = 50)
     protected String createdBy;
 
-    @Override
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    @Override
     public String getCreatedBy() {
         return createdBy;
     }
 
-    @Override
     public void setCreateTs(Date createTs) {
         this.createTs = createTs;
     }
 
-    @Override
     public Date getCreateTs() {
         return createTs;
     }

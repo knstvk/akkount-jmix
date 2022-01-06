@@ -2,14 +2,13 @@ package akkount.web.account;
 
 import akkount.entity.Account;
 import akkount.service.BalanceService;
-import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;
 import io.jmix.ui.Dialogs;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.Component;
 import io.jmix.ui.action.DialogAction;
-import com.haulmont.cuba.gui.components.Table;
+import io.jmix.ui.component.Table;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +19,6 @@ import java.util.Set;
 @UiController("akk_Account.lookup")
 @UiDescriptor("account-browse.xml")
 @LookupComponent("accountTable")
-@LoadDataBeforeShow
 public class AccountBrowse extends StandardLookup<Account> {
 
     @Inject

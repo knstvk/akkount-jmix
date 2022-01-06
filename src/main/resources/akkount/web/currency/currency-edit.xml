@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        caption="msg://editCaption"
-        messagesPack="akkount.web.currency">
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://editCaption">
     <data>
         <instance id="currencyDc"
                     class="akkount.entity.Currency"
-                    view="_local">
+                    fetchPlan="_local">
             <loader/>
         </instance>
     </data>
     <dialogMode forceDialog="true"
                 width="AUTO"/>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
     <layout spacing="true" expand="editActions">
         <form id="fieldGroup"
                     dataContainer="currencyDc">

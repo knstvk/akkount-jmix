@@ -1,7 +1,5 @@
 package akkount.entity;
 
-import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.entity.annotation.PublishEntityChangedEvents;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
@@ -11,9 +9,7 @@ import java.util.Date;
 @JmixEntity
 @Table(name = "AKK_OPERATION")
 @Entity(name = "akk_Operation")
-@PublishEntityChangedEvents
 public class Operation extends StandardEntity {
-    private static final long serialVersionUID = 7040817103549067673L;
 
     @Column(name = "OP_TYPE", nullable = false)
     protected String opType;

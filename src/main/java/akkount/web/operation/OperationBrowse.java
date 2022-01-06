@@ -4,8 +4,6 @@ import akkount.entity.Account;
 import akkount.entity.Category;
 import akkount.entity.Operation;
 import akkount.entity.OperationType;
-import com.haulmont.cuba.gui.components.LookupField;
-import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.*;
@@ -21,7 +19,6 @@ import java.util.Map;
 @UiController("akk_Operation.lookup")
 @UiDescriptor("operation-browse.xml")
 @LookupComponent("operationTable")
-@LoadDataBeforeShow
 public class OperationBrowse extends StandardLookup<Operation> {
 
     @Inject
@@ -41,16 +38,16 @@ public class OperationBrowse extends StandardLookup<Operation> {
     private CollectionLoader<Operation> operationsDl;
 
     @Autowired
-    private LookupField<Account> accFilterField;
+    private EntityComboBox<Account> accFilterField;
 
     @Autowired
-    private LookupField<Category> categoryFilterField;
+    private EntityComboBox<Category> categoryFilterField;
 
     @Autowired
     private CheckBox showGenericFilterCheckbox;
 
     @Autowired
-    private com.haulmont.cuba.gui.components.Filter filter;
+    private Filter filter;
 
     @Subscribe("operationTable.createExpense")
     private void onOperationTableCreateExpense(Action.ActionPerformedEvent event) {

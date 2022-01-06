@@ -1,19 +1,18 @@
 package akkount.jmx;
 
-import akkount.entity.*;
 import akkount.entity.Currency;
-import akkount.event.BalanceChangedEvent;
+import akkount.entity.*;
 import akkount.service.BalanceWorker;
 import akkount.service.OperationWorker;
-import com.haulmont.bali.db.QueryRunner;
-import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.global.Events;
-import com.haulmont.cuba.core.global.Metadata;
+import io.jmix.core.DataManager;
+import io.jmix.core.Metadata;
 import io.jmix.core.TimeSource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -27,8 +26,8 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
 
     private Log log = LogFactory.getLog(getClass());
 
-    @Inject
-    protected Persistence persistence;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Inject
     protected TimeSource timeSource;
@@ -39,11 +38,13 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     @Inject
     private Metadata metadata;
 
-    @Inject
-    private Events events;
+//    @Autowired
+//    private UiEventPublisher uiEventPublisher;
 
     @Inject
     private OperationWorker operationWorker;
+    @Autowired
+    private DataManager dataManager;
 
     private class Context {
 
@@ -101,7 +102,8 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
             cleanupTable("AKK_CATEGORY");
             cleanupTable("AKK_CURRENCY");
 
-            events.publish(new BalanceChangedEvent(this));
+            // todo sending UI events
+//            uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
 
             return "Done";
         } catch (Throwable e) {
@@ -111,113 +113,105 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     }
 
     private void cleanupTable(String table) throws SQLException {
-        QueryRunner runner = new QueryRunner(persistence.getDataSource());
-        runner.update("delete from " + table);
+        jdbcTemplate.update("delete from " + table);
     }
 
     private void createCurrencies(final Context context) {
-        persistence.runInTransaction(em -> {
-            Currency currency = metadata.create(Currency.class);
-            currency.setCode("rub");
-            currency.setName("Russian Rubles");
-            em.persist(currency);
-            context.rubCurrency = currency;
+        Currency currency = metadata.create(Currency.class);
+        currency.setCode("rub");
+        currency.setName("Russian Rubles");
+        dataManager.save(currency);
+        context.rubCurrency = currency;
 
-            currency = metadata.create(Currency.class);
-            currency.setCode("eur");
-            currency.setName("Euro");
-            em.persist(currency);
-            context.eurCurrency = currency;
-        });
+        currency = metadata.create(Currency.class);
+        currency.setCode("eur");
+        currency.setName("Euro");
+        dataManager.save(currency);
+        context.eurCurrency = currency;
     }
 
     private void createAccounts(final Context context) {
-        persistence.runInTransaction(em -> {
-            Account account;
+        Account account;
 
-            account = metadata.create(Account.class);
-            account.setName("Credit card");
-            account.setCurrency(context.rubCurrency);
-            account.setGroup(1);
-            em.persist(account);
-            context.accounts.add(account);
+        account = metadata.create(Account.class);
+        account.setName("Credit card");
+        account.setCurrency(context.rubCurrency);
+        account.setGroup(1);
+        dataManager.save(account);
+        context.accounts.add(account);
 
-            account = metadata.create(Account.class);
-            account.setName("Cash");
-            account.setCurrency(context.rubCurrency);
-            account.setGroup(1);
-            em.persist(account);
-            context.accounts.add(account);
+        account = metadata.create(Account.class);
+        account.setName("Cash");
+        account.setCurrency(context.rubCurrency);
+        account.setGroup(1);
+        dataManager.save(account);
+        context.accounts.add(account);
 
-            account = metadata.create(Account.class);
-            account.setName("Deposit");
-            account.setCurrency(context.rubCurrency);
-            account.setGroup(2);
-            em.persist(account);
-            context.accounts.add(account);
+        account = metadata.create(Account.class);
+        account.setName("Deposit");
+        account.setCurrency(context.rubCurrency);
+        account.setGroup(2);
+        dataManager.save(account);
+        context.accounts.add(account);
 
-            account = metadata.create(Account.class);
-            account.setName("Deposit EUR");
-            account.setCurrency(context.eurCurrency);
-            account.setGroup(2);
-            em.persist(account);
-            context.accounts.add(account);
-
-        });
+        account = metadata.create(Account.class);
+        account.setName("Deposit EUR");
+        account.setCurrency(context.eurCurrency);
+        account.setGroup(2);
+        dataManager.save(account);
+        context.accounts.add(account);
     }
 
     private void createCategories(final Context context) {
-        persistence.runInTransaction(em -> {
-            Category category;
+        Category category;
 
-            category = metadata.create(Category.class);
-            category.setName("Housekeeping");
-            category.setCatType(CategoryType.EXPENSE);
-            em.persist(category);
-            context.expenseCategories.add(category);
+        category = metadata.create(Category.class);
+        category.setName("Housekeeping");
+        category.setCatType(CategoryType.EXPENSE);
+        dataManager.save(category);
+        context.expenseCategories.add(category);
 
-            category = metadata.create(Category.class);
-            category.setName("Hobby");
-            category.setCatType(CategoryType.EXPENSE);
-            em.persist(category);
-            context.expenseCategories.add(category);
+        category = metadata.create(Category.class);
+        category.setName("Hobby");
+        category.setCatType(CategoryType.EXPENSE);
+        dataManager.save(category);
+        context.expenseCategories.add(category);
 
-            category = metadata.create(Category.class);
-            category.setName("Travel");
-            category.setCatType(CategoryType.EXPENSE);
-            em.persist(category);
-            context.expenseCategories.add(category);
+        category = metadata.create(Category.class);
+        category.setName("Travel");
+        category.setCatType(CategoryType.EXPENSE);
+        dataManager.save(category);
+        context.expenseCategories.add(category);
 
-            category = metadata.create(Category.class);
-            category.setName("Food");
-            category.setCatType(CategoryType.EXPENSE);
-            em.persist(category);
-            context.expenseCategories.add(category);
+        category = metadata.create(Category.class);
+        category.setName("Food");
+        category.setCatType(CategoryType.EXPENSE);
+        dataManager.save(category);
+        context.expenseCategories.add(category);
 
-            category = metadata.create(Category.class);
-            category.setName("Clothes");
-            category.setCatType(CategoryType.EXPENSE);
-            em.persist(category);
-            context.expenseCategories.add(category);
+        category = metadata.create(Category.class);
+        category.setName("Clothes");
+        category.setCatType(CategoryType.EXPENSE);
+        dataManager.save(category);
+        context.expenseCategories.add(category);
 
-            category = metadata.create(Category.class);
-            category.setName("Car");
-            category.setCatType(CategoryType.EXPENSE);
-            em.persist(category);
-            context.expenseCategories.add(category);
+        category = metadata.create(Category.class);
+        category.setName("Car");
+        category.setCatType(CategoryType.EXPENSE);
+        dataManager.save(category);
+        context.expenseCategories.add(category);
 
-            category = metadata.create(Category.class);
-            category.setName("Salary");
-            category.setCatType(CategoryType.INCOME);
-            em.persist(category);
-            context.salaryCategory = category;
+        category = metadata.create(Category.class);
+        category.setName("Salary");
+        category.setCatType(CategoryType.INCOME);
+        dataManager.save(category);
+        context.salaryCategory = category;
 
-            category = metadata.create(Category.class);
-            category.setName("Other");
-            category.setCatType(CategoryType.INCOME);
-            em.persist(category);
-            context.otherIncomeCategory = category;
-        });
+        category = metadata.create(Category.class);
+        category.setName("Other");
+        category.setCatType(CategoryType.INCOME);
+        dataManager.save(category);
+        context.otherIncomeCategory = category;
     }
 
     private void createOperations(Date startDate, int numberOfDays, Context context) {
@@ -248,66 +242,61 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         } finally {
             operationWorker.enableBalanceChangedEvents(true);
         }
-        events.publish(new BalanceChangedEvent(this));
+        // todo sending UI events
+//        uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
     }
 
     private void income(final Date date, final Account account, final Category category, final BigDecimal amount) {
-        persistence.runInTransaction(em -> {
-            Operation operation = metadata.create(Operation.class);
-            operation.setOpType(OperationType.INCOME);
-            operation.setOpDate(date);
-            operation.setAcc2(account);
-            operation.setCategory(category);
-            operation.setAmount2(amount);
-            em.persist(operation);
+        Operation operation = metadata.create(Operation.class);
+        operation.setOpType(OperationType.INCOME);
+        operation.setOpDate(date);
+        operation.setAcc2(account);
+        operation.setCategory(category);
+        operation.setAmount2(amount);
+        dataManager.save(operation);
 
-            log.info("Income: " + date + ", " + account.getName() + ", " + amount);
-        });
+        log.info("Income: " + date + ", " + account.getName() + ", " + amount);
     }
 
     private void expense(final Date date, final Account account, final Context context) {
-        persistence.runInTransaction(em -> {
-            int categoryIdx = (int) Math.round(Math.random() * (context.expenseCategories.size() - 1));
-            Category category = context.expenseCategories.get(categoryIdx);
-            if (category == null)
-                return;
+        int categoryIdx = (int) Math.round(Math.random() * (context.expenseCategories.size() - 1));
+        Category category = context.expenseCategories.get(categoryIdx);
+        if (category == null)
+            return;
 
-            int categoryWeight = context.expenseCategories.size() - categoryIdx;
-            BigDecimal amount = randomExpenseAmount(account, date, 0.1 + (categoryWeight * 0.05));
-            if (BigDecimal.ZERO.compareTo(amount) >= 0)
-                return;
+        int categoryWeight = context.expenseCategories.size() - categoryIdx;
+        BigDecimal amount = randomExpenseAmount(account, date, 0.1 + (categoryWeight * 0.05));
+        if (BigDecimal.ZERO.compareTo(amount) >= 0)
+            return;
 
-            Operation operation = metadata.create(Operation.class);
-            operation.setOpType(OperationType.EXPENSE);
-            operation.setOpDate(date);
-            operation.setAcc1(account);
-            operation.setCategory(category);
-            operation.setAmount1(amount);
-            em.persist(operation);
+        Operation operation = metadata.create(Operation.class);
+        operation.setOpType(OperationType.EXPENSE);
+        operation.setOpDate(date);
+        operation.setAcc1(account);
+        operation.setCategory(category);
+        operation.setAmount1(amount);
+        dataManager.save(operation);
 
-            log.info("Expense: " + date + ", " + account.getName() + ", " + amount);
-        });
+        log.info("Expense: " + date + ", " + account.getName() + ", " + amount);
     }
 
     private void transfer(final Date date, final Account account1, final Account account2) {
-        persistence.runInTransaction(em -> {
-            BigDecimal amount1 = randomExpenseAmount(account1, date, 0.5);
-            if (BigDecimal.ZERO.compareTo(amount1) >= 0)
-                return;
+        BigDecimal amount1 = randomExpenseAmount(account1, date, 0.5);
+        if (BigDecimal.ZERO.compareTo(amount1) >= 0)
+            return;
 
-            BigDecimal amount2 = transferAmount(account1, account2, amount1);
+        BigDecimal amount2 = transferAmount(account1, account2, amount1);
 
-            Operation operation = metadata.create(Operation.class);
-            operation.setOpType(OperationType.TRANSFER);
-            operation.setOpDate(date);
-            operation.setAcc1(account1);
-            operation.setAmount1(amount1);
-            operation.setAcc2(account2);
-            operation.setAmount2(amount2);
-            em.persist(operation);
+        Operation operation = metadata.create(Operation.class);
+        operation.setOpType(OperationType.TRANSFER);
+        operation.setOpDate(date);
+        operation.setAcc1(account1);
+        operation.setAmount1(amount1);
+        operation.setAcc2(account2);
+        operation.setAmount2(amount2);
+        dataManager.save(operation);
 
-            log.info("Transfer: " + date + ", " + account1.getName() + ", " + amount1+ ", " + account2.getName() + ", " + amount2);
-        });
+        log.info("Transfer: " + date + ", " + account1.getName() + ", " + amount1+ ", " + account2.getName() + ", " + amount2);
     }
 
 

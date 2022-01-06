@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+<window xmlns="http://jmix.io/schema/ui/window"
         caption="msg://browseCaption"
-        focusComponent="operationTable"
-        messagesPack="akkount.web.operation">
+        focusComponent="operationTable">
     <data>
         <collection id="operationsDc"
                          class="akkount.entity.Operation"
-                         view="operation-browse">
+                         fetchPlan="operation-browse">
             <loader id="operationsDl">
                 <query>
                     <![CDATA[select e from akk_Operation e order by e.opDate desc, e.createTs desc]]>
@@ -28,20 +27,23 @@
             </loader>
         </collection>
     </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
     <layout expand="operationTable"
             spacing="true">
         <hbox spacing="true" width="100%" expand="filterSpacer">
             <label value="Filter by" align="MIDDLE_LEFT"/>
-            <lookupPickerField id="accFilterField" optionsContainer="accountsDc" inputPrompt="Account" width="200">
+            <entityComboBox id="accFilterField" optionsContainer="accountsDc" inputPrompt="Account" width="200">
                 <actions>
-                    <action id="clear" type="picker_clear"/>
+                    <action id="clear" type="entity_clear"/>
                 </actions>
-            </lookupPickerField>
-            <lookupPickerField id="categoryFilterField" optionsContainer="categoriesDc" inputPrompt="Category" width="200">
+            </entityComboBox>
+            <entityComboBox id="categoryFilterField" optionsContainer="categoriesDc" inputPrompt="Category" width="200">
                 <actions>
-                    <action id="clear" type="picker_clear"/>
+                    <action id="clear" type="entity_clear"/>
                 </actions>
-            </lookupPickerField>
+            </entityComboBox>
             <label id="filterSpacer"/>
             <checkBox id="showGenericFilterCheckbox" caption="Show generic filter" align="MIDDLE_RIGHT"/>
         </hbox>
@@ -62,22 +64,27 @@
             <columns>
                 <column id="opType"/>
                 <column id="opDate">
-                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
-                               format="msg://opDateFormat"/>
+                    <formatter>
+                        <date format="msg://opDateFormat"/>
+                    </formatter>
                 </column>
                 <column id="acc1"/>
                 <column id="amount1">
-                    <formatter class="akkount.web.DecimalFormatter"/>
+                    <formatter>
+                        <custom bean="akk_DecimalFormatter"/>
+                    </formatter>
                 </column>
                 <column id="acc2"/>
                 <column id="amount2">
-                    <formatter class="akkount.web.DecimalFormatter"/>
+                    <formatter>
+                        <custom bean="akk_DecimalFormatter"/>
+                    </formatter>
                 </column>
                 <column id="category"/>
                 <column id="comments"/>
                 <column id="createdBy"/>
             </columns>
-            <rowsCount/>
+            <simplePagination/>
             <buttonsPanel id="buttonsPanel"
                           alwaysVisible="true">
                 <button id="createExpenseBtn" action="operationTable.createExpense"/>

@@ -1,12 +1,13 @@
 package akkount.web.category;
 
-import java.util.Map;
-import com.haulmont.cuba.gui.components.AbstractEditor;
 import akkount.entity.Category;
+import io.jmix.ui.screen.EditedEntityContainer;
+import io.jmix.ui.screen.StandardEditor;
+import io.jmix.ui.screen.UiController;
+import io.jmix.ui.screen.UiDescriptor;
 
-public class CategoryEdit extends AbstractEditor<Category> {
-
-    @Override
-    public void init(Map<String, Object> params) {
-    }
+@UiController("akk_Category.edit")
+@UiDescriptor("category-edit.xml")
+@EditedEntityContainer("categoryDc")
+public class CategoryEdit extends StandardEditor<Category> {
 }

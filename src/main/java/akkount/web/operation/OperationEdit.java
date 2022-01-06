@@ -5,18 +5,15 @@ import akkount.entity.Operation;
 import akkount.entity.OperationType;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
-import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.UserSessionSource;
-import com.haulmont.cuba.gui.components.GroupBoxLayout;
-import com.haulmont.cuba.gui.screen.LoadDataBeforeShow;
 import com.vaadin.server.VaadinSession;
+import io.jmix.core.Messages;
 import io.jmix.core.TimeSource;
 import io.jmix.ui.Fragments;
+import io.jmix.ui.component.GroupBoxLayout;
 import io.jmix.ui.component.ValidationErrors;
 import io.jmix.ui.model.DataContext;
 import io.jmix.ui.screen.*;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.util.Calendar;
@@ -25,7 +22,6 @@ import java.util.Date;
 @UiController("akk_Operation.edit")
 @UiDescriptor("operation-edit.xml")
 @EditedEntityContainer("operationDc")
-@LoadDataBeforeShow
 public class OperationEdit extends StandardEditor<Operation> {
 
     public static final String LAST_OPERATION_DATE_ATTR = "lastOperationDate";
@@ -38,9 +34,6 @@ public class OperationEdit extends StandardEditor<Operation> {
 
     @Inject
     private UserDataService userDataService;
-
-    @Autowired
-    private UserSessionSource userSessionSource;
 
     private OperationFrame operationFrame;
 

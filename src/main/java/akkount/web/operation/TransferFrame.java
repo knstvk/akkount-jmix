@@ -1,8 +1,8 @@
 package akkount.web.operation;
 
 import akkount.entity.Operation;
-import com.haulmont.cuba.gui.components.Label;
-import com.haulmont.cuba.gui.components.TextField;
+import io.jmix.ui.component.Label;
+import io.jmix.ui.component.TextField;
 import io.jmix.ui.component.ValidationErrors;
 import io.jmix.ui.model.InstanceContainer;
 import io.jmix.ui.screen.ScreenFragment;

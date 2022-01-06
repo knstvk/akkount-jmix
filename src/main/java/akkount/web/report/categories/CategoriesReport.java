@@ -4,36 +4,37 @@ import akkount.entity.Category;
 import akkount.entity.CategoryAmount;
 import akkount.entity.CategoryType;
 import akkount.entity.Currency;
+import akkount.service.ReportService;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
-import com.haulmont.cuba.gui.WindowManager;
-import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.components.BoxLayout;
-import com.haulmont.cuba.gui.components.DateField;
-import com.haulmont.cuba.gui.components.HBoxLayout;
-import com.haulmont.cuba.gui.components.Label;
-import com.haulmont.cuba.gui.components.Table;
-import com.haulmont.cuba.gui.components.TextField;
-import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
-import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
+import akkount.web.operation.ShowOperations;
+import io.jmix.core.LoadContext;
+import io.jmix.ui.ScreenBuilders;
+import io.jmix.ui.UiComponents;
 import io.jmix.ui.action.AbstractAction;
+import io.jmix.ui.action.ItemTrackingAction;
 import io.jmix.ui.component.*;
+import io.jmix.ui.model.CollectionContainer;
+import io.jmix.ui.model.CollectionLoader;
+import io.jmix.ui.screen.*;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class CategoriesReport extends AbstractWindow {
+@UiController("categories-report")
+@UiDescriptor("categories-report.xml")
+public class CategoriesReport extends Screen {
 
     @Inject
-    protected OptionsGroup categoryTypeGroup;
+    protected RadioButtonGroup categoryTypeGroup;
     @Inject
-    protected LookupField<Currency> currencyField;
+    protected EntityComboBox<Currency> currencyField;
     @Inject
-    protected LookupField<Integer> periodTypeField;
+    protected ComboBox<Integer> periodTypeField;
     @Inject
     protected DateField<Date> from1;
     @Inject
@@ -53,13 +54,13 @@ public class CategoriesReport extends AbstractWindow {
     @Inject
     protected BoxLayout excludedBox;
     @Inject
-    protected CollectionDatasource<CategoryAmount, UUID> ds1;
+    protected CollectionContainer<CategoryAmount> ds1;
     @Inject
-    protected CollectionDatasource<CategoryAmount, UUID> ds2;
+    protected CollectionContainer<CategoryAmount> ds2;
     @Inject
-    protected CollectionDatasource<Currency, UUID> currenciesDs;
+    protected CollectionContainer<Currency> currenciesDs;
     @Inject
-    protected ComponentsFactory componentsFactory;
+    protected UiComponents componentsFactory;
     @Inject
     protected UserDataService userDataService;
 
@@ -67,8 +68,23 @@ public class CategoriesReport extends AbstractWindow {
 
     private Map<Category, BoxLayout> excludedCategories = new HashMap<>();
 
-    @Override
-    public void init(Map<String, Object> params) {
+    @Autowired
+    private CollectionLoader<Currency> currenciesDl;
+
+    @Autowired
+    private MessageBundle messageBundle;
+    @Autowired
+    private CollectionLoader<CategoryAmount> dl1;
+    @Autowired
+    private CollectionLoader<CategoryAmount> dl2;
+
+    @Autowired
+    private ScreenBuilders screenBuilders;
+    @Autowired
+    private ReportService reportService;
+
+    @Subscribe
+    public void onInit(InitEvent event) {
         initCurrencies();
         initCategoryTypes();
         initPeriodTypes();
@@ -81,7 +97,7 @@ public class CategoriesReport extends AbstractWindow {
     }
 
     private void initCurrencies() {
-        currenciesDs.refresh();
+        currenciesDl.load();
         Currency currency = userDataService.loadEntity(UserDataKeys.CAT_REP_CURRENCY, Currency.class);
         if (currency == null) {
             Collection<Currency> currencies = currenciesDs.getItems();
@@ -112,11 +128,11 @@ public class CategoriesReport extends AbstractWindow {
 
     private void initPeriodTypes() {
         Map<String, Integer> options = new LinkedHashMap<>();
-        options.put(getMessage("1month"), 1);
-        options.put(getMessage("2months"), 2);
-        options.put(getMessage("3months"), 3);
-        options.put(getMessage("6months"), 6);
-        options.put(getMessage("12months"), 12);
+        options.put(messageBundle.getMessage("1month"), 1);
+        options.put(messageBundle.getMessage("2months"), 2);
+        options.put(messageBundle.getMessage("3months"), 3);
+        options.put(messageBundle.getMessage("6months"), 6);
+        options.put(messageBundle.getMessage("12months"), 12);
 
         periodTypeField.setOptionsMap(options);
         periodTypeField.setValue(1);
@@ -186,7 +202,8 @@ public class CategoriesReport extends AbstractWindow {
         if (doNotRefresh)
             return;
 
-        ds1.refresh(createDatasourceParams(from1.getValue(), to1.getValue()));
+        dl1.setParameters(createDatasourceParams(from1.getValue(), to1.getValue()));
+        dl1.load();
 
         totalField1.setEditable(true);
         totalField1.setValue(getTotalAmount(ds1));
@@ -197,7 +214,8 @@ public class CategoriesReport extends AbstractWindow {
         if (doNotRefresh)
             return;
 
-        ds2.refresh(createDatasourceParams(from2.getValue(), to2.getValue()));
+        dl2.setParameters(createDatasourceParams(from2.getValue(), to2.getValue()));
+        dl2.load();
 
         totalField2.setEditable(true);
         totalField2.setValue(getTotalAmount(ds2));
@@ -214,7 +232,7 @@ public class CategoriesReport extends AbstractWindow {
         return params;
     }
 
-    private BigDecimal getTotalAmount(CollectionDatasource<CategoryAmount, UUID> datasource) {
+    private BigDecimal getTotalAmount(CollectionContainer<CategoryAmount> datasource) {
         BigDecimal total = BigDecimal.ZERO;
         for (CategoryAmount ca : datasource.getItems()) {
             total = total.add(ca.getAmount());
@@ -226,19 +244,19 @@ public class CategoriesReport extends AbstractWindow {
         if (excludedCategories.containsKey(category))
             return;
 
-        BoxLayout box = componentsFactory.createComponent(HBoxLayout.class);
+        BoxLayout box = componentsFactory.create(HBoxLayout.class);
         box.setMargin(false, true, false, false);
 
-        Label label = componentsFactory.createComponent(Label.class);
+        Label label = componentsFactory.create(Label.class);
         label.setValue(category.getName());
-        label.setAlignment(Alignment.MIDDLE_LEFT);
+        label.setAlignment(Component.Alignment.MIDDLE_LEFT);
         box.add(label);
 
-        LinkButton button = componentsFactory.createComponent(LinkButton.class);
+        LinkButton button = componentsFactory.create(LinkButton.class);
         button.setIcon("font-icon:REMOVE");
         button.setAction(new AbstractAction("") {
             @Override
-            public void actionPerform(io.jmix.ui.component.Component component) {
+            public void actionPerform(Component component) {
                 for (Iterator<Map.Entry<Category, BoxLayout>> it = excludedCategories.entrySet().iterator(); it.hasNext(); ) {
                     Map.Entry<Category, BoxLayout> entry = it.next();
                     if (entry.getValue() == box) {
@@ -260,18 +278,56 @@ public class CategoriesReport extends AbstractWindow {
         refreshDs2();
     }
 
+    @Install(to = "dl1", target = Target.DATA_LOADER)
+    private List<CategoryAmount> dl1LoadDelegate(LoadContext<CategoryAmount> loadContext) {
+        return loadData(loadContext.getQuery().getParameters());
+    }
+
+    @Install(to = "dl2", target = Target.DATA_LOADER)
+    private List<CategoryAmount> dl2LoadDelegate(LoadContext<CategoryAmount> loadContext) {
+        return loadData(loadContext.getQuery().getParameters());
+    }
+
+    protected List<CategoryAmount> loadData(Map<String, Object> params) {
+        Date fromDate = (Date) params.get("from");
+        Date toDate = (Date) params.get("to");
+        if (fromDate == null || toDate == null || toDate.compareTo(fromDate) < 0)
+            return Collections.emptyList();
+
+        Currency currency = (Currency) params.get("currency");
+        if (currency == null)
+            Collections.emptyList();
+
+        CategoryType categoryType = (CategoryType) params.get("categoryType");
+        if (categoryType == null)
+            categoryType = CategoryType.EXPENSE;
+
+        //noinspection unchecked
+        Set<Category> excludedCategories = (Set) params.get("excludedCategories");
+        if (excludedCategories == null)
+            excludedCategories = new HashSet<>();
+        List<UUID> ids = new ArrayList<>(excludedCategories.size());
+        for (Category category : excludedCategories) {
+            ids.add(category.getId());
+        }
+
+        List<CategoryAmount> list = reportService.getTurnoverByCategories(fromDate, toDate, categoryType,
+                currency.getCode(), ids);
+        return list;
+    }
+
     private class ExcludeCategoryAction extends ItemTrackingAction {
 
         private Table table;
 
         public ExcludeCategoryAction(Table table) {
-            super(table, "excludeCategory");
+            super("excludeCategory");
             this.table = table;
         }
 
         @Override
-        public void actionPerform(io.jmix.ui.component.Component component) {
-            CategoryAmount categoryAmount = (CategoryAmount) table.getDatasource().getItem();
+        public void actionPerform(Component component) {
+            CategoryAmount categoryAmount = (CategoryAmount) table.getSingleSelected();
             if (categoryAmount != null) {
                 excludeCategory(categoryAmount.getCategory());
                 userDataService.addEntity(UserDataKeys.CAT_REP_EXCLUDED_CATEGORIES, categoryAmount.getCategory());
@@ -286,15 +342,15 @@ public class CategoriesReport extends AbstractWindow {
         private DateField to;
 
         public ShowOperationsAction(Table table, DateField from, DateField to) {
-            super(table, "showOperations");
+            super("showOperations");
             this.table = table;
             this.from = from;
             this.to = to;
         }
 
         @Override
-        public void actionPerform(io.jmix.ui.component.Component component) {
-            CategoryAmount categoryAmount = (CategoryAmount) table.getDatasource().getItem();
+        public void actionPerform(Component component) {
+            CategoryAmount categoryAmount = (CategoryAmount) table.getSingleSelected();
             if (categoryAmount != null) {
                 Map<String, Object> params = new HashMap<>();
                 params.put("category", categoryAmount.getCategory());
@@ -305,7 +361,11 @@ public class CategoriesReport extends AbstractWindow {
                 } else {
                     params.put("currency2", ((Currency) currencyField.getValue()).getCode());
                 }
-                openWindow("show-operations", WindowManager.OpenType.NEW_TAB, params);
+                screenBuilders.screen(table.getFrame().getFrameOwner())
+                        .withScreenClass(ShowOperations.class)
+                        .withOpenMode(OpenMode.NEW_TAB)
+                        .withOptions(new MapScreenOptions(params))
+                        .show();
             }
         }
     }

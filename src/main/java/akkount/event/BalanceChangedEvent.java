@@ -4,10 +4,9 @@
 
 package akkount.event;
 
-import com.haulmont.cuba.gui.events.UiEvent;
 import org.springframework.context.ApplicationEvent;
 
-public class BalanceChangedEvent extends ApplicationEvent implements UiEvent {
+public class BalanceChangedEvent extends ApplicationEvent {
 
     public BalanceChangedEvent(Object source) {
         super(source);

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        messagesPack="akkount.web.operation">
+<window xmlns="http://jmix.io/schema/ui/window">
     <data>
         <collection id="categoriesDc"
                     class="akkount.entity.Category"
-                    view="_minimal">
+                    fetchPlan="_instance_name">
             <loader>
                 <query><![CDATA[select e from akk_Category e where e.catType = 'E' order by e.name]]></query>
             </loader>
         </collection>
         <instance id="operationDc"
                   class="akkount.entity.Operation"
-                  view="operation-edit"
+                  fetchPlan="operation-edit"
                   provided="true"/>
-        <collection id="accountsDc" class="akkount.entity.Account" view="_local" provided="true"/>
+        <collection id="accountsDc" class="akkount.entity.Account" fetchPlan="_local" provided="true"/>
     </data>
     <layout>
         <gridLayout spacing="true" width="100%">
@@ -24,12 +23,12 @@
             <rows>
                 <row>
                     <label align="MIDDLE_LEFT" value="msg://account"/>
-                    <lookupPickerField dataContainer="operationDc" optionsContainer="accountsDc" property="acc1"
+                    <entityComboBox dataContainer="operationDc" optionsContainer="accountsDc" property="acc1"
                                        required="true" width="100%">
                         <actions>
-                            <action id="lookup" type="picker_lookup"/>
+                            <action id="lookup" type="entity_lookup"/>
                         </actions>
-                    </lookupPickerField>
+                    </entityComboBox>
                 </row>
                 <row>
                     <label align="MIDDLE_LEFT" value="msg://amount"/>
@@ -41,12 +40,12 @@
                 </row>
                 <row>
                     <label align="MIDDLE_LEFT" value="msg://category"/>
-                    <lookupPickerField dataContainer="operationDc" optionsContainer="categoriesDc" property="category"
+                    <entityComboBox dataContainer="operationDc" optionsContainer="categoriesDc" property="category"
                                        width="100%">
                         <actions>
-                            <action id="lookup" type="picker_lookup"/>
+                            <action id="lookup" type="entity_lookup"/>
                         </actions>
-                    </lookupPickerField>
+                    </entityComboBox>
                 </row>
                 <row>
                     <label align="MIDDLE_LEFT" value="msg://comment"/>

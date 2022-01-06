@@ -1,54 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
-        caption="msg://browseCaption"
-        class="akkount.web.operation.ShowOperations"
-        messagesPack="akkount.web.operation">
-    <dsContext>
-        <groupDatasource id="operationDs"
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://browseCaption">
+    <data>
+        <collection id="operationDs"
                          class="akkount.entity.Operation"
-                         view="operation-browse">
-            <query>
-                <![CDATA[select o from akk_Operation o order by o.opDate desc, o.createTs desc]]>
-                <filter>
-                    <and>
-                        <c>o.category = :param$category</c>
-                        <c>@dateAfter(o.opDate, :param$fromDate)</c>
-                        <c>@dateBefore(o.opDate, :param$toDate)</c>
-                        <c>o.acc1.currencyCode = :param$currency1</c>
-                        <c>o.acc2.currencyCode = :param$currency2</c>
-                    </and>
-                </filter>
-            </query>
-        </groupDatasource>
-    </dsContext>
+                         fetchPlan="operation-browse">
+            <loader>
+                <query>
+                    <![CDATA[select o from akk_Operation o order by o.opDate desc, o.createTs desc]]>
+                    <condition>
+                        <and>
+                            <c:jpql><c:where>o.category = :param$category</c:where></c:jpql>
+                            <c:jpql><c:where>@dateAfter(o.opDate, :param$fromDate)</c:where></c:jpql>
+                            <c:jpql><c:where>@dateBefore(o.opDate, :param$toDate)</c:where></c:jpql>
+                            <c:jpql><c:where>o.acc1.currencyCode = :param$currency1</c:where></c:jpql>
+                            <c:jpql><c:where>o.acc2.currencyCode = :param$currency2</c:where></c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
     <layout expand="operationTable"
             spacing="true">
         <label id="descriptionLab"/>
         <groupTable id="operationTable"
-                    width="100%">
+                    width="100%" dataContainer="operationDs">
             <actions>
                 <action id="excel" type="excelExport"/>
             </actions>
             <columns>
                 <column id="opType"/>
                 <column id="opDate">
-                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter"
-                               format="msg://opDateFormat"/>
+                    <formatter>
+                        <date format="msg://opDateFormat"/>
+                    </formatter>
                 </column>
                 <column id="acc1"/>
                 <column id="amount1">
-                    <formatter class="akkount.web.DecimalFormatter"/>
+                    <formatter>
+                        <custom bean="akk_DecimalFormatter"/>
+                    </formatter>
                 </column>
                 <column id="acc2"/>
                 <column id="amount2">
-                    <formatter class="akkount.web.DecimalFormatter"/>
+                    <formatter>
+                        <custom bean="akk_DecimalFormatter"/>
+                    </formatter>
                 </column>
                 <column id="category"/>
                 <column id="comments"/>
                 <column id="createdBy"/>
             </columns>
-            <rows datasource="operationDs"/>
-            <rowsCount/>
+            <simplePagination/>
             <buttonsPanel>
                 <button action="operationTable.excel"/>
             </buttonsPanel>
