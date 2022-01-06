@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<services xmlns="http://jmix.io/schema/rest/services-v2">
+<services xmlns="http://jmix.io/schema/rest/services">
 
     <service name="akk_BalanceService">
         <method name="getBalanceData">
@@ -11,8 +11,6 @@
         <method name="getLastAccount">
             <param name="opType"/>
         </method>
-
-        <method name="getBalance"/>
     </service>
 
 </services>
