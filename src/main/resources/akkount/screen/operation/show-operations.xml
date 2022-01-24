@@ -6,16 +6,16 @@
         <collection id="operationDs"
                          class="akkount.entity.Operation"
                          fetchPlan="operation-browse">
-            <loader>
+            <loader id="operationsDl">
                 <query>
                     <![CDATA[select o from akk_Operation o order by o.opDate desc, o.createTs desc]]>
                     <condition>
                         <and>
-                            <c:jpql><c:where>o.category = :param$category</c:where></c:jpql>
-                            <c:jpql><c:where>@dateAfter(o.opDate, :param$fromDate)</c:where></c:jpql>
-                            <c:jpql><c:where>@dateBefore(o.opDate, :param$toDate)</c:where></c:jpql>
-                            <c:jpql><c:where>o.acc1.currencyCode = :param$currency1</c:where></c:jpql>
-                            <c:jpql><c:where>o.acc2.currencyCode = :param$currency2</c:where></c:jpql>
+                            <c:jpql><c:where>o.category = :category</c:where></c:jpql>
+                            <c:jpql><c:where>@dateAfter(o.opDate, :fromDate)</c:where></c:jpql>
+                            <c:jpql><c:where>@dateBefore(o.opDate, :toDate)</c:where></c:jpql>
+                            <c:jpql><c:where>o.acc1.currencyCode = :currency1</c:where></c:jpql>
+                            <c:jpql><c:where>o.acc2.currencyCode = :currency2</c:where></c:jpql>
                         </and>
                     </condition>
                 </query>

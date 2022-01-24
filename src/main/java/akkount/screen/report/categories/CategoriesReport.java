@@ -4,10 +4,10 @@ import akkount.entity.Category;
 import akkount.entity.CategoryAmount;
 import akkount.entity.CategoryType;
 import akkount.entity.Currency;
+import akkount.screen.operation.ShowOperations;
 import akkount.service.ReportService;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
-import akkount.screen.operation.ShowOperations;
 import io.jmix.core.LoadContext;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.UiComponents;
@@ -338,8 +338,8 @@ public class CategoriesReport extends Screen {
     private class ShowOperationsAction extends ItemTrackingAction {
 
         private Table table;
-        private DateField from;
-        private DateField to;
+        private DateField<Date> from;
+        private DateField<Date> to;
 
         public ShowOperationsAction(Table table, DateField from, DateField to) {
             super("showOperations");
@@ -352,20 +352,17 @@ public class CategoriesReport extends Screen {
         public void actionPerform(Component component) {
             CategoryAmount categoryAmount = (CategoryAmount) table.getSingleSelected();
             if (categoryAmount != null) {
-                Map<String, Object> params = new HashMap<>();
-                params.put("category", categoryAmount.getCategory());
-                params.put("fromDate", from.getValue());
-                params.put("toDate", to.getValue());
-                if (categoryAmount.getCategory().getCatType() == CategoryType.EXPENSE) {
-                    params.put("currency1", ((Currency) currencyField.getValue()).getCode());
-                } else {
-                    params.put("currency2", ((Currency) currencyField.getValue()).getCode());
-                }
-                screenBuilders.screen(table.getFrame().getFrameOwner())
+                ShowOperations showOperationsScreen = screenBuilders.screen(table.getFrame().getFrameOwner())
                         .withScreenClass(ShowOperations.class)
                         .withOpenMode(OpenMode.NEW_TAB)
-                        .withOptions(new MapScreenOptions(params))
-                        .show();
+                        .build();
+                showOperationsScreen.setParams(new ShowOperations.Params(
+                        categoryAmount.getCategory(),
+                        from.getValue(),
+                        to.getValue(),
+                        currencyField.getValue().getCode()
+                ));
+                showOperationsScreen.show();
             }
         }
     }

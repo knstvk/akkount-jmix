@@ -20,8 +20,8 @@ public interface ParentsRole extends
     @SpecificPolicy(resources = "get-balance")
     void balance();
 
-    @ScreenPolicy(screenIds = "akk_PreferencesScreen")
-    @MenuPolicy(menuIds = {"akk_PreferencesScreen"})
+    @ScreenPolicy(screenIds = {"akk_PreferencesScreen", "ShowOperations"}, screenClasses = {})
+    @MenuPolicy(menuIds = "akk_PreferencesScreen")
     void screens();
 
 

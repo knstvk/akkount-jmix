@@ -9,6 +9,7 @@
               <entry key="main">
                 <value>
                   <DataStoreSettings>
+                    <option name="generateDdlType" value="CREATE_AND_UPDATE" />
                     <option name="supportedTypes">
                       <option value="hsql" />
                     </option>
