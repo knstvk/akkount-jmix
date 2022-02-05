@@ -7,10 +7,10 @@ import io.jmix.securityui.role.annotation.ScreenPolicy;
 @ResourceRole(name = "Reports Read", code = "reports-read")
 public interface ReportsReadRole {
 
-    @MenuPolicy(menuIds = {"application"})
+    @MenuPolicy(menuIds = "application")
     void commonMenu();
 
-    @ScreenPolicy(screenIds = {"categories-report", "show-operations"})
+    @ScreenPolicy(screenIds = {"categories-report", "ShowOperations"})
     @MenuPolicy(menuIds = {"categories-report"})
     void categoriesReport();
 }
