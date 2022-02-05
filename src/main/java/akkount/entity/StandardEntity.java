@@ -43,7 +43,7 @@ public abstract class StandardEntity {
     @Column(name = "VERSION", nullable = false)
     protected Integer version;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @Column(name = "CREATE_TS")
     protected Date createTs;
@@ -52,7 +52,7 @@ public abstract class StandardEntity {
     @Column(name = "CREATED_BY", length = 50)
     protected String createdBy;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "UPDATE_TS")
     protected Date updateTs;
@@ -61,7 +61,7 @@ public abstract class StandardEntity {
     @Column(name = "UPDATED_BY", length = 50)
     protected String updatedBy;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @DeletedDate
     @Column(name = "DELETE_TS")
     protected Date deleteTs;
