@@ -2,9 +2,11 @@ package akkount;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -14,7 +16,7 @@ import javax.sql.DataSource;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class AkkountApplication {
+public class AkkountApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AkkountApplication.class, args);
@@ -22,9 +24,16 @@ public class AkkountApplication {
 
 	@Bean
 	@Primary
-	@ConfigurationProperties(prefix="main.datasource")
-	DataSource dataSource() {
-		return DataSourceBuilder.create().build();
+	@ConfigurationProperties("main.datasource")
+	DataSourceProperties dataSourceProperties() {
+		return new DataSourceProperties();
+	}
+
+	@Bean
+	@Primary
+	@ConfigurationProperties("main.datasource.hikari")
+	DataSource dataSource(DataSourceProperties dataSourceProperties) {
+		return dataSourceProperties.initializeDataSourceBuilder().build();
 	}
 
 	@Bean
