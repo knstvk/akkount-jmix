@@ -1,4 +1,4 @@
-window.akkount_web_operation_CalcExtension = function() {
+window.akkount_screen_operation_CalcExtension = function() {
     var connectorId = this.getParentId();
     var input = $(this.getElement(connectorId));
     input.on("keypress", function(event) {
