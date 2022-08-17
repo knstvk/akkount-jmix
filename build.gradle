@@ -67,3 +67,4 @@ task copyWebApp(type: Copy) {
 
 copyWebApp.dependsOn(yarn_build)
 bootJar.dependsOn(copyWebApp)
+bootWar.dependsOn(copyWebApp)
