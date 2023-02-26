@@ -9,12 +9,12 @@ import io.jmix.core.usersubstitution.CurrentUserSubstitution;
 import io.jmix.security.authentication.JmixUserDetails;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -32,10 +32,10 @@ public class UserDataWorker {
     @PersistenceContext
     protected EntityManager entityManager;
 
-    @Inject
+    @Autowired
     protected CurrentUserSubstitution currentUserSubstitution;
 
-    @Inject
+    @Autowired
     private Metadata metadata;
 
     @Nullable

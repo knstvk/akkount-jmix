@@ -2,9 +2,9 @@ package akkount.service;
 
 import akkount.entity.Account;
 import io.jmix.core.DataManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Service(BalanceService.NAME)
 public class BalanceServiceBean implements BalanceService {
 
-    @Inject
+    @Autowired
     protected BalanceWorker balanceWorker;
-    @Inject
+    @Autowired
     private DataManager dataManager;
 
     @Override
