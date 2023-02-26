@@ -1,6 +1,10 @@
 package akkount;
 
 import com.google.common.base.Strings;
+import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.theme.Theme;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +19,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
 
+@Push
+@Theme(value = "akkount")
+@PWA(name = "Akkount", shortName = "Akkount")
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class AkkountApplication extends SpringBootServletInitializer {
+public class AkkountApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
 	@Autowired
 	private Environment environment;
@@ -43,16 +48,6 @@ public class AkkountApplication extends SpringBootServletInitializer {
 	@ConfigurationProperties("main.datasource.hikari")
 	DataSource dataSource(DataSourceProperties dataSourceProperties) {
 		return dataSourceProperties.initializeDataSourceBuilder().build();
-	}
-
-	@Bean
-	public WebMvcConfigurer forwardFrontendToIndex() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addViewControllers(ViewControllerRegistry registry) {
-				registry.addRedirectViewController("/front", "/front/index.html");
-			}
-		};
 	}
 
 	@EventListener
