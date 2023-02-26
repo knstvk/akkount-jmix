@@ -2,7 +2,7 @@
 <menu-config xmlns="http://jmix.io/schema/flowui/menu">
 
     <menu id="application" title="msg://akkount/menu.application.title" opened="true">
-        <item view="User.list" title="msg://akkount.view.user/UserListView.title"/>
+        <item view="akk_User.list" title="msg://akkount.view.user/UserListView.title"/>
     </menu>
 
 </menu-config>

@@ -8,7 +8,7 @@
             <fetchPlan extends="_base"/>
             <loader id="usersDl">
                 <query>
-                    <![CDATA[select e from User e order by e.username]]>
+                    <![CDATA[select e from akk_User e order by e.username]]>
                 </query>
             </loader>
         </collection>
@@ -54,8 +54,7 @@
                 <column property="firstName"/>
                 <column property="lastName"/>
                 <column property="email"/>
-                <column property="timeZoneId"/>
-                <column property="active"/>
+                <column property="enabled"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

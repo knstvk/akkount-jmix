@@ -30,8 +30,7 @@
             <textField id="firstNameField" property="firstName"/>
             <textField id="lastNameField" property="lastName"/>
             <textField id="emailField" property="email"/>
-            <comboBox id="timeZoneField" property="timeZoneId"/>
-            <checkbox id="activeField" property="active"/>
+            <checkbox id="enabledField" property="enabled"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

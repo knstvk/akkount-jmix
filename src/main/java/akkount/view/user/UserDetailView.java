@@ -2,7 +2,6 @@ package akkount.view.user;
 
 import akkount.entity.User;
 import akkount.view.main.MainView;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.EntityStates;
@@ -11,12 +10,10 @@ import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
 
 @Route(value = "users/:id", layout = MainView.class)
-@ViewController("User.detail")
+@ViewController("akk_User.detail")
 @ViewDescriptor("user-detail-view.xml")
 @EditedEntityContainer("userDc")
 public class UserDetailView extends StandardDetailView<User> {
@@ -27,8 +24,6 @@ public class UserDetailView extends StandardDetailView<User> {
     private PasswordField passwordField;
     @ViewComponent
     private PasswordField confirmPasswordField;
-    @ViewComponent
-    private ComboBox<String> timeZoneField;
 
     @Autowired
     private EntityStates entityStates;
@@ -39,7 +34,6 @@ public class UserDetailView extends StandardDetailView<User> {
 
     @Subscribe
     public void onInit(InitEvent event) {
-        timeZoneField.setItems(List.of(TimeZone.getAvailableIDs()));
     }
 
     @Subscribe

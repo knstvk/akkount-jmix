@@ -6,7 +6,9 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 import javax.persistence.*;
 
 @JmixEntity
-@Table(name = "AKK_ACCOUNT")
+@Table(name = "AKK_ACCOUNT", uniqueConstraints = {
+        @UniqueConstraint(name = "IDX_ACCOUNT_UNQ_NAME", columnNames = {"NAME"})
+})
 @Entity(name = "akk_Account")
 public class Account extends StandardEntity {
 
@@ -18,7 +20,7 @@ public class Account extends StandardEntity {
     protected String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "CURRENCY_ID")
+    @JoinColumn(name = "CURRENCY_ID", nullable = false)
     protected Currency currency;
 
     @Column(name = "CURRENCY_CODE", nullable = false, length = 3)
