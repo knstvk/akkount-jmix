@@ -52,7 +52,7 @@ The resulting JAR will be created in `build/libs` directory.
 Run the application:
 
 ```
-java -jar akkount-0.4-SNAPSHOT.jar
+java -jar akkount-0.5.jar
 ```
 
 You can also use the Bash scripts located in `etc` to start and stop the application.

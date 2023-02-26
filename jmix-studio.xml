@@ -4,16 +4,17 @@
     <moduleSettings>
       <entry key="akkount.main">
         <ModuleSettings>
-          <option name="dataStoreOptions">
+          <option name="dataStoreOptionsV2">
             <map>
               <entry key="main">
                 <value>
-                  <DataStoreSettings>
+                  <DataStoreSettingsV2>
                     <option name="generateDdlType" value="CREATE_AND_UPDATE" />
+                    <option name="nameLengthMode" value="ORACLE" />
                     <option name="supportedTypes">
                       <option value="hsql" />
                     </option>
-                  </DataStoreSettings>
+                  </DataStoreSettingsV2>
                 </value>
               </entry>
             </map>
