@@ -32,6 +32,7 @@
             <button id="editBtn" action="accountsTable.edit"/>
             <button id="removeBtn" action="accountsTable.remove"/>
             <simplePagination id="pagination" dataLoader="accountsDl"/>
+            <button id="generateSampleDataBtn" text="Generate sample data"/>
         </hbox>
         <dataGrid id="accountsTable"
                   width="100%"
