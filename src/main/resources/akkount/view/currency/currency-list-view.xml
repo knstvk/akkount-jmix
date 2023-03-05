@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://currencyListView.title"
+      focusComponent="currenciesTable">
+    <data readOnly="true">
+        <collection id="currenciesDc"
+                    class="akkount.entity.Currency">
+            <fetchPlan extends="_base"/>
+            <loader id="currenciesDl">
+                <query>
+                    <![CDATA[select e from akk_Currency e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <queryParameters>
+            <pagination component="pagination"/>
+        </queryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="currenciesTable.create"/>
+            <button id="editBtn" action="currenciesTable.edit"/>
+            <button id="removeBtn" action="currenciesTable.remove"/>
+            <simplePagination id="pagination" dataLoader="currenciesDl"/>
+        </hbox>
+        <dataGrid id="currenciesTable"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="currenciesDc" columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column property="code"/>
+                <column property="name"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

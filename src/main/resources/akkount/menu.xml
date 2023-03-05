@@ -3,6 +3,9 @@
 
     <menu id="application" title="msg://akkount/menu.application.title" opened="true">
         <item view="akk_User.list" title="msg://akkount.view.user/UserListView.title"/>
+        <item view="akk_Currency.list" title="msg://akkount.view.currency/currencyListView.title"/>
+        <item view="akk_Account.list" title="msg://akkount.view.account/accountListView.title"/>
+        <item view="akk_Category.list" title="msg://akkount.view.category/categoryListView.title"/>
     </menu>
 
 </menu-config>
