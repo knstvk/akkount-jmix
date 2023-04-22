@@ -36,6 +36,7 @@
         <dataLoadCoordinator auto="true"/>
         <queryParameters id="queryParameters">
             <pagination component="pagination"/>
+            <genericFilter component="genericFilter"/>
         </queryParameters>
     </facets>
     <actions>
@@ -43,8 +44,8 @@
         <action id="discardAction" type="lookup_discard"/>
     </actions>
     <layout>
-        <radioButtonGroup id="filterSelector"/>
         <hbox id="simpleFilterBox">
+            <label text="Filter by"/>
             <entityComboBox id="accFilterField" itemsContainer="accountsDc" metaClass="akk_Account"
                             placeholder="Account">
                 <actions>
@@ -58,7 +59,7 @@
                 </actions>
             </entityComboBox>
         </hbox>
-        <genericFilter dataLoader="operationsDl" summaryText="Generic filter" visible="false" id="genericFilter"/>
+        <genericFilter dataLoader="operationsDl" summaryText="Generic filter" id="genericFilter" opened="false"/>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button id="createBtn" action="operationsTable.create"/>
             <button id="editBtn" action="operationsTable.edit"/>

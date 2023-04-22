@@ -4,18 +4,16 @@ import akkount.entity.Account;
 import akkount.entity.Category;
 import akkount.entity.Operation;
 import akkount.view.main.MainView;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteConfiguration;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.component.combobox.EntityComboBox;
-import io.jmix.flowui.component.genericfilter.Configuration;
 import io.jmix.flowui.component.genericfilter.GenericFilter;
-import io.jmix.flowui.component.radiobuttongroup.JmixRadioButtonGroup;
+import io.jmix.flowui.facet.QueryParametersFacet;
+import io.jmix.flowui.facet.queryparameters.AbstractQueryParametersBinder;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,9 @@ import java.util.*;
 @DialogMode(width = "50em", height = "37.5em")
 public class OperationListView extends StandardListView<Operation> {
 
-    public static final String ACCOUNT_URL_PARAM = "account";
-    public static final String CATEGORY_URL_PARAM = "category";
-
-    private static final String[] FILTER_OPTIONS = {"Simple filter", "Generic filter"};
+    private static final String ACCOUNT_URL_PARAM = "account";
+    private static final String CATEGORY_URL_PARAM = "category";
+    private static final String FILTER_OPENED_URL_PARAM = "filterOpened";
 
     @Autowired
     private DataManager dataManager;
@@ -47,52 +44,19 @@ public class OperationListView extends StandardListView<Operation> {
     @ViewComponent
     private GenericFilter genericFilter;
     @ViewComponent
-    private JmixRadioButtonGroup<String> filterSelector;
-    @ViewComponent
-    private HorizontalLayout simpleFilterBox;
+    private QueryParametersFacet queryParameters;
 
     private boolean entering;
 
     @Subscribe
     public void onInit(InitEvent event) {
-        filterSelector.setItems(Arrays.asList(FILTER_OPTIONS));
-        filterSelector.setValue(FILTER_OPTIONS[0]);
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        Account account = null;
-        Category category = null;
-
-        QueryParameters queryParameters = event.getLocation().getQueryParameters();
-
-        List<String> accounts = queryParameters.getParameters().get(ACCOUNT_URL_PARAM);
-        if (accounts != null) {
-            String accountIdStr = accounts.get(0);
-            account = dataManager.load(Account.class).id(UUID.fromString(accountIdStr)).optional().orElse(null);
-        }
-
-        List<String> categories = queryParameters.getParameters().get(CATEGORY_URL_PARAM);
-        if (categories != null) {
-            String categoryIdStr = categories.get(0);
-            category = dataManager.load(Category.class).id(UUID.fromString(categoryIdStr)).optional().orElse(null);
-        }
-
-        setFilterOnOperationsDl(account, category);
-
-        entering = true;
-        accFilterField.setValue(account);
-        categoryFilterField.setValue(category);
-        entering = false;
-
-        super.beforeEnter(event);
+        queryParameters.registerBinder(new SimpleFilterBinder());
     }
 
     @Subscribe("accFilterField")
     public void onAccFilterFieldComponentValueChange(AbstractField.ComponentValueChangeEvent<EntityComboBox<Account>, Account> event) {
         if (!entering) {
             reload();
-            updateUrl();
         }
     }
 
@@ -100,33 +64,7 @@ public class OperationListView extends StandardListView<Operation> {
     public void onCategoryFilterFieldComponentValueChange(AbstractField.ComponentValueChangeEvent<EntityComboBox<Account>, Account> event) {
         if (!entering) {
             reload();
-            updateUrl();
         }
-    }
-
-    private void updateUrl() {
-        Account account = accFilterField.getValue();
-        Category category = categoryFilterField.getValue();
-
-        String originalUrl = RouteConfiguration.forSessionScope().getUrl(getClass());
-
-        var map = new HashMap<String, String>();
-        if (account != null)
-            map.put("account", account.getId().toString());
-        if (category != null)
-            map.put("category", category.getId().toString());
-
-        if (map.isEmpty()) {
-            replaceUrl(originalUrl);
-        } else {
-            String queryString = QueryParameters.simple(map).getQueryString();
-            replaceUrl(originalUrl + "?" + queryString);
-        }
-    }
-
-    private void replaceUrl(String url) {
-        getUI().ifPresent(ui ->
-                ui.getPage().getHistory().replaceState(null, url));
     }
 
     private void reload() {
@@ -164,25 +102,59 @@ public class OperationListView extends StandardListView<Operation> {
                 QueryParameters.of(OperationDetailView.ACCOUNT_URL_PARAM, account.getId().toString());
     }
 
-    @Subscribe("filterSelector")
-    public void onFilterSelectorComponentValueChange(AbstractField.ComponentValueChangeEvent<JmixRadioButtonGroup, Object> event) {
-        if (FILTER_OPTIONS[0].equals(filterSelector.getValue())) {
-            simpleFilterBox.setVisible(true);
+    private class SimpleFilterBinder extends AbstractQueryParametersBinder {
 
-            // TODO is there a simpler way to reset the filter?
-            Configuration configuration = genericFilter.getEmptyConfiguration();
-            configuration.getRootLogicalFilterComponent().removeAll();
-            configuration.setModified(false);
-            genericFilter.setCurrentConfiguration(configuration);
-            genericFilter.apply();
+        public SimpleFilterBinder() {
+            genericFilter.addOpenedChangeListener(event -> {
+                boolean opened = event.isOpened();
+                QueryParameters qp = new QueryParameters(ImmutableMap.of(FILTER_OPENED_URL_PARAM,
+                        opened ? Collections.singletonList("1") : Collections.emptyList()));
+                fireQueryParametersChanged(new QueryParametersFacet.QueryParametersChangeEvent(this, qp));
+            });
+            accFilterField.addValueChangeListener(event -> {
+                Account account = event.getValue();
+                QueryParameters qp = new QueryParameters(ImmutableMap.of(ACCOUNT_URL_PARAM,
+                        account == null ? Collections.emptyList() : Collections.singletonList(account.getId().toString())));
+                fireQueryParametersChanged(new QueryParametersFacet.QueryParametersChangeEvent(this, qp));
+            });
+            categoryFilterField.addValueChangeListener(event -> {
+                Category category = event.getValue();
+                QueryParameters qp = new QueryParameters(ImmutableMap.of(CATEGORY_URL_PARAM,
+                        category == null ? Collections.emptyList() : Collections.singletonList(category.getId().toString())));
+                fireQueryParametersChanged(new QueryParametersFacet.QueryParametersChangeEvent(this, qp));
+            });
+        }
 
-            genericFilter.setVisible(false);
-        } else {
-            simpleFilterBox.setVisible(false);
-            accFilterField.setValue(null);
-            categoryFilterField.setValue(null);
+        @Override
+        public void updateState(QueryParameters queryParameters) {
+            List<String> strings = queryParameters.getParameters().get(FILTER_OPENED_URL_PARAM);
+            if (strings != null) {
+                genericFilter.setOpened("1".equals(strings.get(0)));
+            }
 
-            genericFilter.setVisible(true);
+            Account account = null;
+            Category category = null;
+
+            List<String> accounts = queryParameters.getParameters().get(ACCOUNT_URL_PARAM);
+            if (accounts != null) {
+                String accountIdStr = accounts.get(0);
+                if (!Strings.isNullOrEmpty(accountIdStr))
+                    account = dataManager.load(Account.class).id(UUID.fromString(accountIdStr)).optional().orElse(null);
+            }
+
+            List<String> categories = queryParameters.getParameters().get(CATEGORY_URL_PARAM);
+            if (categories != null) {
+                String categoryIdStr = categories.get(0);
+                if (!Strings.isNullOrEmpty(categoryIdStr))
+                    category = dataManager.load(Category.class).id(UUID.fromString(categoryIdStr)).optional().orElse(null);
+            }
+
+            setFilterOnOperationsDl(account, category);
+
+            entering = true;
+            accFilterField.setValue(account);
+            categoryFilterField.setValue(category);
+            entering = false;
         }
     }
 }
