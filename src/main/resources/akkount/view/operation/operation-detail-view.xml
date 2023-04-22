@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://operationDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="operationDc"
+                  class="akkount.entity.Operation">
+            <fetchPlan extends="_base">
+                <property name="acc1" fetchPlan="_instance_name"/>
+                <property name="acc2" fetchPlan="_instance_name"/>
+                <property name="category" fetchPlan="_instance_name"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection class="akkount.entity.Account" id="accountsDc">
+            <fetchPlan extends="_base"/>
+            <loader id="accountsDl">
+                <query>
+                    <![CDATA[select e from akk_Account e
+                    order by e.name asc]]>
+                </query>
+            </loader>
+        </collection>
+        <collection class="akkount.entity.Category" id="categoriesDc">
+            <fetchPlan extends="_base"/>
+            <loader id="categoriesDl">
+                <query>
+                    <![CDATA[select e from akk_Category e
+                    where e.catType = :catType
+                    order by e.name asc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <datePicker id="opDateField" property="opDate" dataContainer="operationDc"/>
+        <tabs id="typeTabs">
+            <tab id="expenseTab" label="Expense"/>
+            <tab id="incomeTab" label="Income"/>
+            <tab id="transferTab" label="Transfer"/>
+        </tabs>
+        <formLayout id="form" dataContainer="operationDc">
+            <entityComboBox id="acc1Field" property="acc1" itemsContainer="accountsDc"/>
+            <textField id="amount1Field" property="amount1"/>
+            <entityComboBox id="acc2Field" property="acc2" itemsContainer="accountsDc"/>
+            <textField id="amount2Field" property="amount2"/>
+            <entityComboBox id="categoryField" property="category" itemsContainer="categoriesDc"/>
+            <textArea id="commentsField" property="comments"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>
