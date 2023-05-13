@@ -18,12 +18,14 @@
             <section id="section" classNames="jmix-main-view-section">
                 <h2 id="applicationTitle"
                     text="msg://applicationTitle.text"
-                    classNames="jmix-main-view-application-title"/>
+                    classNames="jmix-main-view-application-title">
+                </h2>
                 <nav id="navigation"
                      classNames="jmix-main-view-navigation"
                      ariaLabel="msg://navigation.ariaLabel">
                     <listMenu id="menu"/>
                 </nav>
+                <details id="balanceDetails" summaryText="Balance" classNames="balance-details"/>
                 <footer id="footer" classNames="jmix-main-view-footer">
                     <userIndicator id="userIndicator"/>
                     <button id="logoutButton"
