@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://jmix.io/schema/flowui/menu">
 
-    <menu id="application" title="msg://akkount/menu.application.title" opened="true">
-        <item view="akk_User.list" title="msg://akkount.view.user/UserListView.title"/>
-        <item view="akk_Currency.list" title="msg://akkount.view.currency/currencyListView.title"/>
+    <menu opened="true" id="application" title="msg://akkount/menu.application.title">
+        <item view="akk_Operation.list" title="msg://akkount.view.operation/operationListView.title"/>
         <item view="akk_Account.list" title="msg://akkount.view.account/accountListView.title"/>
         <item view="akk_Category.list" title="msg://akkount.view.category/categoryListView.title"/>
-        <item view="akk_Operation.list" title="msg://akkount.view.operation/operationListView.title"/>
+        <item view="akk_Currency.list" title="msg://akkount.view.currency/currencyListView.title"/>
     </menu>
-
+    <menu id="administration" description="msg://akkount/menu_config.administration.description"
+          title="msg://akkount/menu_config.administration.title">
+        <item view="akk_User.list" title="msg://akkount.view.user/UserListView.title"/>
+        <item view="sec_ResourceRoleModel.list"
+              title="msg://io.jmix.securityflowui.view.resourcerole/resourceRoleModelListView.menu"/>
+        <item view="sec_RowLevelRoleModel.list"
+              title="msg://io.jmix.securityflowui.view.rowlevelrole/rowLevelRoleModelListView.menu"/>
+        <item view="datatl_entityInspectorListView"
+              title="msg://io.jmix.datatoolsflowui.view.entityinspector/listTitle"/>
+        <item view="sys_LockInfo.list"
+              title="msg://io.jmix.flowui.app.pessimisticlocking/pessimisticLockListView.menu"/>
+    </menu>
 </menu-config>
