@@ -9,6 +9,7 @@ import io.jmix.core.Id;
 import io.jmix.core.Metadata;
 import io.jmix.core.event.AttributeChanges;
 import io.jmix.core.event.EntityChangedEvent;
+import io.jmix.flowui.UiEventPublisher;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,8 @@ public class OperationWorker {
     @Autowired
     private UserDataWorker userDataWorker;
 
-//    @Autowired
-//    private UiEventPublisher uiEventPublisher;
+    @Autowired
+    private UiEventPublisher uiEventPublisher;
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -90,7 +91,7 @@ public class OperationWorker {
             TransactionTemplate transactionTemplate = new TransactionTemplate(
                     transactionManager, new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
             transactionTemplate.executeWithoutResult(transactionStatus -> {
-//                uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
+                uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
             });
         }
     }
