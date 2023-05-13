@@ -1,8 +1,0 @@
-@import "akkount-defaults";
-@import "addons";
-@import "akkount";
-
-.akkount {
-  @include addons;
-  @include akkount;
-}
