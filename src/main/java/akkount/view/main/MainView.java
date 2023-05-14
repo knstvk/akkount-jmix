@@ -4,12 +4,16 @@ import akkount.event.BalanceChangedEvent;
 import akkount.service.BalanceData;
 import akkount.service.BalanceService;
 import akkount.view.DecimalFormatter;
+import akkount.view.preferences.PreferencesView;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.TimeSource;
 import io.jmix.flowui.UiComponents;
+import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.app.main.StandardMainView;
 import io.jmix.flowui.component.details.JmixDetails;
 import io.jmix.flowui.view.Subscribe;
@@ -42,6 +46,8 @@ public class MainView extends StandardMainView {
     private UiComponents uiComponents;
     @Autowired
     private DecimalFormatter decimalFormatter;
+    @Autowired
+    private ViewNavigators viewNavigators;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -124,5 +130,10 @@ public class MainView extends StandardMainView {
         }
 
         return groupDiv;
+    }
+
+    @Subscribe("preferencesBtn")
+    public void onPreferencesBtnClick(ClickEvent<Button> event) {
+        viewNavigators.view(PreferencesView.class).navigate();
     }
 }

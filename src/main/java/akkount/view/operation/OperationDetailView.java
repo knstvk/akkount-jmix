@@ -88,6 +88,8 @@ public class OperationDetailView extends StandardDetailView<Operation> {
 
     @Subscribe
     public void onReady(ReadyEvent event) {
+        setShowSaveNotification(false);
+
         Operation operation = getEditedEntity();
         OperationType opType = operation.getOpType();
         if (!entityStates.isNew(operation)) {

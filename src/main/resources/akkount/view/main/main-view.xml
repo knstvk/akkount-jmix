@@ -28,6 +28,7 @@
                 <details id="balanceDetails" summaryText="Balance" classNames="balance-details"/>
                 <footer id="footer" classNames="jmix-main-view-footer">
                     <userIndicator id="userIndicator"/>
+                    <button id="preferencesBtn" icon="SLIDERS"/>
                     <button id="logoutButton"
                             action="logout"
                             classNames="jmix-logout-button"/>

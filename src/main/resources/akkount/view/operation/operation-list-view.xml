@@ -44,7 +44,7 @@
         <action id="discardAction" type="lookup_discard"/>
     </actions>
     <layout>
-        <hbox id="simpleFilterBox">
+        <hbox id="simpleFilterBox" alignItems="BASELINE">
             <label text="Filter by"/>
             <entityComboBox id="accFilterField" itemsContainer="accountsDc" metaClass="akk_Account"
                             placeholder="Account">
