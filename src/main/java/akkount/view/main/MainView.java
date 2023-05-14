@@ -7,7 +7,9 @@ import akkount.view.DecimalFormatter;
 import akkount.view.preferences.PreferencesView;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.router.Route;
@@ -15,7 +17,6 @@ import io.jmix.core.TimeSource;
 import io.jmix.flowui.UiComponents;
 import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.app.main.StandardMainView;
-import io.jmix.flowui.component.details.JmixDetails;
 import io.jmix.flowui.view.Subscribe;
 import io.jmix.flowui.view.ViewComponent;
 import io.jmix.flowui.view.ViewController;
@@ -36,7 +37,7 @@ public class MainView extends StandardMainView {
     private static final Logger log = LoggerFactory.getLogger(MainView.class);
 
     @ViewComponent
-    private JmixDetails balanceDetails;
+    private VerticalLayout balanceGroupsBox;
 
     @Autowired
     private BalanceService balanceService;
@@ -58,32 +59,33 @@ public class MainView extends StandardMainView {
     public void refreshBalance() {
         log.info("Refreshing balance");
 
+        balanceGroupsBox.removeAll();
+
         Date currentDate = timeSource.currentTimestamp();
 
         List<BalanceData> balanceDataList = balanceService.getBalanceData(currentDate);
-
-        Div balanceDiv = uiComponents.create(Div.class);
-        balanceDiv.setClassName("balance-container");
 
         if (!balanceDataList.isEmpty()) {
             for (int i = 0; i < balanceDataList.size(); i++) {
                 BalanceData balanceData = balanceDataList.get(i);
                 Div groupDiv = createBalanceGroup(balanceData);
 
-                balanceDiv.add(groupDiv);
+                Details details = uiComponents.create(Details.class);
+                details.setClassName("balance-details");
+                details.setSummaryText("Balance" + (balanceDataList.size() > 1 ? " [" + (i+1) + "]" : ""));
+                details.setContent(groupDiv);
+                if (i == 0)
+                    details.setOpened(true);
 
-                if (i < balanceDataList.size() - 1) {
-                    balanceDiv.getElement().appendChild(ElementFactory.createHr());
-                }
+                balanceGroupsBox.add(details);
             }
         }
 
-        balanceDetails.setContent(balanceDiv);
-        balanceDetails.setOpened(true);
     }
 
     private Div createBalanceGroup(BalanceData balanceData) {
         Div groupDiv = uiComponents.create(Div.class);
+        groupDiv.setClassName("balance-container");
 
         for (BalanceData.AccountBalance balance : balanceData.accounts) {
             Element div = ElementFactory.createDiv();

@@ -5,7 +5,7 @@
         <action id="logout" type="logout"/>
     </actions>
     <appLayout>
-        <navigationBar>
+        <navigationBar touchOptimized="false">
             <header id="header" classNames="jmix-main-view-header">
                 <drawerToggle id="drawerToggle"
                               classNames="jmix-main-view-drawer-toggle"
@@ -25,7 +25,7 @@
                      ariaLabel="msg://navigation.ariaLabel">
                     <listMenu id="menu"/>
                 </nav>
-                <details id="balanceDetails" summaryText="Balance" classNames="balance-details"/>
+                <vbox id="balanceGroupsBox" classNames="balance-box" spacing="false"/>
                 <footer id="footer" classNames="jmix-main-view-footer">
                     <userIndicator id="userIndicator"/>
                     <button id="preferencesBtn" icon="SLIDERS"/>

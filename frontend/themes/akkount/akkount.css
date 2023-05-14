@@ -1,7 +1,6 @@
 /* Define your styles here */
 
-.balance-details {
-    padding: 16px;
+.balance-box {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-color: var(--lumo-contrast-10pct);
