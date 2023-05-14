@@ -1,16 +1,10 @@
 package akkount.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import io.jmix.core.metamodel.annotation.JmixEntity;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import io.jmix.core.metamodel.annotation.JmixEntity;
 
 @JmixEntity
 @Table(name = "AKK_BALANCE")
@@ -22,10 +16,10 @@ public class Balance extends StandardEntity {
     protected Date balanceDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ACCOUNT_ID")
+    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     protected Account account;
 
-    @Column(name = "AMOUNT")
+    @Column(name = "AMOUNT", precision = 19, scale = 2)
     protected BigDecimal amount = BigDecimal.ZERO;
 
     public void setBalanceDate(Date balanceDate) {

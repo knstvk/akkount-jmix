@@ -26,10 +26,10 @@ public class Operation extends StandardEntity {
     @JoinColumn(name = "ACC2_ID")
     protected Account acc2;
 
-    @Column(name = "AMOUNT1")
+    @Column(name = "AMOUNT1", precision = 19, scale = 2)
     protected BigDecimal amount1;// = BigDecimal.ZERO;
 
-    @Column(name = "AMOUNT2")
+    @Column(name = "AMOUNT2", precision = 19, scale = 2)
     protected BigDecimal amount2;// = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY)

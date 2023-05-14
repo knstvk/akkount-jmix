@@ -53,7 +53,7 @@
             <column name="ACCOUNT_ID" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <column name="AMOUNT" type="DECIMAL"/>
+            <column name="AMOUNT" type="DECIMAL(19, 2)"/>
         </createTable>
     </changeSet>
     <changeSet id="3" author="akkount">
@@ -121,8 +121,8 @@
             </column>
             <column name="ACC1_ID" type="UUID"/>
             <column name="ACC2_ID" type="UUID"/>
-            <column name="AMOUNT1" type="DECIMAL"/>
-            <column name="AMOUNT2" type="DECIMAL"/>
+            <column name="AMOUNT1" type="DECIMAL(19, 2)"/>
+            <column name="AMOUNT2" type="DECIMAL(19, 2)"/>
             <column name="CATEGORY_ID" type="UUID"/>
             <column name="COMMENTS" type="VARCHAR(200)"/>
         </createTable>
@@ -143,12 +143,7 @@
             <column name="CREATED_BY" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet id="7-another-db" author="akkount" dbms="!postgresql">
-        <createIndex indexName="IDX_ACCOUNT_UNQ_NAME" tableName="AKK_ACCOUNT" unique="true">
-            <column name="NAME"/>
-        </createIndex>
-    </changeSet>
-    <changeSet id="7-postgresql" author="akkount" dbms="postgresql">
+    <changeSet id="7" author="akkount" dbms="postgresql">
         <createIndex indexName="IDX_ACCOUNT_UNQ_NAME" tableName="AKK_ACCOUNT" unique="true">
             <column name="NAME"/>
         </createIndex>
