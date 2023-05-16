@@ -381,7 +381,6 @@
     "construct-style-sheets-polyfill": "$construct-style-sheets-polyfill",
     "lit": "$lit",
     "@polymer/polymer": "$@polymer/polymer",
-    "proj4": "$proj4",
     "date-fns": "$date-fns"
   }
 }
