@@ -1,5 +1,5 @@
 plugins {
-    id 'io.jmix' version '1.5.1'
+    id 'io.jmix' version '1.5.2'
     id 'java'
     id 'war'
 }
@@ -8,7 +8,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.vaadin'
 
 jmix {
-    bomVersion = '1.5.1'
+    bomVersion = '1.5.2'
 }
 
 group = 'akkount'
