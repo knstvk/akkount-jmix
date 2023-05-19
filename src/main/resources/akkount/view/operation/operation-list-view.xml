@@ -64,6 +64,7 @@
             <button id="createBtn" action="operationsTable.create"/>
             <button id="editBtn" action="operationsTable.edit"/>
             <button id="removeBtn" action="operationsTable.remove"/>
+            <button id="excelExportButton" action="operationsTable.excelExport"/>
             <simplePagination id="pagination" dataLoader="operationsDl"/>
         </hbox>
         <dataGrid id="operationsTable"
@@ -74,6 +75,7 @@
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
+                <action id="excelExport" type="excelExport"/>
             </actions>
             <columns>
                 <column property="opType"/>
