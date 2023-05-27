@@ -30,7 +30,9 @@ public class BalanceServiceBean implements BalanceService {
     @Override
     public List<BalanceData> getBalanceData(Date date) {
         Map<Integer, List<Account>> accountsByGroup = dataManager.load(Account.class)
-                .query("select e from akk_Account e where e.active = true order by e.group")
+                .query("select e from akk_Account e " +
+                        "where e.active = true " +
+                        "order by e.group asc, e.name asc")
                 .list().stream()
                 .collect(Collectors.groupingBy(
                         account -> account.getGroup() != null ? account.getGroup() : 0,
