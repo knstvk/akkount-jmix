@@ -79,11 +79,11 @@
             </actions>
             <columns>
                 <column property="opType"/>
-                <column property="opDate"/>
+<!--                <column property="opDate"/>-->
                 <column property="acc1"/>
                 <column property="acc2"/>
-                <column property="amount1"/>
-                <column property="amount2"/>
+<!--                <column property="amount1"/>-->
+<!--                <column property="amount2"/>-->
                 <column property="category"/>
                 <column property="comments"/>
                 <column property="createdBy"/>

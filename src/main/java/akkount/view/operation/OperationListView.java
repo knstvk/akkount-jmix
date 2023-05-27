@@ -3,21 +3,26 @@ package akkount.view.operation;
 import akkount.entity.Account;
 import akkount.entity.Category;
 import akkount.entity.Operation;
+import akkount.view.DecimalFormatter;
 import akkount.view.main.MainView;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
+import io.jmix.core.Messages;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.genericfilter.GenericFilter;
+import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.facet.QueryParametersFacet;
 import io.jmix.flowui.facet.queryparameters.AbstractQueryParametersBinder;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Route(value = "operations", layout = MainView.class)
@@ -33,6 +38,10 @@ public class OperationListView extends StandardListView<Operation> {
 
     @Autowired
     private DataManager dataManager;
+    @Autowired
+    private Messages messages;
+    @Autowired
+    private DecimalFormatter decimalFormatter;
 
     @ViewComponent
     private CollectionLoader<Operation> operationsDl;
@@ -45,12 +54,42 @@ public class OperationListView extends StandardListView<Operation> {
     private GenericFilter genericFilter;
     @ViewComponent
     private QueryParametersFacet queryParameters;
+    @ViewComponent
+    private DataGrid<Operation> operationsTable;
 
     private boolean entering;
 
     @Subscribe
     public void onInit(InitEvent event) {
         queryParameters.registerBinder(new SimpleFilterBinder());
+
+        // todo change when https://github.com/jmix-framework/jmix/issues/1177 is fixed
+
+        Grid.Column<Operation> dateColumn = operationsTable.addColumn(operation -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(messages.getMessage("opDateFormat"));
+            return simpleDateFormat.format(operation.getOpDate());
+        });
+        dateColumn.setKey("opDate");
+        dateColumn.setHeader(messages.getMessage("akkount.entity/Operation.opDate"));
+        dateColumn.setAutoWidth(true);
+        dateColumn.setSortable(true);
+        operationsTable.setColumnPosition(dateColumn, 1);
+
+        Grid.Column<Operation> amount1Column = operationsTable.addColumn(operation ->
+                decimalFormatter.apply(operation.getAmount1()));
+        amount1Column.setKey("amount1");
+        amount1Column.setHeader(messages.getMessage("akkount.entity/Operation.amount1"));
+        amount1Column.setAutoWidth(true);
+        amount1Column.setSortable(true);
+        operationsTable.setColumnPosition(amount1Column, 4);
+
+        Grid.Column<Operation> amount2Column = operationsTable.addColumn(operation ->
+                decimalFormatter.apply(operation.getAmount2()));
+        amount2Column.setKey("amount2");
+        amount2Column.setHeader(messages.getMessage("akkount.entity/Operation.amount2"));
+        amount2Column.setAutoWidth(true);
+        amount2Column.setSortable(true);
+        operationsTable.setColumnPosition(amount2Column, 5);
     }
 
     @Subscribe("accFilterField")

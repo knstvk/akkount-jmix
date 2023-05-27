@@ -1,14 +1,15 @@
 package akkount.view.operation;
 
 import akkount.entity.*;
-
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
 import akkount.view.main.MainView;
-
+import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -28,6 +29,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -72,6 +75,8 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private CollectionContainer<Category> categoriesDc;
     @ViewComponent
     private FormLayout form;
+    @ViewComponent
+    private Span weekDayText;
 
     private Account accountByFilter;
 
@@ -170,6 +175,12 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     @Subscribe
     public void onAfterSave(AfterSaveEvent event) {
         VaadinSession.getCurrent().setAttribute(LAST_OPERATION_DATE_ATTR, getEditedEntity().getOpDate());
+    }
+
+    @Subscribe("opDateField")
+    public void onOpDateFieldComponentValueChange(final AbstractField.ComponentValueChangeEvent<DatePicker, LocalDate> event) {
+        LocalDate date = event.getValue();
+        weekDayText.setText(date == null ? "" : date.format(DateTimeFormatter.ofPattern("EEEE")));
     }
 
     @Override

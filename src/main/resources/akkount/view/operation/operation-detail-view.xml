@@ -40,7 +40,10 @@
         <action id="closeAction" type="detail_close"/>
     </actions>
     <layout>
-        <datePicker id="opDateField" property="opDate" dataContainer="operationDc"/>
+        <hbox id="dateBox" alignItems="BASELINE">
+            <datePicker id="opDateField" property="opDate" dataContainer="operationDc"/>
+            <span id="weekDayText"/>
+        </hbox>
         <tabs id="typeTabs">
             <tab id="expenseTab" label="Expense"/>
             <tab id="incomeTab" label="Income"/>
