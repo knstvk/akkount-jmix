@@ -72,9 +72,9 @@
                   minHeight="20em"
                   dataContainer="operationsDc">
             <actions>
-                <action id="create" type="create"/>
+                <action id="create" type="create" shortcutCombination="META-BACKSLASH"/>
                 <action id="edit" type="edit"/>
-                <action id="remove" type="remove"/>
+                <action id="remove" type="remove" shortcutCombination="META-BACKSPACE"/>
                 <action id="excelExport" type="excelExport"/>
             </actions>
             <columns>

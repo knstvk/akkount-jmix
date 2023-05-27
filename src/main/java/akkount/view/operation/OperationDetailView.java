@@ -4,9 +4,7 @@ import akkount.entity.*;
 import akkount.service.UserDataKeys;
 import akkount.service.UserDataService;
 import akkount.view.main.MainView;
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Span;
@@ -23,6 +21,7 @@ import io.jmix.core.TimeSource;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.datepicker.TypedDatePicker;
 import io.jmix.flowui.component.textfield.TypedTextField;
+import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
@@ -79,6 +78,10 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private FormLayout form;
     @ViewComponent
     private Span weekDayText;
+    @ViewComponent
+    private JmixButton saveAndCloseBtn;
+    @ViewComponent
+    private JmixButton closeBtn;
 
     private Account accountByFilter;
 
@@ -114,6 +117,11 @@ public class OperationDetailView extends StandardDetailView<Operation> {
         }
         configureControls(opType);
         loadCategories(opType);
+
+        // added programmatically because if set in XML, back navigation doesn't happen and parent list view doesn't open
+        saveAndCloseBtn.addFocusShortcut(Key.ENTER, KeyModifier.META);
+        closeBtn.addFocusShortcut(Key.ESCAPE);
+
         opDateField.focus();
     }
 
