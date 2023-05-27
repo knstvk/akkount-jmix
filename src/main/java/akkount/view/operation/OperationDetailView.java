@@ -16,6 +16,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.shared.Registration;
 import io.jmix.core.DataManager;
 import io.jmix.core.EntityStates;
 import io.jmix.core.TimeSource;
@@ -25,6 +26,7 @@ import io.jmix.flowui.component.textfield.TypedTextField;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -79,6 +81,8 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private Span weekDayText;
 
     private Account accountByFilter;
+
+    private Registration amount1ChangeListenerRegistration;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -206,6 +210,7 @@ public class OperationDetailView extends StandardDetailView<Operation> {
                 acc2Field.setVisible(false);
                 amount2Field.setVisible(false);
                 categoryField.setVisible(true);
+                unregisterAmount1ChangeListener();
             }
             case INCOME -> {
                 acc1Field.setVisible(false);
@@ -213,6 +218,7 @@ public class OperationDetailView extends StandardDetailView<Operation> {
                 acc2Field.setVisible(true);
                 amount2Field.setVisible(true);
                 categoryField.setVisible(true);
+                unregisterAmount1ChangeListener();
             }
             case TRANSFER -> {
                 acc1Field.setVisible(true);
@@ -220,7 +226,23 @@ public class OperationDetailView extends StandardDetailView<Operation> {
                 acc2Field.setVisible(true);
                 amount2Field.setVisible(true);
                 categoryField.setVisible(false);
+                registerAmount1ChangeListener();
             }
+        }
+    }
+
+    private void registerAmount1ChangeListener() {
+        amount1ChangeListenerRegistration = amount1Field.addValueChangeListener(e -> {
+            if (e.getValue() != null && StringUtils.isBlank(amount2Field.getValue())) {
+                amount2Field.setValue(e.getValue());
+            }
+        });
+    }
+
+    private void unregisterAmount1ChangeListener() {
+        if (amount1ChangeListenerRegistration != null) {
+            amount1ChangeListenerRegistration.remove();
+            amount1ChangeListenerRegistration = null;
         }
     }
 
