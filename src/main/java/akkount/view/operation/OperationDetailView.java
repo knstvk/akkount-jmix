@@ -21,9 +21,11 @@ import io.jmix.core.TimeSource;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.datepicker.TypedDatePicker;
 import io.jmix.flowui.component.textfield.TypedTextField;
+import io.jmix.flowui.component.validation.ValidationErrors;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
+import io.jmix.flowui.util.OperationResult;
 import io.jmix.flowui.view.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -55,6 +57,8 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private TimeSource timeSource;
     @Autowired
     private DataManager dataManager;
+    @Autowired
+    private ViewValidation viewValidation;
 
     @ViewComponent
     private Tabs typeTabs;
@@ -213,30 +217,40 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private void configureControls(OperationType opType) {
         switch (opType) {
             case EXPENSE -> {
-                acc1Field.setVisible(true);
-                amount1Field.setVisible(true);
-                acc2Field.setVisible(false);
-                amount2Field.setVisible(false);
+                showExpenseFields(true);
+                showIncomeFields(false);
                 categoryField.setVisible(true);
                 unregisterAmount1ChangeListener();
             }
             case INCOME -> {
-                acc1Field.setVisible(false);
-                amount1Field.setVisible(false);
-                acc2Field.setVisible(true);
-                amount2Field.setVisible(true);
+                showExpenseFields(false);
+                showIncomeFields(true);
                 categoryField.setVisible(true);
                 unregisterAmount1ChangeListener();
             }
             case TRANSFER -> {
-                acc1Field.setVisible(true);
-                amount1Field.setVisible(true);
-                acc2Field.setVisible(true);
-                amount2Field.setVisible(true);
+                showExpenseFields(true);
+                showIncomeFields(true);
                 categoryField.setVisible(false);
                 registerAmount1ChangeListener();
             }
         }
+        // revalidate after changing "required" property of components
+        viewValidation.validateUiComponents(getContent());
+    }
+
+    private void showExpenseFields(boolean enable) {
+        acc1Field.setVisible(enable);
+        acc1Field.setRequired(enable);
+        amount1Field.setVisible(enable);
+        amount1Field.setRequired(enable);
+    }
+
+    private void showIncomeFields(boolean enable) {
+        acc2Field.setVisible(enable);
+        acc2Field.setRequired(enable);
+        amount2Field.setVisible(enable);
+        amount2Field.setRequired(enable);
     }
 
     private void registerAmount1ChangeListener() {
