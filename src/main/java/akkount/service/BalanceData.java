@@ -2,7 +2,7 @@ package akkount.service;
 
 import akkount.entity.Account;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;

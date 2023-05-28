@@ -4,7 +4,7 @@ import akkount.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 @Service(PortalService.NAME)
 public class PortalServiceBean implements PortalService {

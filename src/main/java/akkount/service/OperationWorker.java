@@ -22,7 +22,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
