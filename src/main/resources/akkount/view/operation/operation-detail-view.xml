@@ -17,6 +17,7 @@
             <loader id="accountsDl">
                 <query>
                     <![CDATA[select e from akk_Account e
+                    where e.active = true
                     order by e.name asc]]>
                 </query>
             </loader>
