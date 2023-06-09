@@ -16,8 +16,8 @@ import io.jmix.core.Messages;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.genericfilter.GenericFilter;
 import io.jmix.flowui.component.grid.DataGrid;
-import io.jmix.flowui.facet.QueryParametersFacet;
-import io.jmix.flowui.facet.queryparameters.AbstractQueryParametersBinder;
+import io.jmix.flowui.facet.UrlQueryParametersFacet;
+import io.jmix.flowui.facet.urlqueryparameters.AbstractUrlQueryParametersBinder;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class OperationListView extends StandardListView<Operation> {
     @ViewComponent
     private GenericFilter genericFilter;
     @ViewComponent
-    private QueryParametersFacet queryParameters;
+    private UrlQueryParametersFacet queryParameters;
     @ViewComponent
     private DataGrid<Operation> operationsTable;
 
@@ -141,26 +141,26 @@ public class OperationListView extends StandardListView<Operation> {
                 QueryParameters.of(OperationDetailView.ACCOUNT_URL_PARAM, account.getId().toString());
     }
 
-    private class SimpleFilterBinder extends AbstractQueryParametersBinder {
+    private class SimpleFilterBinder extends AbstractUrlQueryParametersBinder {
 
         public SimpleFilterBinder() {
             genericFilter.addOpenedChangeListener(event -> {
                 boolean opened = event.isOpened();
                 QueryParameters qp = new QueryParameters(ImmutableMap.of(FILTER_OPENED_URL_PARAM,
                         opened ? Collections.singletonList("1") : Collections.emptyList()));
-                fireQueryParametersChanged(new QueryParametersFacet.QueryParametersChangeEvent(this, qp));
+                fireQueryParametersChanged(new UrlQueryParametersFacet.UrlQueryParametersChangeEvent(this, qp));
             });
             accFilterField.addValueChangeListener(event -> {
                 Account account = event.getValue();
                 QueryParameters qp = new QueryParameters(ImmutableMap.of(ACCOUNT_URL_PARAM,
                         account == null ? Collections.emptyList() : Collections.singletonList(account.getId().toString())));
-                fireQueryParametersChanged(new QueryParametersFacet.QueryParametersChangeEvent(this, qp));
+                fireQueryParametersChanged(new UrlQueryParametersFacet.UrlQueryParametersChangeEvent(this, qp));
             });
             categoryFilterField.addValueChangeListener(event -> {
                 Category category = event.getValue();
                 QueryParameters qp = new QueryParameters(ImmutableMap.of(CATEGORY_URL_PARAM,
                         category == null ? Collections.emptyList() : Collections.singletonList(category.getId().toString())));
-                fireQueryParametersChanged(new QueryParametersFacet.QueryParametersChangeEvent(this, qp));
+                fireQueryParametersChanged(new UrlQueryParametersFacet.UrlQueryParametersChangeEvent(this, qp));
             });
         }
 

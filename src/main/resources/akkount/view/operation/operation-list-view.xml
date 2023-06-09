@@ -34,10 +34,10 @@
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
-        <queryParameters id="queryParameters">
+        <urlQueryParameters id="queryParameters">
             <pagination component="pagination"/>
             <genericFilter component="genericFilter"/>
-        </queryParameters>
+        </urlQueryParameters>
     </facets>
     <actions>
         <action id="selectAction" type="lookup_select"/>
