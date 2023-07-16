@@ -53,7 +53,7 @@ public class OperationListView extends StandardListView<Operation> {
     @ViewComponent
     private GenericFilter genericFilter;
     @ViewComponent
-    private UrlQueryParametersFacet queryParameters;
+    private UrlQueryParametersFacet urlQueryParameters;
     @ViewComponent
     private DataGrid<Operation> operationsTable;
 
@@ -61,7 +61,7 @@ public class OperationListView extends StandardListView<Operation> {
 
     @Subscribe
     public void onInit(InitEvent event) {
-        queryParameters.registerBinder(new SimpleFilterBinder());
+        urlQueryParameters.registerBinder(new SimpleFilterBinder());
 
         // todo change when https://github.com/jmix-framework/jmix/issues/1177 is fixed
 

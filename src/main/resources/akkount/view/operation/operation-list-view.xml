@@ -34,7 +34,7 @@
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
-        <urlQueryParameters id="queryParameters">
+        <urlQueryParameters id="urlQueryParameters">
             <pagination component="pagination"/>
             <genericFilter component="genericFilter"/>
         </urlQueryParameters>
@@ -64,7 +64,7 @@
             <button id="createBtn" action="operationsTable.create"/>
             <button id="editBtn" action="operationsTable.edit"/>
             <button id="removeBtn" action="operationsTable.remove"/>
-            <button id="excelExportButton" action="operationsTable.excelExport"/>
+            <button id="excelExportButton"/>
             <simplePagination id="pagination" dataLoader="operationsDl"/>
         </hbox>
         <dataGrid id="operationsTable"
@@ -72,10 +72,10 @@
                   minHeight="20em"
                   dataContainer="operationsDc">
             <actions>
-                <action id="create" type="create" shortcutCombination="META-BACKSLASH"/>
-                <action id="edit" type="edit"/>
-                <action id="remove" type="remove" shortcutCombination="META-BACKSPACE"/>
-                <action id="excelExport" type="excelExport"/>
+                <action id="create" type="list_create" shortcutCombination="META-BACKSLASH"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove" shortcutCombination="META-BACKSPACE"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
             </actions>
             <columns>
                 <column property="opType"/>
