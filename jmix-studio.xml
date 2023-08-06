@@ -28,6 +28,7 @@
     </moduleSettings>
   </component>
   <component name="JmixPluginProjectSettings">
+    <option name="isUsingFinalModifier" value="false" />
     <option name="savedDbProperties">
       <list>
         <SavedDbProperties>

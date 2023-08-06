@@ -52,9 +52,9 @@
         </tabs>
         <formLayout id="form" dataContainer="operationDc">
             <entityComboBox id="acc1Field" property="acc1" itemsContainer="accountsDc"/>
-            <textField id="amount1Field" property="amount1"/>
+            <textField id="amount1Field" label="msg://akkount.entity/Operation.amount1"/>
             <entityComboBox id="acc2Field" property="acc2" itemsContainer="accountsDc"/>
-            <textField id="amount2Field" property="amount2"/>
+            <textField id="amount2Field" label="msg://akkount.entity/Operation.amount2"/>
             <entityComboBox id="categoryField" property="category" itemsContainer="categoriesDc"/>
             <textArea id="commentsField" property="comments"/>
         </formLayout>

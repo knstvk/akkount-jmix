@@ -25,7 +25,6 @@ import io.jmix.flowui.component.validation.ValidationErrors;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
-import io.jmix.flowui.util.OperationResult;
 import io.jmix.flowui.view.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -59,17 +58,19 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private DataManager dataManager;
     @Autowired
     private ViewValidation viewValidation;
+    @Autowired
+    private AmountCalculator amountCalculator;
 
     @ViewComponent
     private Tabs typeTabs;
     @ViewComponent
     private EntityComboBox<Account> acc2Field;
     @ViewComponent
-    private TypedTextField<BigDecimal> amount2Field;
+    private TypedTextField<String> amount2Field;
     @ViewComponent
     private EntityComboBox<Account> acc1Field;
     @ViewComponent
-    private TypedTextField<BigDecimal> amount1Field;
+    private TypedTextField<String> amount1Field;
     @ViewComponent
     private EntityComboBox<Category> categoryField;
     @ViewComponent
@@ -127,6 +128,9 @@ public class OperationDetailView extends StandardDetailView<Operation> {
         closeBtn.addFocusShortcut(Key.ESCAPE);
 
         opDateField.focus();
+
+        amountCalculator.initAmount(amount1Field, operation.getAmount1());
+        amountCalculator.initAmount(amount2Field, operation.getAmount2());
     }
 
     @Subscribe("typeTabs")
@@ -298,5 +302,23 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private Date loadDate() {
         Date date = (Date) VaadinSession.getCurrent().getAttribute(LAST_OPERATION_DATE_ATTR);
         return date != null ? date : DateUtils.truncate(timeSource.currentTimestamp(), Calendar.DAY_OF_MONTH);
+    }
+
+    @Subscribe
+    public void onValidation(ValidationEvent event) {
+        ValidationErrors errors = new ValidationErrors();
+        OperationType opType = getSelectedOpType();
+        if (opType == OperationType.EXPENSE || opType == OperationType.TRANSFER) {
+            BigDecimal amount = amountCalculator.calculateAmount(amount1Field, errors);
+            if (amount != null)
+                getEditedEntity().setAmount1(amount);
+        }
+        if (opType == OperationType.INCOME || opType == OperationType.TRANSFER) {
+            BigDecimal amount = amountCalculator.calculateAmount(amount2Field, errors);
+            if (amount != null)
+                getEditedEntity().setAmount2(amount);
+        }
+        if (!errors.isEmpty())
+            event.addErrors(errors);
     }
 }
