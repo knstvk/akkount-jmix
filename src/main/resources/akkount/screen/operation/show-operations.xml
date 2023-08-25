@@ -34,7 +34,7 @@
                 <column id="opType"/>
                 <column id="opDate">
                     <formatter>
-                        <date format="msg://opDateFormat"/>
+                        <date format="msg:///opDateFormat"/>
                     </formatter>
                 </column>
                 <column id="acc1"/>
