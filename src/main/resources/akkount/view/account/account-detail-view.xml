@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://accountDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="accountDc"
+                  class="akkount.entity.Account">
+            <fetchPlan extends="_base">
+                <property name="currency" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection class="akkount.entity.Currency" id="currenciesDc">
+            <fetchPlan extends="_base"/>
+            <loader id="currenciesDl">
+                <query>
+                    <![CDATA[select e from akk_Currency e
+                    order by e.code asc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="accountDc">
+            <textField id="nameField" property="name"/>
+            <textField id="descriptionField" property="description"/>
+            <entityComboBox id="currencyField" property="currency"
+                            itemsContainer="currenciesDc">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                </actions>
+            </entityComboBox>
+            <checkbox id="activeField" property="active"/>
+            <textField id="groupField" property="group"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

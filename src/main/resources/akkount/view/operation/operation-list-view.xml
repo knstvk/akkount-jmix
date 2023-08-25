@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://operationListView.title"
+      focusComponent="operationsTable">
+    <data readOnly="true">
+        <collection id="operationsDc"
+                    class="akkount.entity.Operation">
+            <fetchPlan extends="_base">
+                <property name="acc1" fetchPlan="_instance_name"/>
+                <property name="acc2" fetchPlan="_instance_name"/>
+                <property name="category" fetchPlan="_instance_name"/>
+            </fetchPlan>
+            <loader id="operationsDl">
+                <query>
+                    <![CDATA[select e from akk_Operation e order by e.opDate desc, e.createTs desc]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="accountsDc" class="akkount.entity.Account">
+            <loader id="accountsDl">
+                <query>
+                    select e from akk_Account e where e.active = true order by e.name
+                </query>
+            </loader>
+        </collection>
+        <collection id="categoriesDc" class="akkount.entity.Category">
+            <loader id="categoriesDl">
+                <query>
+                    select e from akk_Category e order by e.name
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters id="urlQueryParameters">
+            <pagination component="pagination"/>
+            <genericFilter component="genericFilter"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <hbox id="simpleFilterBox" alignItems="BASELINE">
+            <label text="Filter by"/>
+            <entityComboBox id="accFilterField" itemsContainer="accountsDc" metaClass="akk_Account"
+                            placeholder="Account">
+                <actions>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityComboBox>
+            <entityComboBox id="categoryFilterField" itemsContainer="categoriesDc" metaClass="akk_Category"
+                            placeholder="Category">
+                <actions>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityComboBox>
+        </hbox>
+        <genericFilter dataLoader="operationsDl" summaryText="Generic filter" id="genericFilter" opened="false"/>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="operationsTable.create"/>
+            <button id="editBtn" action="operationsTable.edit"/>
+            <button id="removeBtn" action="operationsTable.remove"/>
+            <button id="excelExportButton"/>
+            <simplePagination id="pagination" dataLoader="operationsDl"/>
+        </hbox>
+        <dataGrid id="operationsTable"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="operationsDc">
+            <actions>
+                <action id="create" type="list_create" shortcutCombination="META-BACKSLASH"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove" shortcutCombination="META-BACKSPACE"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
+            </actions>
+            <columns>
+                <column property="opType"/>
+<!--                <column property="opDate"/>-->
+                <column property="acc1"/>
+                <column property="acc2"/>
+<!--                <column property="amount1"/>-->
+<!--                <column property="amount2"/>-->
+                <column property="category"/>
+                <column property="comments"/>
+                <column property="createdBy"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

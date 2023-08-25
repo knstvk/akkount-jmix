@@ -9,7 +9,7 @@ import io.jmix.core.Id;
 import io.jmix.core.Metadata;
 import io.jmix.core.event.AttributeChanges;
 import io.jmix.core.event.EntityChangedEvent;
-import io.jmix.ui.UiEventPublisher;
+import io.jmix.flowui.UiEventPublisher;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +22,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
+import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,13 +39,13 @@ public class OperationWorker {
 
     private static final Logger log = LoggerFactory.getLogger(OperationWorker.class);
 
-    @Inject
+    @Autowired
     private Metadata metadata;
 
-    @Inject
+    @Autowired
     private DataManager tdm;
 
-    @Inject
+    @Autowired
     private UserDataWorker userDataWorker;
 
     @Autowired

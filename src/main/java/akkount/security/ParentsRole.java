@@ -7,20 +7,18 @@ import io.jmix.security.role.annotation.EntityAttributePolicy;
 import io.jmix.security.role.annotation.EntityPolicy;
 import io.jmix.security.role.annotation.ResourceRole;
 import io.jmix.security.role.annotation.SpecificPolicy;
-import io.jmix.securityui.role.UiFilterRole;
-import io.jmix.securityui.role.UiMinimalRole;
-import io.jmix.securityui.role.annotation.MenuPolicy;
-import io.jmix.securityui.role.annotation.ScreenPolicy;
+import io.jmix.securityflowui.role.annotation.MenuPolicy;
+import io.jmix.securityflowui.role.annotation.ViewPolicy;
 
 @ResourceRole(name = "Parents", code = "parents")
 public interface ParentsRole extends
-        UiMinimalRole, UiFilterRole,
+        UiMinimalRole,
         MasterDataFullAccessRole, OperationsFullAccessRole, ReportsReadRole {
 
     @SpecificPolicy(resources = "get-balance")
     void balance();
 
-    @ScreenPolicy(screenIds = {"akk_PreferencesScreen", "ShowOperations"}, screenClasses = {})
+    @ViewPolicy(viewIds = {"akk_PreferencesScreen", "ShowOperations"})
     @MenuPolicy(menuIds = "akk_PreferencesScreen")
     void screens();
 

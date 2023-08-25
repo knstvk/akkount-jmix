@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
@@ -29,19 +28,19 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Inject
+    @Autowired
     protected TimeSource timeSource;
 
-    @Inject
+    @Autowired
     protected BalanceWorker balanceWorker;
 
-    @Inject
+    @Autowired
     private Metadata metadata;
 
 //    @Autowired
 //    private UiEventPublisher uiEventPublisher;
 
-    @Inject
+    @Autowired
     private OperationWorker operationWorker;
     @Autowired
     private DataManager dataManager;

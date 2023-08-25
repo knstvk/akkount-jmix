@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://reportView.title">
+    <data>
+        <collection id="ds1" class="akkount.entity.CategoryAmount">
+            <loader id="dl1"/>
+        </collection>
+        <collection id="ds2" class="akkount.entity.CategoryAmount">
+            <loader id="dl2"/>
+        </collection>
+        <collection id="currenciesDs"
+                    class="akkount.entity.Currency"
+                    fetchPlan="_instance_name">
+            <loader id="currenciesDl">
+                <query>
+                    <![CDATA[select e from akk_Currency e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout>
+        <formLayout>
+            <comboBox id="periodTypeField" label="msg://period"/>
+            <entityComboBox id="currencyField"
+                            itemsContainer="currenciesDs"
+                            required="true" metaClass="akk_Currency" label="msg://currency"/>
+            <radioButtonGroup id="categoryTypeGroup"/>
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+                <responsiveStep minWidth="60em" columns="3"/>
+            </responsiveSteps>
+        </formLayout>
+        <formLayout>
+            <vbox>
+                <h4 text="msg://period1"/>
+                <hbox alignItems="BASELINE">
+                    <datePicker id="from1" datatype="date"/>
+                    <span text="-"/>
+                    <datePicker id="to1" datatype="date"/>
+                    <button id="showOperationsBtn1" icon="FILE_TEXT_O"/>
+                    <button id="excludeBtn1" icon="BAN" title="msg://exclude.text"/>
+                </hbox>
+                <dataGrid width="100%" dataContainer="ds1" id="dataGrid1">
+                    <actions>
+                        <action id="exclude" text="msg://exclude.text"/>
+                        <action id="showOperations" text="msg://showOperations.text"/>
+                    </actions>
+                    <columns>
+                        <column property="category.name"/>
+                        <column property="amount"/>
+                    </columns>
+                </dataGrid>
+                <hbox alignItems="BASELINE" justifyContent="END" width="100%">
+                    <span text="msg://total"/>
+                    <textField id="totalField1" datatype="decimal" readOnly="true"/>
+                </hbox>
+            </vbox>
+            <vbox>
+                <h4 text="msg://period2"/>
+                <hbox alignItems="BASELINE">
+                    <datePicker id="from2" datatype="date"/>
+                    <span text="-"/>
+                    <datePicker id="to2" datatype="date"/>
+                    <button id="showOperationsBtn2" icon="FILE_TEXT_O"/>
+                    <button id="excludeBtn2" title="msg://exclude.text" icon="BAN"/>
+                </hbox>
+                <dataGrid width="100%" dataContainer="ds2" id="dataGrid2">
+                    <actions>
+                        <action id="exclude" text="msg://exclude.text"/>
+                        <action id="showOperations" text="msg://showOperations.text"/>
+                    </actions>
+                    <columns>
+                        <column property="category.name"/>
+                        <column property="amount"/>
+                    </columns>
+                </dataGrid>
+                <hbox alignItems="BASELINE" justifyContent="END" width="100%">
+                    <span text="msg://total"/>
+                    <textField id="totalField2" datatype="decimal" readOnly="true"/>
+                </hbox>
+            </vbox>
+            <responsiveSteps>
+                <responsiveStep minWidth="0em" columns="1"/>
+                <responsiveStep minWidth="60em" columns="2"/>
+            </responsiveSteps>
+        </formLayout>
+        <h4 text="msg://excludedCategories"/>
+        <hbox id="excludedBox"/>
+    </layout>
+</view>

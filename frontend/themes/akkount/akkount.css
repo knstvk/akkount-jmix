@@ -1,0 +1,33 @@
+/* Define your styles here */
+
+.balance-box {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: var(--lumo-contrast-10pct);
+}
+
+.balance-container {
+    margin-left: 25px;
+}
+
+.balance-line {
+    display: flex;
+    gap: 1em;
+    font-family: var(--lumo-font-family);
+    font-size: var(--lumo-font-size-s);
+    font-weight: 500;
+    line-height: var(--lumo-line-height-s);
+    color: var(--lumo-secondary-text-color);
+}
+
+.balance-account-line {
+    margin-bottom: 0.4em;
+}
+
+.balance-total-line {
+    background-color: var(--lumo-contrast-5pct);
+}
+
+.balance-account {
+    flex-grow: 1;
+}

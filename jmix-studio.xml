@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="IgnoredChangelogIncludeConfig">
+    <datastore-include-infos>
+      <datastore-include-info datastore-name="main" />
+    </datastore-include-infos>
+  </component>
   <component name="JmixDataStoreSettingsManager">
     <moduleSettings>
       <entry key="akkount.main">
@@ -10,9 +15,8 @@
                 <value>
                   <DataStoreSettingsV2>
                     <option name="generateDdlType" value="CREATE_AND_UPDATE" />
-                    <option name="nameLengthMode" value="ORACLE" />
                     <option name="supportedTypes">
-                      <option value="hsql" />
+                      <option value="postgres" />
                     </option>
                   </DataStoreSettingsV2>
                 </value>
@@ -22,5 +26,23 @@
         </ModuleSettings>
       </entry>
     </moduleSettings>
+  </component>
+  <component name="JmixPluginProjectSettings">
+    <option name="isUsingFinalModifier" value="false" />
+    <option name="savedDbProperties">
+      <list>
+        <SavedDbProperties>
+          <option name="databaseName" value="akk" />
+          <option name="dbType" value="hsqlfile" />
+          <option name="dbmsVersion" />
+          <option name="host" value=".jmix/hsqldb" />
+          <option name="url" value="jdbc:hsqldb:file:.jmix/hsqldb/akk" />
+          <option name="user" value="sa" />
+        </SavedDbProperties>
+      </list>
+    </option>
+  </component>
+  <component name="TranslationAddonsNotifySettings">
+    <option name="dontShowAgain" value="true" />
   </component>
 </project>

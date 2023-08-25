@@ -7,8 +7,8 @@ import io.jmix.security.model.EntityPolicyAction;
 import io.jmix.security.role.annotation.EntityAttributePolicy;
 import io.jmix.security.role.annotation.EntityPolicy;
 import io.jmix.security.role.annotation.ResourceRole;
-import io.jmix.securityui.role.annotation.MenuPolicy;
-import io.jmix.securityui.role.annotation.ScreenPolicy;
+import io.jmix.securityflowui.role.annotation.MenuPolicy;
+import io.jmix.securityflowui.role.annotation.ViewPolicy;
 
 @ResourceRole(name = "Operations Full Access", code = "operations-full-access")
 public interface OperationsFullAccessRole {
@@ -18,7 +18,7 @@ public interface OperationsFullAccessRole {
 
     @EntityPolicy(entityClass = Operation.class, actions = {EntityPolicyAction.ALL})
     @EntityAttributePolicy(entityClass = Operation.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @ScreenPolicy(screenIds = {"akk_Operation.lookup", "akk_Operation.edit"}, screenClasses = {})
+    @ViewPolicy(viewIds = {"akk_Operation.lookup", "akk_Operation.edit"})
     @MenuPolicy(menuIds = {"akk_Operation.lookup"})
     void operation();
 

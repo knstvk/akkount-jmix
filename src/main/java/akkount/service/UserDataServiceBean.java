@@ -1,15 +1,15 @@
 package akkount.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
+import jakarta.annotation.Nullable;
 import java.util.List;
 
 @Service(UserDataService.NAME)
 public class UserDataServiceBean implements UserDataService {
 
-    @Inject
+    @Autowired
     protected UserDataWorker worker;
 
     @Override

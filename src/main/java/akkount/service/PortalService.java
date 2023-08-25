@@ -2,7 +2,7 @@ package akkount.service;
 
 import akkount.entity.Account;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public interface PortalService {
     String NAME = "akk_PortalService";
