@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://showOperationsView.title">
+    <data>
+        <collection id="operationDs"
+                    class="akkount.entity.Operation"
+                    fetchPlan="operation-browse">
+            <loader id="operationsDl">
+                <query>
+                    <![CDATA[select o from akk_Operation o order by o.opDate desc, o.createTs desc]]>
+                    <condition>
+                        <and>
+                            <c:jpql><c:where>o.category = :category</c:where></c:jpql>
+                            <c:jpql><c:where>@dateAfter(o.opDate, :fromDate)</c:where></c:jpql>
+                            <c:jpql><c:where>@dateBefore(o.opDate, :toDate)</c:where></c:jpql>
+                            <c:jpql><c:where>o.acc1.currencyCode = :currency1</c:where></c:jpql>
+                            <c:jpql><c:where>o.acc2.currencyCode = :currency2</c:where></c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout>
+        <h5 id="descriptionLabel" text="Description"/>
+        <hbox>
+            <button action="operationsDataGrid.excelExport"/>
+            <simplePagination dataLoader="operationsDl"/>
+        </hbox>
+        <dataGrid width="100%" dataContainer="operationDs" id="operationsDataGrid">
+            <actions>
+                <action id="excelExport" type="grdexp_excelExport"/>
+            </actions>
+            <columns>
+                <column property="opType" resizable="true"/>
+<!--                <column property="opDate"/>-->
+                <column property="acc1" resizable="true"/>
+<!--                <column property="amount1"/>-->
+                <column property="acc2" resizable="true"/>
+<!--                <column property="amount2"/>-->
+                <column property="comments" resizable="true"/>
+            </columns>
+        </dataGrid>
+    </layout>
+</view>

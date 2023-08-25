@@ -6,6 +6,7 @@
         <item view="akk_Account.list" title="msg://akkount.view.account/accountListView.title"/>
         <item view="akk_Category.list" title="msg://akkount.view.category/categoryListView.title"/>
         <item view="akk_Currency.list" title="msg://akkount.view.currency/currencyListView.title"/>
+        <item view="akk_ReportView" title="msg://akkount.view.report/reportView.title"/>
     </menu>
     <menu id="administration" description="msg://akkount/menu_config.administration.description"
           title="msg://akkount/menu_config.administration.title">
