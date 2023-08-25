@@ -21,30 +21,29 @@ Some details:
 * A _category_ can be set for expense or income operations.
 * The current balance is constantly displayed and is recalculated after each operation.
 * Categories report shows the summary by two arbitrary periods of time to allow quick visual comparison. Any category can be excluded from the report. You can "drill down" into any row to see operations that comprise the row.
-* The system has a fully functional Jmix UI and a mobile-friendly UI based on React Admin. 
+* The system has a fully functional mobile-friendly web UI. 
 
 ## Development
 
-You should have Java 8+, npm 7+ and Jmix Studio 1.1+ installed.
+You should have PostgreSQL, Java 17+ and Jmix Studio 2.0+ installed on your computer.
 
-Open the project in Jmix Studio and run the application server using *Jmix Application* run/debug configuration. The application will use the HSQL database automatically created in the `.jmix/db` directory.
+- Open the project in Jmix Studio. 
+- Right-click on _Data Stores → Main Data Store_ item in Jmix tool window and select _Recreate_. Studio will create and initialize the local `akkount` database.
+- Run the application server using *Jmix Application* run/debug configuration.
 
-The main UI is available at http://localhost:8080/akk. Login as `admin` / `admin`. 
+The application UI is available at http://localhost:8080/akk. Login as `admin` / `admin`. 
 
 You can generate some test data:
 
-- Open *Administration > JMX Console*, find `akkount.jmx:type=akk_SampleDataGenerator` MBean and open it.
-- Enter the number of days to generate (e.g. 100) in the parameter field of the `generateSampleData` method and click *Invoke*.     
-
-Open the terminal in the `frontend` directory and run `npm run start`. The frontend UI will be available at http://localhost:3000.
-
+- Open _Accounts_ view and click _Generate sample data_.
+- Enter the number of days to generate (e.g. 100) in the dialog and click _OK_.
 
 ## Building and running
 
 Open the terminal in the project directory and run the following command to build the executable JAR file:
 
 ```
-./gradlew bootJar
+./gradlew -Pvaadin.productionMode=true bootJar 
 ```
 
 The resulting JAR will be created in `build/libs` directory.
@@ -52,9 +51,7 @@ The resulting JAR will be created in `build/libs` directory.
 Run the application:
 
 ```
-java -jar akkount-0.5.jar
+java -jar akkount-0.6.jar
 ```
-
-You can also use the Bash scripts located in `etc` to start and stop the application.
 
 The main UI is available at http://localhost:8080/akk, frontend UI at http://localhost:8080/akk/front. Username: `admin`, password: `admin`.
