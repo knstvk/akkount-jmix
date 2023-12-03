@@ -8,6 +8,7 @@ import akkount.view.main.MainView;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
@@ -162,6 +163,11 @@ public class OperationListView extends StandardListView<Operation> {
                         category == null ? Collections.emptyList() : Collections.singletonList(category.getId().toString())));
                 fireQueryParametersChanged(new UrlQueryParametersFacet.UrlQueryParametersChangeEvent(this, qp));
             });
+        }
+
+        @Override
+        public Component getComponent() {
+            return null;
         }
 
         @Override
