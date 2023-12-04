@@ -41,7 +41,7 @@ public class BalanceServiceBean implements BalanceService {
         List<BalanceData> result = new ArrayList<>(accountsByGroup.size());
 
         for (List<Account> accounts : accountsByGroup.values()) {
-            Map<Account, BigDecimal> balanceByAccount = new HashMap<>();
+            Map<Account, BigDecimal> balanceByAccount = new LinkedHashMap<>();
             for (Account account : accounts) {
                 BigDecimal balance = getBalance(account.getId(), date);
                 if (BigDecimal.ZERO.compareTo(balance) != 0) {
