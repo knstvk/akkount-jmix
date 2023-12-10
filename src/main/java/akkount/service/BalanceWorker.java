@@ -6,16 +6,18 @@ import io.jmix.core.DataManager;
 import io.jmix.core.FetchPlanRepository;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Component(BalanceWorker.NAME)
@@ -38,7 +40,7 @@ public class BalanceWorker {
     private FetchPlanRepository fetchPlanRepository;
 
     @Transactional
-    public BigDecimal getBalance(final UUID accountId, final Date date) {
+    public BigDecimal getBalance(final UUID accountId, final LocalDate date) {
         if (!secureOperations.isSpecificPermitted("get-balance", policyStore)) {
             return BigDecimal.ZERO;
         }
@@ -84,7 +86,7 @@ public class BalanceWorker {
     public void recalculateBalance(UUID accountId) {
         removeBalanceRecords(accountId);
 
-        TreeMap<Date, Balance> balances = new TreeMap<>();
+        TreeMap<LocalDate, Balance> balances = new TreeMap<>();
 
         TypedQuery<Operation> query = entityManager.createQuery("select op from akk_Operation op " +
                 "left join op.acc1 a1 left join op.acc2 a2 " +
@@ -109,15 +111,15 @@ public class BalanceWorker {
         }
     }
 
-    private void addOperation(TreeMap<Date, Balance> balances, Operation operation, UUID accountId) {
+    private void addOperation(TreeMap<LocalDate, Balance> balances, Operation operation, UUID accountId) {
         if (operation.getAcc1() != null && operation.getAcc1().getId().equals(accountId)) {
-            Map.Entry<Date, Balance> entry = balances.higherEntry(operation.getOpDate());
+            Map.Entry<LocalDate, Balance> entry = balances.higherEntry(operation.getOpDate());
             if (entry == null) {
                 Balance balance = dataManager.create(Balance.class);
                 balance.setAccount(operation.getAcc1());
                 balance.setAmount(operation.getAmount1().negate()
                         .add(previousBalanceAmount(balances, operation.getOpDate())));
-                balance.setBalanceDate(DateUtils.ceiling(operation.getOpDate(), Calendar.MONTH));
+                balance.setBalanceDate(operation.getOpDate().with(TemporalAdjusters.lastDayOfMonth())/*DateUtils.ceiling(operation.getOpDate(), Calendar.MONTH)*/);
                 balances.put(balance.getBalanceDate(), balance);
             } else {
                 Balance balance = entry.getValue();
@@ -125,13 +127,13 @@ public class BalanceWorker {
             }
         }
         if (operation.getAcc2() != null && operation.getAcc2().getId().equals(accountId)) {
-            Map.Entry<Date, Balance> entry = balances.higherEntry(operation.getOpDate());
+            Map.Entry<LocalDate, Balance> entry = balances.higherEntry(operation.getOpDate());
             if (entry == null) {
                 Balance balance = dataManager.create(Balance.class);
                 balance.setAccount(operation.getAcc2());
                 balance.setAmount(operation.getAmount2()
                         .add(previousBalanceAmount(balances, operation.getOpDate())));
-                balance.setBalanceDate(DateUtils.ceiling(operation.getOpDate(), Calendar.MONTH));
+                balance.setBalanceDate(operation.getOpDate().with(TemporalAdjusters.lastDayOfMonth()));
                 balances.put(balance.getBalanceDate(), balance);
             } else {
                 Balance balance = entry.getValue();
@@ -140,8 +142,8 @@ public class BalanceWorker {
         }
     }
 
-    private BigDecimal previousBalanceAmount(TreeMap<Date, Balance> balances, Date opDate) {
-        Map.Entry<Date, Balance> entry = balances.floorEntry(opDate);
+    private BigDecimal previousBalanceAmount(TreeMap<LocalDate, Balance> balances, LocalDate opDate) {
+        Map.Entry<LocalDate, Balance> entry = balances.floorEntry(opDate);
         return entry == null ? BigDecimal.ZERO : entry.getValue().getAmount();
     }
 }

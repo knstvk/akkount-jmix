@@ -2,10 +2,10 @@ package akkount.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
-import jakarta.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,12 +15,12 @@ import java.util.UUID;
 public class UserData {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     @JmixGeneratedValue
     protected UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = false)
     protected User user;
 
     @Column(name = "KEY_", length = 50, nullable = false)

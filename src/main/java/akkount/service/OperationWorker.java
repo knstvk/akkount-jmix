@@ -10,7 +10,7 @@ import io.jmix.core.Metadata;
 import io.jmix.core.event.AttributeChanges;
 import io.jmix.core.event.EntityChangedEvent;
 import io.jmix.flowui.UiEventPublisher;
-import org.apache.commons.lang3.time.DateUtils;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,9 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,7 +99,7 @@ public class OperationWorker {
         balanceChangedEventsEnabled = enable;
     }
 
-    private void removeOperation(Date opDate, Id<Account> acc1Id, Id<Account> acc2Id,
+    private void removeOperation(LocalDate opDate, Id<Account> acc1Id, Id<Account> acc2Id,
                                  BigDecimal amount1, BigDecimal amount2) {
         log.debug("removeOperation: opDate={}, acc1Id={}, acc2Id={}, amount1={}, amount2={}", opDate, acc1Id, acc2Id, amount1, amount2);
 
@@ -163,7 +162,7 @@ public class OperationWorker {
         }
     }
 
-    private List<Balance> getBalanceRecords(Date opDate, Id<Account> accId) {
+    private List<Balance> getBalanceRecords(LocalDate opDate, Id<Account> accId) {
         log.debug("getBalanceRecords: opDate={}, accId={}", opDate, accId);
 
         return tdm.load(Balance.class)
@@ -174,7 +173,7 @@ public class OperationWorker {
                 .list();
     }
 
-    private BigDecimal previousBalanceAmount(Account account, Date opDate) {
+    private BigDecimal previousBalanceAmount(Account account, LocalDate opDate) {
         log.debug("previousBalanceAmount: acccount={}, opDate={}", account, opDate);
 
         Optional<Balance> optBalance = tdm.load(Balance.class)
@@ -187,8 +186,8 @@ public class OperationWorker {
         return optBalance.map(Balance::getAmount).orElse(BigDecimal.ZERO);
     }
 
-    private Date nextBalanceDate(Date opDate) {
-        return DateUtils.ceiling(opDate, Calendar.MONTH);
+    private LocalDate nextBalanceDate(LocalDate opDate) {
+        return opDate.with(TemporalAdjusters.firstDayOfNextMonth());
     }
 
     private void saveUserData(Operation operation) {

@@ -1,19 +1,18 @@
 package akkount.entity;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
-
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @JmixEntity
 @Table(name = "AKK_BALANCE")
 @Entity(name = "akk_Balance")
 public class Balance extends StandardEntity {
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "BALANCE_DATE", nullable = false)
-    protected Date balanceDate;
+    protected LocalDate balanceDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
@@ -22,11 +21,11 @@ public class Balance extends StandardEntity {
     @Column(name = "AMOUNT", precision = 19, scale = 2)
     protected BigDecimal amount = BigDecimal.ZERO;
 
-    public void setBalanceDate(Date balanceDate) {
+    public void setBalanceDate(LocalDate balanceDate) {
         this.balanceDate = balanceDate;
     }
 
-    public Date getBalanceDate() {
+    public LocalDate getBalanceDate() {
         return balanceDate;
     }
 

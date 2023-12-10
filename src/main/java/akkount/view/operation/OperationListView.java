@@ -10,6 +10,9 @@ import com.google.common.collect.ImmutableMap;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.renderer.Renderer;
+import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
@@ -63,34 +66,6 @@ public class OperationListView extends StandardListView<Operation> {
     @Subscribe
     public void onInit(InitEvent event) {
         urlQueryParameters.registerBinder(new SimpleFilterBinder());
-
-        // todo change when https://github.com/jmix-framework/jmix/issues/1177 is fixed
-
-        Grid.Column<Operation> dateColumn = operationsTable.addColumn(operation -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(messages.getMessage("opDateFormat"));
-            return simpleDateFormat.format(operation.getOpDate());
-        });
-        dateColumn.setKey("opDate");
-        dateColumn.setHeader(messages.getMessage("akkount.entity/Operation.opDate"));
-        dateColumn.setAutoWidth(true);
-        dateColumn.setSortable(true);
-        operationsTable.setColumnPosition(dateColumn, 1);
-
-        Grid.Column<Operation> amount1Column = operationsTable.addColumn(operation ->
-                decimalFormatter.apply(operation.getAmount1()));
-        amount1Column.setKey("amount1");
-        amount1Column.setHeader(messages.getMessage("akkount.entity/Operation.amount1"));
-        amount1Column.setAutoWidth(true);
-        amount1Column.setSortable(true);
-        operationsTable.setColumnPosition(amount1Column, 4);
-
-        Grid.Column<Operation> amount2Column = operationsTable.addColumn(operation ->
-                decimalFormatter.apply(operation.getAmount2()));
-        amount2Column.setKey("amount2");
-        amount2Column.setHeader(messages.getMessage("akkount.entity/Operation.amount2"));
-        amount2Column.setAutoWidth(true);
-        amount2Column.setSortable(true);
-        operationsTable.setColumnPosition(amount2Column, 5);
     }
 
     @Subscribe("accFilterField")
@@ -140,6 +115,18 @@ public class OperationListView extends StandardListView<Operation> {
         return account == null ?
                 QueryParameters.empty() :
                 QueryParameters.of(OperationDetailView.ACCOUNT_URL_PARAM, account.getId().toString());
+    }
+
+    @Supply(to = "operationsTable.amount1", subject = "renderer")
+    private Renderer<Operation> operationsTableAmount1Renderer() {
+        return new TextRenderer<>(operation ->
+                decimalFormatter.apply(operation.getAmount1()));
+    }
+
+    @Supply(to = "operationsTable.amount2", subject = "renderer")
+    private Renderer<Operation> operationsTableAmount2Renderer() {
+        return new TextRenderer<>(operation ->
+                decimalFormatter.apply(operation.getAmount2()));
     }
 
     private class SimpleFilterBinder extends AbstractUrlQueryParametersBinder {

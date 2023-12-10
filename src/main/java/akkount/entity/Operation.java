@@ -1,10 +1,10 @@
 package akkount.entity;
 
 import io.jmix.core.metamodel.annotation.JmixEntity;
-
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @JmixEntity
 @Table(name = "AKK_OPERATION")
@@ -14,9 +14,8 @@ public class Operation extends StandardEntity {
     @Column(name = "OP_TYPE", nullable = false)
     protected String opType;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "OP_DATE", nullable = false)
-    protected Date opDate;
+    protected LocalDate opDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACC1_ID")
@@ -39,20 +38,20 @@ public class Operation extends StandardEntity {
     @Column(name = "COMMENTS", length = 200)
     protected String comments;
 
+    public void setOpDate(LocalDate opDate) {
+        this.opDate = opDate;
+    }
+
+    public LocalDate getOpDate() {
+        return opDate;
+    }
+
     public void setOpType(OperationType opType) {
         this.opType = opType == null ? null : opType.getId();
     }
 
     public OperationType getOpType() {
         return opType == null ? null : OperationType.fromId(opType);
-    }
-
-    public void setOpDate(Date opDate) {
-        this.opDate = opDate;
-    }
-
-    public Date getOpDate() {
-        return opDate;
     }
 
     public void setComments(String comments) {

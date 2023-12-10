@@ -1,6 +1,5 @@
 package akkount.jmx;
 
-import akkount.entity.Currency;
 import akkount.entity.*;
 import akkount.service.BalanceWorker;
 import akkount.service.OperationWorker;
@@ -8,7 +7,6 @@ import io.jmix.core.DataManager;
 import io.jmix.core.Metadata;
 import io.jmix.core.TimeSource;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,11 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component("akk_SampleDataGenerator")
 public class SampleDataGenerator implements SampleDataGeneratorMBean {
@@ -71,8 +73,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         if (numberOfDaysBack < 1 || numberOfDaysBack > 1000) {
             return "numberOfDaysBack must be between 1 and 1000";
         }
-        Date startDate = DateUtils.truncate(DateUtils.addDays(timeSource.currentTimestamp(), -numberOfDaysBack),
-                Calendar.DAY_OF_MONTH);
+        LocalDate startDate = timeSource.now().toLocalDate().minusDays(numberOfDaysBack);
 
         try {
             Context context = new Context();
@@ -213,11 +214,11 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         context.otherIncomeCategory = category;
     }
 
-    private void createOperations(Date startDate, int numberOfDays, Context context) {
+    private void createOperations(LocalDate startDate, int numberOfDays, Context context) {
         operationWorker.enableBalanceChangedEvents(false);
         try {
             for (int i = 0; i < numberOfDays; i++) {
-                Date date = DateUtils.addDays(startDate, i);
+                LocalDate date = startDate.plusDays(i);
 
                 if (i % 7 == 0) {
                     income(date, context.accounts.get(0), context.salaryCategory, new BigDecimal("100000"));
@@ -245,7 +246,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
 //        uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
     }
 
-    private void income(final Date date, final Account account, final Category category, final BigDecimal amount) {
+    private void income(final LocalDate date, final Account account, final Category category, final BigDecimal amount) {
         Operation operation = metadata.create(Operation.class);
         operation.setOpType(OperationType.INCOME);
         operation.setOpDate(date);
@@ -257,7 +258,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         log.info("Income: " + date + ", " + account.getName() + ", " + amount);
     }
 
-    private void expense(final Date date, final Account account, final Context context) {
+    private void expense(final LocalDate date, final Account account, final Context context) {
         int categoryIdx = (int) Math.round(Math.random() * (context.expenseCategories.size() - 1));
         Category category = context.expenseCategories.get(categoryIdx);
         if (category == null)
@@ -279,7 +280,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         log.info("Expense: " + date + ", " + account.getName() + ", " + amount);
     }
 
-    private void transfer(final Date date, final Account account1, final Account account2) {
+    private void transfer(final LocalDate date, final Account account1, final Account account2) {
         BigDecimal amount1 = randomExpenseAmount(account1, date, 0.5);
         if (BigDecimal.ZERO.compareTo(amount1) >= 0)
             return;
@@ -299,7 +300,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     }
 
 
-    private BigDecimal randomExpenseAmount(Account account, Date date, Double part) {
+    private BigDecimal randomExpenseAmount(Account account, LocalDate date, Double part) {
         BigDecimal balance = balanceWorker.getBalance(account.getId(), date);
         if (BigDecimal.ZERO.compareTo(balance) >= 0)
             return BigDecimal.ZERO;

@@ -35,9 +35,9 @@
             <vbox>
                 <h4 text="msg://period1"/>
                 <hbox alignItems="BASELINE">
-                    <datePicker id="from1" datatype="date"/>
+                    <datePicker id="from1" datatype="localDate" dateFormat="dd/MM/yyyy"/>
                     <span text="-"/>
-                    <datePicker id="to1" datatype="date"/>
+                    <datePicker id="to1" datatype="localDate" dateFormat="dd/MM/yyyy"/>
                     <button id="showOperationsBtn1" icon="FILE_TEXT_O"/>
                     <button id="excludeBtn1" icon="BAN" title="msg://exclude.text"/>
                 </hbox>
@@ -59,9 +59,9 @@
             <vbox>
                 <h4 text="msg://period2"/>
                 <hbox alignItems="BASELINE">
-                    <datePicker id="from2" datatype="date"/>
+                    <datePicker id="from2" datatype="localDate" dateFormat="dd/MM/yyyy"/>
                     <span text="-"/>
-                    <datePicker id="to2" datatype="date"/>
+                    <datePicker id="to2" datatype="localDate" dateFormat="dd/MM/yyyy"/>
                     <button id="showOperationsBtn2" icon="FILE_TEXT_O"/>
                     <button id="excludeBtn2" title="msg://exclude.text" icon="BAN"/>
                 </hbox>

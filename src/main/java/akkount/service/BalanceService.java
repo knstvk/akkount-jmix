@@ -1,17 +1,17 @@
 package akkount.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 public interface BalanceService {
     String NAME = "akk_BalanceService";
 
-    BigDecimal getBalance(UUID accountId, Date date);
+    BigDecimal getBalance(UUID accountId, LocalDate date);
 
     void recalculateBalance(UUID accountId);
 
-    List<BalanceData> getBalanceData(Date date);
+    List<BalanceData> getBalanceData(LocalDate date);
 
 }

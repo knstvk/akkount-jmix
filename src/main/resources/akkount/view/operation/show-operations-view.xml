@@ -22,6 +22,9 @@
             </loader>
         </collection>
     </data>
+    <facets>
+        <settings auto="true"/>
+    </facets>
     <layout>
         <h5 id="descriptionLabel" text="Description"/>
         <hbox>
@@ -32,14 +35,16 @@
             <actions>
                 <action id="excelExport" type="grdexp_excelExport"/>
             </actions>
-            <columns>
-                <column property="opType" resizable="true"/>
-<!--                <column property="opDate"/>-->
-                <column property="acc1" resizable="true"/>
-<!--                <column property="amount1"/>-->
-                <column property="acc2" resizable="true"/>
-<!--                <column property="amount2"/>-->
-                <column property="comments" resizable="true"/>
+            <columns resizable="true">
+                <column property="opType"/>
+                <column property="opDate">
+                    <localDateRenderer format="msg:///opDateFormat"/>
+                </column>
+                <column property="acc1"/>
+                <column property="amount1"/>
+                <column property="acc2"/>
+                <column property="amount2"/>
+                <column property="comments"/>
             </columns>
         </dataGrid>
     </layout>
