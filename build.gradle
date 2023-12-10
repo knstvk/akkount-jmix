@@ -11,6 +11,10 @@ jmix {
     bomVersion = '2.1.1'
 }
 
+vaadin {
+    optimizeBundle = false
+}
+
 group = 'akkount'
 version = '0.6'
 
