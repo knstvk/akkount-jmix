@@ -93,6 +93,8 @@ public class MainView extends StandardMainView {
 
             Element nameDiv = ElementFactory.createDiv();
             nameDiv.setText(balance.name);
+            nameDiv.setAttribute("title", balance.name
+                    + (balance.description != null ? ": " + balance.description : ""));
             nameDiv.setAttribute("class", "balance-account");
             div.appendChild(nameDiv);
 
