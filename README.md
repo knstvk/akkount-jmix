@@ -25,7 +25,7 @@ Some details:
 
 ## Development
 
-You should have PostgreSQL, Java 17+ and Jmix Studio 2.0+ installed on your computer.
+You should have PostgreSQL, Java 17+ and Jmix Studio 2.1+ installed on your computer.
 
 - Open the project in Jmix Studio. 
 - Right-click on _Data Stores → Main Data Store_ item in Jmix tool window and select _Recreate_. Studio will create and initialize the local `akkount` database.
