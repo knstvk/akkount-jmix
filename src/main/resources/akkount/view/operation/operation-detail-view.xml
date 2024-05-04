@@ -42,7 +42,7 @@
     </actions>
     <layout>
         <hbox id="dateBox" alignItems="BASELINE">
-            <datePicker id="opDateField" property="opDate" dataContainer="operationDc"/>
+            <datePicker id="opDateField" property="opDate" dataContainer="operationDc" dateFormat="dd/MM/yyyy"/>
             <span id="weekDayText"/>
         </hbox>
         <tabs id="typeTabs">

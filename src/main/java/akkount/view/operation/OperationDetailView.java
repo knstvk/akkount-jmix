@@ -27,14 +27,12 @@ import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,7 +74,7 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     @ViewComponent
     private CollectionLoader<Category> categoriesDl;
     @ViewComponent
-    private TypedDatePicker<Date> opDateField;
+    private TypedDatePicker<LocalDate> opDateField;
     @ViewComponent
     private CollectionContainer<Category> categoriesDc;
     @ViewComponent
@@ -299,9 +297,9 @@ public class OperationDetailView extends StandardDetailView<Operation> {
         return userDataService.loadEntity(key, Account.class);
     }
 
-    private Date loadDate() {
-        Date date = (Date) VaadinSession.getCurrent().getAttribute(LAST_OPERATION_DATE_ATTR);
-        return date != null ? date : DateUtils.truncate(timeSource.currentTimestamp(), Calendar.DAY_OF_MONTH);
+    private LocalDate loadDate() {
+        LocalDate date = (LocalDate) VaadinSession.getCurrent().getAttribute(LAST_OPERATION_DATE_ATTR);
+        return date != null ? date : timeSource.now().toLocalDate().with(TemporalAdjusters.firstDayOfMonth());
     }
 
     @Subscribe

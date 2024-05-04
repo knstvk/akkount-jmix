@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Route(value = "report", layout = MainView.class)
@@ -82,13 +83,13 @@ public class ReportView extends StandardView {
     @ViewComponent
     private TypedTextField<BigDecimal> totalField2;
     @ViewComponent
-    private TypedDatePicker<Date> from1;
+    private TypedDatePicker<LocalDate> from1;
     @ViewComponent
-    private TypedDatePicker<Date> to1;
+    private TypedDatePicker<LocalDate> to1;
     @ViewComponent
-    private TypedDatePicker<Date> from2;
+    private TypedDatePicker<LocalDate> from2;
     @ViewComponent
-    private TypedDatePicker<Date> to2;
+    private TypedDatePicker<LocalDate> to2;
     @ViewComponent
     private CollectionContainer<CategoryAmount> ds1;
     @ViewComponent
@@ -196,10 +197,10 @@ public class ReportView extends StandardView {
             if (months != null) {
                 doNotRefresh = true;
                 try {
-                    Date end = to2.getTypedValue();
-                    from2.setTypedValue(DateUtils.addMonths(end, -1 * months));
-                    to1.setTypedValue(DateUtils.addMonths(end, -1 * months));
-                    from1.setTypedValue(DateUtils.addMonths(end, -2 * months));
+                    LocalDate end = to2.getTypedValue();
+                    from2.setTypedValue(end.minusMonths(months));
+                    to1.setTypedValue(end.minusMonths(months));
+                    from1.setTypedValue(end.minusMonths(months * 2));
                 } finally {
                     doNotRefresh = false;
                 }
@@ -223,12 +224,12 @@ public class ReportView extends StandardView {
     }
 
     private void initDates() {
-        Date now = new Date();
+        LocalDate now = LocalDate.now();
 
-        from1.setTypedValue(DateUtils.addMonths(now, -2));
-        to1.setTypedValue(DateUtils.addMonths(now, -1));
+        from1.setTypedValue(now.minusMonths(2));
+        to1.setTypedValue(now.minusMonths(1));
 
-        from2.setTypedValue(DateUtils.addMonths(now, -1));
+        from2.setTypedValue(now.minusMonths(1));
         to2.setTypedValue(now);
 
         HasValue.ValueChangeListener period1Listener = event -> refreshDs1();
@@ -263,8 +264,8 @@ public class ReportView extends StandardView {
     }
 
     protected List<CategoryAmount> loadData(Map<String, Object> params) {
-        Date fromDate = (Date) params.get("from");
-        Date toDate = (Date) params.get("to");
+        LocalDate fromDate = (LocalDate) params.get("from");
+        LocalDate toDate = (LocalDate) params.get("to");
         if (fromDate == null || toDate == null || toDate.compareTo(fromDate) < 0)
             return Collections.emptyList();
 
@@ -373,7 +374,7 @@ public class ReportView extends StandardView {
         showOperations(dataGrid2.getSingleSelectedItem(), from2.getTypedValue(), to2.getTypedValue());
     }
 
-    private void showOperations(CategoryAmount categoryAmount, Date from, Date to) {
+    private void showOperations(CategoryAmount categoryAmount, LocalDate from, LocalDate to) {
         if (categoryAmount != null) {
             DialogWindow<ShowOperationsView> window = dialogWindows.view(this, ShowOperationsView.class).build();
             window.getView().setParams(new ShowOperationsView.Params(

@@ -17,7 +17,5 @@
               title="msg://io.jmix.securityflowui.view.rowlevelrole/rowLevelRoleModelListView.menu"/>
         <item view="datatl_entityInspectorListView"
               title="msg://io.jmix.datatoolsflowui.view.entityinspector/listTitle"/>
-        <item view="sys_LockInfo.list"
-              title="msg://io.jmix.flowui.app.pessimisticlocking/pessimisticLockListView.menu"/>
     </menu>
 </menu-config>

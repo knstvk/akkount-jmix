@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class BalanceServiceBean implements BalanceService {
     private DataManager dataManager;
 
     @Override
-    public BigDecimal getBalance(UUID accountId, Date date) {
+    public BigDecimal getBalance(UUID accountId, LocalDate date) {
         return balanceWorker.getBalance(accountId, date);
     }
 
@@ -28,7 +29,7 @@ public class BalanceServiceBean implements BalanceService {
     }
 
     @Override
-    public List<BalanceData> getBalanceData(Date date) {
+    public List<BalanceData> getBalanceData(LocalDate date) {
         Map<Integer, List<Account>> accountsByGroup = dataManager.load(Account.class)
                 .query("select e from akk_Account e " +
                         "where e.active = true " +
@@ -41,7 +42,7 @@ public class BalanceServiceBean implements BalanceService {
         List<BalanceData> result = new ArrayList<>(accountsByGroup.size());
 
         for (List<Account> accounts : accountsByGroup.values()) {
-            Map<Account, BigDecimal> balanceByAccount = new HashMap<>();
+            Map<Account, BigDecimal> balanceByAccount = new LinkedHashMap<>();
             for (Account account : accounts) {
                 BigDecimal balance = getBalance(account.getId(), date);
                 if (BigDecimal.ZERO.compareTo(balance) != 0) {

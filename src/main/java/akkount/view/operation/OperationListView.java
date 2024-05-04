@@ -7,22 +7,21 @@ import akkount.view.DecimalFormatter;
 import akkount.view.main.MainView;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.*;
+import com.vaadin.flow.data.renderer.Renderer;
+import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
-import io.jmix.core.Messages;
+import io.jmix.flowui.action.list.CreateAction;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.genericfilter.GenericFilter;
-import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.facet.UrlQueryParametersFacet;
 import io.jmix.flowui.facet.urlqueryparameters.AbstractUrlQueryParametersBinder;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Route(value = "operations", layout = MainView.class)
@@ -39,8 +38,6 @@ public class OperationListView extends StandardListView<Operation> {
     @Autowired
     private DataManager dataManager;
     @Autowired
-    private Messages messages;
-    @Autowired
     private DecimalFormatter decimalFormatter;
 
     @ViewComponent
@@ -54,8 +51,8 @@ public class OperationListView extends StandardListView<Operation> {
     private GenericFilter genericFilter;
     @ViewComponent
     private UrlQueryParametersFacet urlQueryParameters;
-    @ViewComponent
-    private DataGrid<Operation> operationsTable;
+    @ViewComponent("operationsTable.create")
+    private CreateAction<Operation> operationsTableCreate;
 
     private boolean entering;
 
@@ -63,33 +60,11 @@ public class OperationListView extends StandardListView<Operation> {
     public void onInit(InitEvent event) {
         urlQueryParameters.registerBinder(new SimpleFilterBinder());
 
-        // todo change when https://github.com/jmix-framework/jmix/issues/1177 is fixed
-
-        Grid.Column<Operation> dateColumn = operationsTable.addColumn(operation -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(messages.getMessage("opDateFormat"));
-            return simpleDateFormat.format(operation.getOpDate());
-        });
-        dateColumn.setKey("opDate");
-        dateColumn.setHeader(messages.getMessage("akkount.entity/Operation.opDate"));
-        dateColumn.setAutoWidth(true);
-        dateColumn.setSortable(true);
-        operationsTable.setColumnPosition(dateColumn, 1);
-
-        Grid.Column<Operation> amount1Column = operationsTable.addColumn(operation ->
-                decimalFormatter.apply(operation.getAmount1()));
-        amount1Column.setKey("amount1");
-        amount1Column.setHeader(messages.getMessage("akkount.entity/Operation.amount1"));
-        amount1Column.setAutoWidth(true);
-        amount1Column.setSortable(true);
-        operationsTable.setColumnPosition(amount1Column, 4);
-
-        Grid.Column<Operation> amount2Column = operationsTable.addColumn(operation ->
-                decimalFormatter.apply(operation.getAmount2()));
-        amount2Column.setKey("amount2");
-        amount2Column.setHeader(messages.getMessage("akkount.entity/Operation.amount2"));
-        amount2Column.setAutoWidth(true);
-        amount2Column.setSortable(true);
-        operationsTable.setColumnPosition(amount2Column, 5);
+        // global shortcut
+        Shortcuts.addShortcutListener(this,
+                () -> operationsTableCreate.actionPerform(null),
+                Key.BACKSLASH,
+                KeyModifier.META);
     }
 
     @Subscribe("accFilterField")
@@ -132,13 +107,24 @@ public class OperationListView extends StandardListView<Operation> {
         operationsDl.setParameters(paramsMap);
     }
 
-
     @Install(to = "operationsTable.create", subject = "queryParametersProvider")
     private QueryParameters operationsTableCreateQueryParametersProvider() {
         Account account = accFilterField.getValue();
         return account == null ?
                 QueryParameters.empty() :
                 QueryParameters.of(OperationDetailView.ACCOUNT_URL_PARAM, account.getId().toString());
+    }
+
+    @Supply(to = "operationsTable.amount1", subject = "renderer")
+    private Renderer<Operation> operationsTableAmount1Renderer() {
+        return new TextRenderer<>(operation ->
+                decimalFormatter.apply(operation.getAmount1()));
+    }
+
+    @Supply(to = "operationsTable.amount2", subject = "renderer")
+    private Renderer<Operation> operationsTableAmount2Renderer() {
+        return new TextRenderer<>(operation ->
+                decimalFormatter.apply(operation.getAmount2()));
     }
 
     private class SimpleFilterBinder extends AbstractUrlQueryParametersBinder {
@@ -162,6 +148,11 @@ public class OperationListView extends StandardListView<Operation> {
                         category == null ? Collections.emptyList() : Collections.singletonList(category.getId().toString())));
                 fireQueryParametersChanged(new UrlQueryParametersFacet.UrlQueryParametersChangeEvent(this, qp));
             });
+        }
+
+        @Override
+        public Component getComponent() {
+            return null;
         }
 
         @Override

@@ -38,6 +38,7 @@
             <pagination component="pagination"/>
             <genericFilter component="genericFilter"/>
         </urlQueryParameters>
+        <settings auto="true"/>
     </facets>
     <actions>
         <action id="selectAction" type="lookup_select"/>
@@ -45,7 +46,7 @@
     </actions>
     <layout>
         <hbox id="simpleFilterBox" alignItems="BASELINE">
-            <label text="Filter by"/>
+            <span text="Filter by"/>
             <entityComboBox id="accFilterField" itemsContainer="accountsDc" metaClass="akk_Account"
                             placeholder="Account">
                 <actions>
@@ -64,26 +65,29 @@
             <button id="createBtn" action="operationsTable.create"/>
             <button id="editBtn" action="operationsTable.edit"/>
             <button id="removeBtn" action="operationsTable.remove"/>
-            <button id="excelExportButton"/>
+            <button id="excelExportButton" action="operationsTable.excelExport"/>
             <simplePagination id="pagination" dataLoader="operationsDl"/>
         </hbox>
         <dataGrid id="operationsTable"
                   width="100%"
                   minHeight="20em"
-                  dataContainer="operationsDc">
+                  dataContainer="operationsDc" multiSort="true" multiSortOnShiftClickOnly="true"
+                  multiSortPriority="APPEND">
             <actions>
-                <action id="create" type="list_create" shortcutCombination="META-BACKSLASH"/>
+                <action id="create" type="list_create"/>
                 <action id="edit" type="list_edit"/>
                 <action id="remove" type="list_remove" shortcutCombination="META-BACKSPACE"/>
                 <action id="excelExport" type="grdexp_excelExport"/>
             </actions>
-            <columns>
+            <columns resizable="true">
                 <column property="opType"/>
-<!--                <column property="opDate"/>-->
+                <column property="opDate">
+                    <localDateRenderer format="msg:///opDateFormat"/>
+                </column>
                 <column property="acc1"/>
                 <column property="acc2"/>
-<!--                <column property="amount1"/>-->
-<!--                <column property="amount2"/>-->
+                <column property="amount1"/>
+                <column property="amount2"/>
                 <column property="category"/>
                 <column property="comments"/>
                 <column property="createdBy"/>

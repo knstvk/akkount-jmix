@@ -14,6 +14,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service(ReportService.NAME)
@@ -26,7 +27,7 @@ public class ReportServiceBean implements ReportService {
 
     @Override
     @Transactional
-    public List<CategoryAmount> getTurnoverByCategories(Date fromDate, Date toDate,
+    public List<CategoryAmount> getTurnoverByCategories(LocalDate fromDate, LocalDate toDate,
                                                         CategoryType categoryType, String currencyCode,
                                                         List<UUID> excludedCategories) {
         List<CategoryAmount> list = new ArrayList<>();
@@ -50,7 +51,7 @@ public class ReportServiceBean implements ReportService {
                             " and o.category.id = :category " +
                             " and o.acc" + suffix + ".currencyCode = :currency");
             amountQuery.setParameter("fromDate", fromDate)
-                    .setParameter("toDate", DateUtils.addDays(toDate, 1))
+                    .setParameter("toDate", toDate.plusDays(1))
                     .setParameter("category", category.getId())
                     .setParameter("currency", currencyCode);
 

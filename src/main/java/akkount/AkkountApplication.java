@@ -5,6 +5,7 @@ import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
+import io.jmix.core.JmixSecurityFilterChainOrder;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
@@ -34,6 +38,15 @@ public class AkkountApplication extends SpringBootServletInitializer implements 
 
 	public static void main(String[] args) {
 		SpringApplication.run(AkkountApplication.class, args);
+	}
+
+	@Bean
+	@Order(JmixSecurityFilterChainOrder.FLOWUI - 10)
+	SecurityFilterChain vaadinPushFilterChain(HttpSecurity http) throws Exception {
+		http.securityMatcher("/VAADIN/push/**")
+				.authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
+				.csrf(csrf -> csrf.disable());
+		return http.build();
 	}
 
 	@Bean
