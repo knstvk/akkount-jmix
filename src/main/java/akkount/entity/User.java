@@ -17,7 +17,7 @@ import java.util.UUID;
 @JmixEntity
 @Entity(name = "akk_User")
 @Table(name = "SEC_USER", indexes = {
-        @Index(name = "IDX_USER__ON_USERNAME", columnList = "USERNAME", unique = true)
+        @Index(name = "IDX_SEC_USER_ON_USERNAME", columnList = "USERNAME", unique = true)
 })
 public class User implements JmixUserDetails {
 
