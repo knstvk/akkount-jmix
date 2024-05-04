@@ -74,7 +74,7 @@
                   dataContainer="operationsDc" multiSort="true" multiSortOnShiftClickOnly="true"
                   multiSortPriority="APPEND">
             <actions>
-                <action id="create" type="list_create" shortcutCombination="META-BACKSLASH"/>
+                <action id="create" type="list_create"/>
                 <action id="edit" type="list_edit"/>
                 <action id="remove" type="list_remove" shortcutCombination="META-BACKSPACE"/>
                 <action id="excelExport" type="grdexp_excelExport"/>

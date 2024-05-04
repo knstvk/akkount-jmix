@@ -7,8 +7,7 @@ import akkount.view.DecimalFormatter;
 import akkount.view.main.MainView;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
@@ -17,11 +16,13 @@ import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
 import io.jmix.core.Messages;
+import io.jmix.flowui.action.list.CreateAction;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.genericfilter.GenericFilter;
 import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.facet.UrlQueryParametersFacet;
 import io.jmix.flowui.facet.urlqueryparameters.AbstractUrlQueryParametersBinder;
+import io.jmix.flowui.kit.action.ActionPerformedEvent;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +61,20 @@ public class OperationListView extends StandardListView<Operation> {
     private UrlQueryParametersFacet urlQueryParameters;
     @ViewComponent
     private DataGrid<Operation> operationsTable;
+    @ViewComponent("operationsTable.create")
+    private CreateAction<Operation> operationsTableCreate;
 
     private boolean entering;
 
     @Subscribe
     public void onInit(InitEvent event) {
         urlQueryParameters.registerBinder(new SimpleFilterBinder());
+
+        // global shortcut
+        Shortcuts.addShortcutListener(this,
+                () -> operationsTableCreate.actionPerform(null),
+                Key.BACKSLASH,
+                KeyModifier.META);
     }
 
     @Subscribe("accFilterField")
@@ -107,7 +116,6 @@ public class OperationListView extends StandardListView<Operation> {
         operationsDl.setQuery(query);
         operationsDl.setParameters(paramsMap);
     }
-
 
     @Install(to = "operationsTable.create", subject = "queryParametersProvider")
     private QueryParameters operationsTableCreateQueryParametersProvider() {
