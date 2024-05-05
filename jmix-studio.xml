@@ -28,7 +28,6 @@
     </moduleSettings>
   </component>
   <component name="JmixPluginProjectSettings">
-    <option name="isUsingFinalModifier" value="false" />
     <option name="savedDbProperties">
       <list>
         <SavedDbProperties>
@@ -43,6 +42,6 @@
     </option>
   </component>
   <component name="TranslationAddonsNotifySettings">
-    <option name="dontShowAgain" value="true" />
+    <option name="dontShowInstallSuggest" value="true" />
   </component>
 </project>
