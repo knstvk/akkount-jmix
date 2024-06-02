@@ -54,4 +54,4 @@ Run the application:
 java -jar akkount-0.6.jar
 ```
 
-The main UI is available at http://localhost:8080/akk, frontend UI at http://localhost:8080/akk/front. Username: `admin`, password: `admin`.
+The main UI is available at http://localhost:8080/akk. Username: `admin`, password: `admin`.
