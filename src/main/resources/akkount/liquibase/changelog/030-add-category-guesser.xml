@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="akkount">
+        <createTable tableName="AKK_CATEGORY_GUESS_RULE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AKK_CATEGORY_GUESS_RULE"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CATEGORY_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAT_TYPE" type="VARCHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_ID" type="UUID"/>
+            <column name="EXPRESSION" remarks="Groovy expression: &quot;amount&quot; variable, boolean result"
+                    type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRIORITY" remarks="Smaller number gives higher priority" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="akkount">
+        <createIndex indexName="IDX_CATEGORY_GUESS_RULE_ACCOUNT" tableName="AKK_CATEGORY_GUESS_RULE">
+            <column name="ACCOUNT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ACCOUNT_ID" baseTableName="AKK_CATEGORY_GUESS_RULE"
+                                 constraintName="FK_AKK_CATEGORY_GUESS_RULE_ON_ACCOUNT" referencedColumnNames="ID"
+                                 referencedTableName="AKK_ACCOUNT"/>
+    </changeSet>
+    <changeSet id="3" author="akkount">
+        <createIndex indexName="IDX_CATEGORY_GUESS_RULE_CATEGORY" tableName="AKK_CATEGORY_GUESS_RULE">
+            <column name="CATEGORY_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="CATEGORY_ID" baseTableName="AKK_CATEGORY_GUESS_RULE"
+                                 constraintName="FK_AKK_CATEGORY_GUESS_RULE_ON_CATEGORY" referencedColumnNames="ID"
+                                 referencedTableName="AKK_CATEGORY"/>
+    </changeSet>
+</databaseChangeLog>

@@ -37,8 +37,9 @@ dependencies {
     implementation 'io.jmix.flowui:jmix-flowui-themes'
     implementation 'io.jmix.datatools:jmix-datatools-starter'
     implementation 'io.jmix.datatools:jmix-datatools-flowui-starter'
+    implementation 'io.jmix.gridexport:jmix-gridexport-flowui-starter'
 
-    implementation 'io.jmix.flowui:jmix-flowui-kit'
+    implementation 'org.apache.groovy:groovy-jsr223'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -49,7 +50,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    implementation 'io.jmix.gridexport:jmix-gridexport-flowui-starter'
+    testImplementation 'io.jmix.flowui:jmix-flowui-test-assist'
 }
 
 test {

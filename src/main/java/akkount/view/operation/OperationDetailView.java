@@ -58,6 +58,8 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private ViewValidation viewValidation;
     @Autowired
     private AmountCalculator amountCalculator;
+    @Autowired
+    private CategoryGuesser categoryGuesser;
 
     @ViewComponent
     private Tabs typeTabs;
@@ -89,6 +91,8 @@ public class OperationDetailView extends StandardDetailView<Operation> {
     private Account accountByFilter;
 
     private Registration amount1ChangeListenerRegistration;
+    private Registration categoryGuessListenerRegistration1;
+    private Registration categoryGuessListenerRegistration2;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -223,18 +227,24 @@ public class OperationDetailView extends StandardDetailView<Operation> {
                 showIncomeFields(false);
                 categoryField.setVisible(true);
                 unregisterAmount1ChangeListener();
+                unregisterCategoryGuessListener2();
+                registerCategoryGuessListener1();
             }
             case INCOME -> {
                 showExpenseFields(false);
                 showIncomeFields(true);
                 categoryField.setVisible(true);
                 unregisterAmount1ChangeListener();
+                unregisterCategoryGuessListener1();
+                registerCategoryGuessListener2();
             }
             case TRANSFER -> {
                 showExpenseFields(true);
                 showIncomeFields(true);
                 categoryField.setVisible(false);
                 registerAmount1ChangeListener();
+                unregisterCategoryGuessListener1();
+                unregisterCategoryGuessListener2();
             }
         }
         // revalidate after changing "required" property of components
@@ -268,6 +278,54 @@ public class OperationDetailView extends StandardDetailView<Operation> {
             amount1ChangeListenerRegistration.remove();
             amount1ChangeListenerRegistration = null;
         }
+    }
+
+    private void registerCategoryGuessListener1() {
+        if (categoryField.isVisible() && categoryField.getValue() == null) {
+            categoryGuessListenerRegistration1 = amount1Field.addValueChangeListener(e -> {
+                categoryField.setValue(guessCategory1());
+            });
+        }
+    }
+
+    private void unregisterCategoryGuessListener1() {
+        if (categoryGuessListenerRegistration1 != null) {
+            categoryGuessListenerRegistration1.remove();
+            categoryGuessListenerRegistration1 = null;
+        }
+    }
+
+    private void registerCategoryGuessListener2() {
+        if (categoryField.isVisible() && categoryField.getValue() == null) {
+            categoryGuessListenerRegistration2 = amount1Field.addValueChangeListener(e -> {
+                categoryField.setValue(guessCategory2());
+            });
+        }
+    }
+
+    private void unregisterCategoryGuessListener2() {
+        if (categoryGuessListenerRegistration2 != null) {
+            categoryGuessListenerRegistration2.remove();
+            categoryGuessListenerRegistration2 = null;
+        }
+    }
+
+    private Category guessCategory1() {
+        ValidationErrors errors = new ValidationErrors();
+        BigDecimal amount = amountCalculator.calculateAmount(amount1Field, errors);
+        if (amount != null) {
+            return categoryGuesser.guessCategory(acc1Field.getValue(), CategoryType.EXPENSE, amount);
+        }
+        return null;
+    }
+
+    private Category guessCategory2() {
+        ValidationErrors errors = new ValidationErrors();
+        BigDecimal amount = amountCalculator.calculateAmount(amount2Field, errors);
+        if (amount != null) {
+            return categoryGuesser.guessCategory(acc2Field.getValue(), CategoryType.INCOME, amount);
+        }
+        return null;
     }
 
     private OperationType getSelectedOpType() {
