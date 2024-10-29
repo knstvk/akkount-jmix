@@ -53,7 +53,7 @@ public class ReportView extends StandardView {
 
     private Map<Category, HorizontalLayout> excludedCategories = new HashMap<>();
 
-    @Autowired
+    @ViewComponent
     private MessageBundle messageBundle;
     @Autowired
     private ReportService reportService;
