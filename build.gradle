@@ -35,13 +35,13 @@ dependencies {
     implementation 'io.jmix.datatools:jmix-datatools-starter'
     implementation 'io.jmix.datatools:jmix-datatools-flowui-starter'
     implementation 'io.jmix.gridexport:jmix-gridexport-flowui-starter'
+    implementation 'io.jmix.pivottable:jmix-pivottable-flowui-starter'
 
     implementation 'org.apache.groovy:groovy-jsr223'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation 'org.postgresql:postgresql'
-    runtimeOnly 'org.hsqldb:hsqldb'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

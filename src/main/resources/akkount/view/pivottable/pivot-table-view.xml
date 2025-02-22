@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view" xmlns:pvttbl="http://jmix.io/schema/pvttbl/ui"
+      title="msg://pivotTableView.title">
+    <data>
+        <collection id="operationsDc" class="akkount.entity.Operation">
+            <fetchPlan extends="_base">
+                <property name="acc1" fetchPlan="_base"/>
+                <property name="acc2" fetchPlan="_base"/>
+                <property name="category" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="operationsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from akk_Operation e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+        </urlQueryParameters>
+        <dataLoadCoordinator auto="true"/>
+        <settings auto="true"/>
+    </facets>
+    <layout>
+        <genericFilter id="genericFilter" dataLoader="operationsDl"/>
+        <pvttbl:pivotTable id="pivotTable" dataContainer="operationsDc" showUI="true">
+            <pvttbl:properties>
+                <pvttbl:property name="opDate"/>
+                <pvttbl:property name="opType"/>
+                <pvttbl:property name="acc1.name" localizedName="Acc1 Name"/>
+                <pvttbl:property name="acc2.name" localizedName="Acc2 Name"/>
+                <pvttbl:property name="amount1"/>
+                <pvttbl:property name="amount2"/>
+                <pvttbl:property name="category.name" localizedName="Category Name"/>
+            </pvttbl:properties>
+            <pvttbl:aggregations selected="SUM"/>
+            <pvttbl:aggregationProperties>
+                <pvttbl:property name="amount1"/>
+            </pvttbl:aggregationProperties>
+        </pvttbl:pivotTable>
+    </layout>
+</view>
