@@ -45,7 +45,7 @@ public class AccountListView extends StandardListView<Account> {
     private SecureOperations secureOperations;
     @Autowired
     private PolicyStore policyStore;
-    @Autowired
+    @ViewComponent
     private MessageBundle messageBundle;
 
     @ViewComponent

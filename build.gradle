@@ -1,5 +1,5 @@
 plugins {
-    id 'io.jmix' version '2.2.3'
+    id 'io.jmix' version '2.5.0-RC1'
     id 'java'
     id 'war'
 }
@@ -8,7 +8,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.vaadin'
 
 jmix {
-    bomVersion = '2.2.3'
+    bomVersion = '2.5.999-SNAPSHOT'
 }
 
 vaadin {
@@ -21,7 +21,7 @@ version = '0.6'
 repositories {
     mavenCentral()
     maven {
-        url = 'https://global.repo.jmix.io/repository/public'
+        url = 'https://nexus.jmix.io/repository/public'
     }
 }
 
@@ -51,6 +51,12 @@ dependencies {
     }
 
     testImplementation 'io.jmix.flowui:jmix-flowui-test-assist'
+}
+
+configurations.implementation {
+    exclude group: 'com.vaadin', module: 'hilla'
+    exclude group: 'com.vaadin', module: 'hilla-dev'
+    exclude group: 'com.vaadin', module: 'copilot'
 }
 
 test {

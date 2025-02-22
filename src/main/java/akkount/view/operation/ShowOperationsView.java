@@ -47,7 +47,7 @@ public class ShowOperationsView extends StandardView {
 
     @Autowired
     private DatatypeRegistry datatypeRegistry;
-    @Autowired
+    @ViewComponent
     private MessageBundle messageBundle;
     @Autowired
     private Messages messages;
