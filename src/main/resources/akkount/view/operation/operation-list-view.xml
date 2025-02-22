@@ -66,7 +66,10 @@
             <button id="editBtn" action="operationsTable.edit"/>
             <button id="removeBtn" action="operationsTable.remove"/>
             <button id="excelExportButton" action="operationsTable.excelExport"/>
-            <simplePagination id="pagination" dataLoader="operationsDl"/>
+            <simplePagination id="pagination" dataLoader="operationsDl"
+                              itemsPerPageUnlimitedItemVisible="false"
+                              itemsPerPageVisible="true"
+                              itemsPerPageItems="100,1000,10000" itemsPerPageDefaultValue="100"/>
         </hbox>
         <dataGrid id="operationsTable"
                   width="100%"
