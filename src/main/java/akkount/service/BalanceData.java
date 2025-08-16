@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class BalanceData implements Serializable {
+public class BalanceData {
 
     public final List<AccountBalance> totals;
     public final List<AccountBalance> accounts;

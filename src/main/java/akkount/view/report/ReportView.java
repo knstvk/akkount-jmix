@@ -33,7 +33,6 @@ import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,7 +176,7 @@ public class ReportView extends StandardView {
         currencyField.addValueChangeListener(event -> {
             refreshDs1();
             refreshDs2();
-            userDataService.saveEntity(UserDataKeys.CAT_REP_CURRENCY, event.getValue());
+            userDataService.saveEntity(UserDataKeys.CAT_REP_CURRENCY, event.getValue(), false);
         });
     }
 
@@ -350,7 +349,7 @@ public class ReportView extends StandardView {
     private void excludeCategory(CategoryAmount categoryAmount) {
         if (categoryAmount != null) {
             excludeCategory(categoryAmount.getCategory());
-            userDataService.addEntity(UserDataKeys.CAT_REP_EXCLUDED_CATEGORIES, categoryAmount.getCategory());
+            userDataService.saveEntity(UserDataKeys.CAT_REP_EXCLUDED_CATEGORIES, categoryAmount.getCategory(), false);
         }
     }
 

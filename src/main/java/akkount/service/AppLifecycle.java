@@ -10,10 +10,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-@Component("akk_AppLifecycle")
+@Component
 public class AppLifecycle {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(AppLifecycle.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -21,7 +21,7 @@ public class AppLifecycle {
     @Autowired
     private DbmsType dbmsType;
 
-    @Value("akk.shutdownDatabaseOnExit")
+    @Value("${akk.shutdown-database-on-exit:false}")
     private String shutdownDatabaseOnExit;
 
     @EventListener(ContextClosedEvent.class)

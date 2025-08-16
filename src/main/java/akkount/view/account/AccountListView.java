@@ -2,7 +2,7 @@ package akkount.view.account;
 
 import akkount.entity.Account;
 
-import akkount.jmx.SampleDataGenerator;
+import akkount.service.SampleDataGenerator;
 import akkount.service.BalanceService;
 import akkount.view.main.MainView;
 

@@ -19,20 +19,18 @@ import io.jmix.core.annotation.DeletedBy;
 import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import jakarta.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
 @JmixEntity(name = "akk_StandardEntity")
 public abstract class StandardEntity {
-
-    private static final long serialVersionUID = 5642226839555253331L;
 
     @Id
     @Column(name = "ID", nullable = false)

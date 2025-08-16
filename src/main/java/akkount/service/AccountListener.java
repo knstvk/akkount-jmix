@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-@Component("akk_AccountWorker")
-public class AccountWorker {
+@Component
+public class AccountListener {
 
     @Autowired
     private DataManager dataManager;
 
     @EventListener
-    public void onAccountPersisting(EntitySavingEvent<Account> event) {
+    public void onAccountSaving(EntitySavingEvent<Account> event) {
         Account account = event.getEntity();
         Currency currency = dataManager.load(Id.of(account.getCurrency())).one();
         account.setCurrencyCode(currency.getCode());

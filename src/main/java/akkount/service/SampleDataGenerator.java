@@ -1,14 +1,14 @@
-package akkount.jmx;
+package akkount.service;
 
 import akkount.entity.*;
-import akkount.service.BalanceWorker;
-import akkount.service.OperationWorker;
+import akkount.event.BalanceChangedEvent;
 import io.jmix.core.DataManager;
 import io.jmix.core.Metadata;
 import io.jmix.core.TimeSource;
+import io.jmix.flowui.UiEventPublisher;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component("akk_SampleDataGenerator")
-public class SampleDataGenerator implements SampleDataGeneratorMBean {
+@Component
+public class SampleDataGenerator {
 
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LoggerFactory.getLogger(SampleDataGenerator.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,16 +34,17 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     protected TimeSource timeSource;
 
     @Autowired
-    protected BalanceWorker balanceWorker;
+    protected BalanceService balanceService;
 
     @Autowired
     private Metadata metadata;
 
-//    @Autowired
-//    private UiEventPublisher uiEventPublisher;
+    @Autowired
+    private UiEventPublisher uiEventPublisher;
 
     @Autowired
-    private OperationWorker operationWorker;
+    private OperationListener operationListener;
+
     @Autowired
     private DataManager dataManager;
 
@@ -67,8 +68,6 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         currencyRates.put("eur", new BigDecimal("70"));
     }
 
-    @Override
-    // todo @Authenticated
     public String generateSampleData(int numberOfDaysBack) {
         if (numberOfDaysBack < 1 || numberOfDaysBack > 1000) {
             return "numberOfDaysBack must be between 1 and 1000";
@@ -89,7 +88,6 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
         }
     }
 
-    @Override
     public String removeAllData(String confirm) {
         if (!"ok".equals(confirm)) {
             return "Pass 'ok' in the parameter";
@@ -102,8 +100,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
             cleanupTable("AKK_CATEGORY");
             cleanupTable("AKK_CURRENCY");
 
-            // todo sending UI events
-//            uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
+            uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
 
             return "Done";
         } catch (Throwable e) {
@@ -215,7 +212,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
     }
 
     private void createOperations(LocalDate startDate, int numberOfDays, Context context) {
-        operationWorker.enableBalanceChangedEvents(false);
+        operationListener.enableBalanceChangedEvents(false);
         try {
             for (int i = 0; i < numberOfDays; i++) {
                 LocalDate date = startDate.plusDays(i);
@@ -240,7 +237,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
 
             }
         } finally {
-            operationWorker.enableBalanceChangedEvents(true);
+            operationListener.enableBalanceChangedEvents(true);
         }
         // todo sending UI events
 //        uiEventPublisher.publishEvent(new BalanceChangedEvent(this));
@@ -301,7 +298,7 @@ public class SampleDataGenerator implements SampleDataGeneratorMBean {
 
 
     private BigDecimal randomExpenseAmount(Account account, LocalDate date, Double part) {
-        BigDecimal balance = balanceWorker.getBalance(account.getId(), date);
+        BigDecimal balance = balanceService.getBalance(account.getId(), date);
         if (BigDecimal.ZERO.compareTo(balance) >= 0)
             return BigDecimal.ZERO;
         else {

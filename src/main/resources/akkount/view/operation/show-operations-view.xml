@@ -6,6 +6,14 @@
         <collection id="operationDs"
                     class="akkount.entity.Operation"
                     fetchPlan="operation-browse">
+            <fetchPlan extends="_base">
+                <property name="acc1"
+                          fetchPlan="_instance_name"/>
+                <property name="acc2"
+                          fetchPlan="_instance_name"/>
+                <property name="category"
+                          fetchPlan="_instance_name"/>
+            </fetchPlan>
             <loader id="operationsDl">
                 <query>
                     <![CDATA[select o from akk_Operation o order by o.opDate desc, o.createTs desc]]>
