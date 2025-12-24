@@ -58,8 +58,8 @@ public class OperationListener {
                     requireNonNull(opDate),
                     changes.getOldReferenceId("acc1"),
                     changes.getOldReferenceId("acc2"),
-                    requireNonNull(amount1),
-                    requireNonNull(amount2)
+                    amount1,
+                    amount2
             );
         } else {
             Operation operation = dataManager.load(event.getEntityId()).one();
@@ -68,8 +68,8 @@ public class OperationListener {
                         changes.isChanged("opDate") ? requireNonNull(opDate) : operation.getOpDate(),
                         changes.isChanged("acc1") ? changes.getOldReferenceId("acc1") : idOfNullable(operation.getAcc1()),
                         changes.isChanged("acc2") ? changes.getOldReferenceId("acc2") : idOfNullable(operation.getAcc2()),
-                        changes.isChanged("amount1") ? requireNonNull(amount1) : operation.getAmount1(),
-                        changes.isChanged("amount2") ? requireNonNull(amount2) : operation.getAmount2()
+                        changes.isChanged("amount1") ? amount1 : operation.getAmount1(),
+                        changes.isChanged("amount2") ? amount2 : operation.getAmount2()
                 );
             }
             addOperation(operation);
@@ -90,7 +90,7 @@ public class OperationListener {
     }
 
     private void removeOperation(LocalDate opDate, @Nullable Id<Account> acc1Id, @Nullable Id<Account> acc2Id,
-                                 BigDecimal amount1, BigDecimal amount2) {
+                                 @Nullable BigDecimal amount1, @Nullable BigDecimal amount2) {
         log.debug("removeOperation: opDate={}, acc1Id={}, acc2Id={}, amount1={}, amount2={}", opDate, acc1Id, acc2Id, amount1, amount2);
 
         if (acc1Id != null) {
