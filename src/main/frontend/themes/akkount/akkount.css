@@ -31,3 +31,41 @@
 .balance-account {
     flex-grow: 1;
 }
+
+/* hbox itself is a vaadin-horizontal-layout with this class */
+.operation-filter-box {
+    width: 100%;
+    max-width: 40em;
+}
+
+/* let children shrink and grow */
+.operation-filter-box > * {
+    flex: 1 1 auto;   /* grow and shrink */
+    min-width: 0;     /* allow shrink below intrinsic width */
+}
+
+/* label takes minimal space, filters share remaining space */
+.operation-filter-box > span {
+    flex: 0 0 auto;   /* do not grow, only keep its content size */
+}
+
+/* hide button label on mobile */
+@media (max-width: 1000px) {
+    vaadin-button.icon-only-on-mobile::part(label) {
+        display: none;
+    }
+    vaadin-button.icon-only-on-mobile {
+        width: 2.5em;
+        min-width: 2.5em;  /* Vaadin buttons have min-width, override it too */
+        padding-left: 0;
+        padding-right: 0;
+        /* Center the icon */
+        justify-content: center;
+        align-items: center;
+    }
+    /* Remove extra margin around the icon so it is truly centered */
+    vaadin-button.icon-only-on-mobile::part(prefix) {
+        margin-inline-start: 0;
+        margin-inline-end: 0;
+    }
+}

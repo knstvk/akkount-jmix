@@ -45,7 +45,8 @@
         <action id="discardAction" type="lookup_discard"/>
     </actions>
     <layout>
-        <hbox id="simpleFilterBox" alignItems="BASELINE">
+        <hbox id="simpleFilterBox" alignItems="BASELINE"
+              width="100%" classNames="operation-filter-box">
             <span text="Filter by"/>
             <entityComboBox id="accFilterField" itemsContainer="accountsDc" metaClass="akk_Account"
                             placeholder="Account">
@@ -63,9 +64,12 @@
         <genericFilter dataLoader="operationsDl" summaryText="Generic filter" id="genericFilter" opened="false"/>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button id="createBtn" action="operationsTable.create"/>
-            <button id="editBtn" action="operationsTable.edit"/>
-            <button id="removeBtn" action="operationsTable.remove"/>
-            <button id="excelExportButton" action="operationsTable.excelExport"/>
+            <button id="editBtn" action="operationsTable.edit"
+                    classNames="icon-only-on-mobile"/>
+            <button id="removeBtn" action="operationsTable.remove"
+                    classNames="icon-only-on-mobile"/>
+            <button id="excelExportButton" action="operationsTable.excelExport"
+                    classNames="icon-only-on-mobile"/>
             <simplePagination id="pagination" dataLoader="operationsDl"
                               itemsPerPageUnlimitedItemVisible="false"
                               itemsPerPageVisible="true"
