@@ -156,7 +156,7 @@ public class BalanceService {
             } else {
                 rate = rates.get(currency.toLowerCase());
                 if (rate == null) {
-                    return null;
+                    continue;
                 }
             }
             total = total.add(entry.getValue().divide(rate, 2, RoundingMode.HALF_UP));
