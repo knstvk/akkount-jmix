@@ -15,6 +15,8 @@ public class BalanceData {
 
     public final List<AccountBalance> totals;
     public final List<AccountBalance> accounts;
+    @Nullable
+    public final AccountBalance baseTotal;
 
     public static class AccountBalance implements Serializable {
         public final String name;
@@ -30,7 +32,7 @@ public class BalanceData {
         }
     }
 
-    public BalanceData(Map<Account, BigDecimal> balanceByAccount) {
+    public BalanceData(Map<Account, BigDecimal> balanceByAccount, @Nullable AccountBalance baseTotal) {
         accounts = new ArrayList<>();
         Map<String, BigDecimal> balanceByCurrency = new TreeMap<>();
 
@@ -45,5 +47,7 @@ public class BalanceData {
         totals = balanceByCurrency.entrySet().stream()
                 .map(entry -> new AccountBalance(null, null, entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
+
+        this.baseTotal = baseTotal;
     }
 }

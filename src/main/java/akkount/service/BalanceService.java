@@ -2,15 +2,18 @@ package akkount.service;
 
 import akkount.entity.Account;
 import akkount.entity.Balance;
+import akkount.entity.Currency;
 import akkount.entity.Operation;
 import io.jmix.core.DataManager;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -27,6 +30,9 @@ public class BalanceService {
 
     @Autowired
     private SecureOperations secureOperations;
+
+    @Autowired
+    private CurrencyRatesService currencyRatesService;
 
     @Transactional
     public BigDecimal getBalance(final UUID accountId, final LocalDate date) {
@@ -98,6 +104,14 @@ public class BalanceService {
                         account -> account.getGroup() != null ? account.getGroup() : 0,
                         TreeMap::new, Collectors.toList()));
 
+        Optional<Currency> baseCurrency = dataManager.load(Currency.class)
+                .query("select e from akk_Currency e where e.base = true")
+                .maxResults(1)
+                .optional();
+        Optional<Map<String, BigDecimal>> rates = baseCurrency
+                .map(currency -> currencyRatesService.getRates(currency.getCode()))
+                .orElse(Optional.empty());
+
         List<BalanceData> result = new ArrayList<>(accountsByGroup.size());
 
         for (List<Account> accounts : accountsByGroup.values()) {
@@ -108,11 +122,47 @@ public class BalanceService {
                     balanceByAccount.put(account, balance);
                 }
             }
-            BalanceData balanceData = new BalanceData(balanceByAccount);
+            BalanceData.AccountBalance baseTotal = null;
+            if (baseCurrency.isPresent() && rates.isPresent()) {
+                baseTotal = calculateBaseTotal(balanceByAccount, baseCurrency.get().getCode(), rates.get());
+            }
+            BalanceData balanceData = new BalanceData(balanceByAccount, baseTotal);
             result.add(balanceData);
         }
 
         return result;
+    }
+
+    @Nullable
+    private BalanceData.AccountBalance calculateBaseTotal(Map<Account, BigDecimal> balanceByAccount,
+                                                          String baseCode,
+                                                          Map<String, BigDecimal> rates) {
+        if (balanceByAccount.isEmpty()) {
+            return null;
+        }
+        Map<String, BigDecimal> balanceByCurrency = new TreeMap<>();
+        for (Map.Entry<Account, BigDecimal> entry : balanceByAccount.entrySet()) {
+            Account account = entry.getKey();
+            BigDecimal val = balanceByCurrency.computeIfAbsent(account.getCurrencyCode(), s -> BigDecimal.ZERO);
+            balanceByCurrency.put(account.getCurrencyCode(), val.add(entry.getValue()));
+        }
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (Map.Entry<String, BigDecimal> entry : balanceByCurrency.entrySet()) {
+            String currency = entry.getKey();
+            BigDecimal rate;
+            if (currency.equalsIgnoreCase(baseCode)) {
+                rate = BigDecimal.ONE;
+            } else {
+                rate = rates.get(currency.toLowerCase());
+                if (rate == null) {
+                    return null;
+                }
+            }
+            total = total.add(entry.getValue().divide(rate, 2, RoundingMode.HALF_UP));
+        }
+
+        return new BalanceData.AccountBalance(null, null, baseCode, total);
     }
 
     private void removeBalanceRecords(UUID accountId) {

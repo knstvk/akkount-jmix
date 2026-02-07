@@ -11,6 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,6 +21,10 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.http.HttpMethod.GET;
 
 @SpringBootTest
 @ExtendWith(AuthenticatedAsAdmin.class)
@@ -34,6 +41,9 @@ public class BalanceServiceTest {
 
     @Autowired
     BalanceService balanceService;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @BeforeEach
     public void setUp() {
@@ -382,5 +392,48 @@ public class BalanceServiceTest {
         List<BalanceData.AccountBalance> totals2 = balanceData.get(1).totals;
         assertThat(totals2).hasSize(1);
         assertThat(totals2.get(0).amount).isEqualByComparingTo(BigDecimal.TEN);
+    }
+
+    @Test
+    public void testGetBalanceDataBaseCurrency() {
+        Currency eur = dataManager.create(Currency.class);
+        eur.setCode("EUR");
+        eur.setName("Euro");
+        dataManager.save(eur);
+
+        Account account1 = dataManager.load(Account.class).id(account1Id).one();
+        account1.setCurrency(eur);
+        dataManager.save(account1);
+
+        Account account2 = dataManager.load(Account.class).id(account2Id).one();
+        account2.setCurrency(eur);
+        dataManager.save(account2);
+
+        Currency usd = dataManager.create(Currency.class);
+        usd.setCode("USD");
+        usd.setName("US Dollar");
+        usd.setBase(true);
+        dataManager.save(usd);
+
+        MockRestServiceServer server = MockRestServiceServer.createServer(restTemplate);
+        server.expect(requestTo("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json"))
+                .andExpect(method(GET))
+                .andRespond(withSuccess("{\"date\":\"2020-01-03\",\"usd\":{\"eur\":2.0}}", MediaType.APPLICATION_JSON));
+
+        income(date("2020-01-01"), BigDecimal.ONE, account1Id);
+        income(date("2020-01-02"), BigDecimal.TEN, account2Id);
+
+        List<BalanceData> balanceData = balanceService.getBalanceData(date("2020-01-03"));
+
+        assertThat(balanceData).hasSize(2);
+        assertThat(balanceData.get(0).baseTotal).isNotNull();
+        assertThat(balanceData.get(0).baseTotal.amount).isEqualByComparingTo(new BigDecimal("0.50"));
+        assertThat(balanceData.get(0).baseTotal.currency).isEqualTo("USD");
+
+        assertThat(balanceData.get(1).baseTotal).isNotNull();
+        assertThat(balanceData.get(1).baseTotal.amount).isEqualByComparingTo(new BigDecimal("5.00"));
+        assertThat(balanceData.get(1).baseTotal.currency).isEqualTo("USD");
+
+        server.verify();
     }
 }

@@ -29,6 +29,7 @@
             <button id="createBtn" action="currenciesTable.create"/>
             <button id="editBtn" action="currenciesTable.edit"/>
             <button id="removeBtn" action="currenciesTable.remove"/>
+            <button id="setBaseBtn" text="msg://currencyListView.setBase"/>
             <simplePagination id="pagination" dataLoader="currenciesDl"/>
         </hbox>
         <dataGrid id="currenciesTable"
@@ -43,6 +44,7 @@
             <columns>
                 <column property="code"/>
                 <column property="name"/>
+                <column property="base"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

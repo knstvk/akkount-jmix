@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -23,6 +24,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 
@@ -61,6 +63,12 @@ public class AkkountApplication extends SpringBootServletInitializer implements 
 	@ConfigurationProperties("main.datasource.hikari")
 	DataSource dataSource(DataSourceProperties dataSourceProperties) {
 		return dataSourceProperties.initializeDataSourceBuilder().build();
+	}
+
+	@Bean
+	RestTemplate restTemplate(RestTemplateBuilder builder) {
+		// Central bean so tests can bind MockRestServiceServer to it.
+		return builder.build();
 	}
 
 	@EventListener

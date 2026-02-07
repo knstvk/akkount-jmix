@@ -21,6 +21,9 @@ public class Currency extends StandardEntity {
     @Column(name = "NAME", length = 50)
     protected String name;
 
+    @Column(name = "BASE_")
+    protected Boolean base;
+
     private static final long serialVersionUID = -3270758636888264613L;
 
     public void setCode(String code) {
@@ -39,5 +42,11 @@ public class Currency extends StandardEntity {
         return name;
     }
 
+    public Boolean getBase() {
+        return base;
+    }
 
+    public void setBase(Boolean base) {
+        this.base = base;
+    }
 }

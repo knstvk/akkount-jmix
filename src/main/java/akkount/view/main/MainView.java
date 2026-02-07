@@ -17,6 +17,7 @@ import io.jmix.core.TimeSource;
 import io.jmix.flowui.UiComponents;
 import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.app.main.StandardMainView;
+import io.jmix.flowui.view.MessageBundle;
 import io.jmix.flowui.view.Subscribe;
 import io.jmix.flowui.view.ViewComponent;
 import io.jmix.flowui.view.ViewController;
@@ -38,6 +39,8 @@ public class MainView extends StandardMainView {
 
     @ViewComponent
     private VerticalLayout balanceGroupsBox;
+    @ViewComponent
+    private MessageBundle messageBundle;
 
     @Autowired
     private BalanceService balanceService;
@@ -131,6 +134,33 @@ public class MainView extends StandardMainView {
             div.appendChild(currencyDiv);
 
             groupDiv.getElement().appendChild(div);
+        }
+
+        if (balanceData.baseTotal != null) {
+            boolean hasBaseCurrency = balanceData.totals.stream()
+                    .anyMatch(balance -> balance.currency.equalsIgnoreCase(balanceData.baseTotal.currency));
+            boolean onlyBaseCurrencyTotal = hasBaseCurrency && balanceData.totals.size() == 1;
+            if (!onlyBaseCurrencyTotal) {
+                Element div = ElementFactory.createDiv();
+                div.setAttribute("class", "balance-line balance-total-line balance-base-total-line");
+
+                Element nameDiv = ElementFactory.createDiv();
+                nameDiv.setText(messageBundle.getMessage("balance.total"));
+                nameDiv.setAttribute("class", "balance-account");
+                div.appendChild(nameDiv);
+
+                Element amountDiv = ElementFactory.createDiv();
+                amountDiv.setText(decimalFormatter.apply(balanceData.baseTotal.amount));
+                amountDiv.setAttribute("class", "balance-amount");
+                div.appendChild(amountDiv);
+
+                Element currencyDiv = ElementFactory.createDiv();
+                currencyDiv.setText(balanceData.baseTotal.currency);
+                currencyDiv.setAttribute("class", "balance-currency");
+                div.appendChild(currencyDiv);
+
+                groupDiv.getElement().appendChild(div);
+            }
         }
 
         return groupDiv;
