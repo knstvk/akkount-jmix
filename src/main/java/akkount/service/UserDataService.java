@@ -6,7 +6,7 @@ import io.jmix.core.Entity;
 import io.jmix.core.Metadata;
 import io.jmix.core.entity.EntityValues;
 import io.jmix.core.usersubstitution.CurrentUserSubstitution;
-import jakarta.annotation.Nullable;
+import org.springframework.lang.Nullable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;

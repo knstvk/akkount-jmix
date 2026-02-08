@@ -7,7 +7,7 @@ import akkount.entity.Operation;
 import io.jmix.core.DataManager;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;
-import jakarta.annotation.Nullable;
+import org.springframework.lang.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

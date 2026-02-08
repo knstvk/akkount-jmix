@@ -1,7 +1,7 @@
 package akkount.service;
 
 import akkount.entity.Account;
-import jakarta.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -44,4 +44,11 @@
   <component name="TranslationAddonsNotifySettings">
     <option name="dontShowInstallSuggest" value="true" />
   </component>
+  <component name="VersionUpdateSettings">
+    <option name="ignoredVersions">
+      <set>
+        <option value="2.7.3" />
+      </set>
+    </option>
+  </component>
 </project>
