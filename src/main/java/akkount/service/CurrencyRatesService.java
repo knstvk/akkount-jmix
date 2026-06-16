@@ -1,7 +1,7 @@
 package akkount.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,13 +54,11 @@ public class CurrencyRatesService {
             }
 
             Map<String, BigDecimal> rates = new HashMap<>();
-            Iterator<Map.Entry<String, JsonNode>> fields = ratesNode.fields();
-            while (fields.hasNext()) {
-                Map.Entry<String, JsonNode> entry = fields.next();
-                if (entry.getValue().isNumber()) {
-                    rates.put(entry.getKey().toLowerCase(), new BigDecimal(entry.getValue().asText()));
+            ratesNode.forEachEntry((s, jsonNode) -> {
+                if (jsonNode.isNumber()) {
+                    rates.put(s.toLowerCase(), new BigDecimal(jsonNode.asText()));
                 }
-            }
+            });
             return rates.isEmpty() ? Optional.empty() : Optional.of(rates);
         } catch (Exception e) {
             return Optional.empty();

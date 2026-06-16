@@ -1,18 +1,20 @@
 package akkount;
 
 import com.google.common.base.Strings;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 import io.jmix.core.JmixSecurityFilterChainOrder;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -30,9 +32,10 @@ import javax.sql.DataSource;
 
 @Push
 @Theme(value = "akkount")
-@PWA(name = "Akkount", shortName = "Akkount")
+@PWA(name = "Akkount", shortName = "Akkount", offline = false)
 @SpringBootApplication
 @ConfigurationPropertiesScan
+@StyleSheet(Lumo.UTILITY_STYLESHEET)
 public class AkkountApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
 	@Autowired

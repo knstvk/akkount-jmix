@@ -76,7 +76,7 @@ public class MainView extends StandardMainView {
                 Details details = uiComponents.create(Details.class);
                 details.setClassName("balance-details");
                 details.setSummaryText("Balance" + (balanceDataList.size() > 1 ? " [" + (i+1) + "]" : ""));
-                details.setContent(groupDiv);
+                details.add(groupDiv);
                 if (i == 0)
                     details.setOpened(true);
 
@@ -168,6 +168,6 @@ public class MainView extends StandardMainView {
 
     @Subscribe("preferencesBtn")
     public void onPreferencesBtnClick(ClickEvent<Button> event) {
-        viewNavigators.view(PreferencesView.class).navigate();
+        viewNavigators.view(this, PreferencesView.class).navigate();
     }
 }
