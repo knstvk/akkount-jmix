@@ -1,7 +1,8 @@
 package akkount.service;
 
 import akkount.entity.Account;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ public class BalanceData {
         public final String currency;
         public final BigDecimal amount;
 
+        @NullMarked
         public AccountBalance(@Nullable String name, @Nullable String description, String currency, BigDecimal amount) {
             this.name = name;
             this.description = description;
@@ -32,6 +34,7 @@ public class BalanceData {
         }
     }
 
+    @NullMarked
     public BalanceData(Map<Account, BigDecimal> balanceByAccount, @Nullable AccountBalance baseTotal) {
         accounts = new ArrayList<>();
         Map<String, BigDecimal> balanceByCurrency = new TreeMap<>();

@@ -8,7 +8,7 @@ import io.jmix.core.DataManager;
 import io.jmix.core.Sort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.script.ScriptEngine;

@@ -4,10 +4,11 @@ import akkount.entity.Account;
 import akkount.entity.Balance;
 import akkount.entity.Currency;
 import akkount.entity.Operation;
+import akkount.service.BalanceData.AccountBalance;
 import io.jmix.core.DataManager;
 import io.jmix.security.constraint.PolicyStore;
 import io.jmix.security.constraint.SecureOperations;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,7 +123,7 @@ public class BalanceService {
                     balanceByAccount.put(account, balance);
                 }
             }
-            BalanceData.AccountBalance baseTotal = null;
+            AccountBalance baseTotal = null;
             if (baseCurrency.isPresent() && rates.isPresent()) {
                 baseTotal = calculateBaseTotal(balanceByAccount, baseCurrency.get().getCode(), rates.get());
             }
@@ -133,8 +134,9 @@ public class BalanceService {
         return result;
     }
 
+
     @Nullable
-    private BalanceData.AccountBalance calculateBaseTotal(Map<Account, BigDecimal> balanceByAccount,
+    private AccountBalance calculateBaseTotal(Map<Account, BigDecimal> balanceByAccount,
                                                           String baseCode,
                                                           Map<String, BigDecimal> rates) {
         if (balanceByAccount.isEmpty()) {
@@ -162,7 +164,7 @@ public class BalanceService {
             total = total.add(entry.getValue().divide(rate, 2, RoundingMode.HALF_UP));
         }
 
-        return new BalanceData.AccountBalance(null, null, baseCode, total);
+        return new AccountBalance(null, null, baseCode, total);
     }
 
     private void removeBalanceRecords(UUID accountId) {

@@ -1,5 +1,5 @@
 plugins {
-    id 'io.jmix' version '3.0.0-M5'
+    id 'io.jmix' version '3.0.0'
     id 'java'
     id 'war'
 }
@@ -8,7 +8,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.vaadin'
 
 jmix {
-    bomVersion = '3.0.999-SNAPSHOT'
+    bomVersion = '3.0.0'
 }
 
 vaadin {
@@ -17,12 +17,12 @@ vaadin {
 }
 
 group = 'akkount'
-version = '0.6'
+version = '0.9'
 
 repositories {
     mavenCentral()
     maven {
-        url = 'https://nexus.jmix.io/repository/public'
+        url = 'https://global.repo.jmix.io/repository/public'
     }
 }
 
