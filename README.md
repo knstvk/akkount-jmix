@@ -25,7 +25,7 @@ Some details:
 
 ## Development
 
-You should have PostgreSQL, Java 17+ and Jmix Studio 2.1+ installed on your computer.
+You should have PostgreSQL, Java 21+ and Jmix Studio 3.0+ installed on your computer.
 
 - Open the project in Jmix Studio. 
 - Right-click on _Data Stores → Main Data Store_ item in Jmix tool window and select _Recreate_. Studio will create and initialize the local `akkount` database.
@@ -51,7 +51,7 @@ The resulting JAR will be created in `build/libs` directory.
 Run the application:
 
 ```
-java -jar akkount-0.6.jar
+java -jar akkount-0.9.jar
 ```
 
 The main UI is available at http://localhost:8080/akk. Username: `admin`, password: `admin`.
