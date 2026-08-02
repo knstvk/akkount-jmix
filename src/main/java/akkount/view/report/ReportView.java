@@ -304,7 +304,7 @@ public class ReportView extends StandardView {
 
         JmixButton button = uiComponents.create(JmixButton.class);
         button.setIcon(new Icon("lumo", "cross"));
-        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        button.addThemeVariants(ButtonVariant.TERTIARY);
         button.addClickListener(event -> {
             for (Iterator<Map.Entry<Category, HorizontalLayout>> it = excludedCategories.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry<Category, HorizontalLayout> entry = it.next();

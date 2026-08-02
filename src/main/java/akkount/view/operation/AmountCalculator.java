@@ -54,7 +54,7 @@ public class AmountCalculator {
 
         JmixButton button = uiComponents.create(JmixButton.class);
         button.setIcon(VaadinIcon.CALC.create());
-        button.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_TERTIARY_INLINE);
+        button.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.TERTIARY);
         button.setTitle("Calculate (press '=')");
         button.addClickListener(clickEvent -> {
             ValidationErrors validationErrors = new ValidationErrors();

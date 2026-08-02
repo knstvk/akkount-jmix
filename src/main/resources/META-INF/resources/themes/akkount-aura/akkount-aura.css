@@ -3,7 +3,7 @@
 .balance-box {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    border-color: var(--lumo-contrast-10pct);
+    border-color: var(--vaadin-border-color-secondary);
 }
 
 .balance-container {
@@ -13,11 +13,11 @@
 .balance-line {
     display: flex;
     gap: 1em;
-    font-family: var(--lumo-font-family);
-    font-size: var(--lumo-font-size-s);
-    font-weight: 500;
-    line-height: var(--lumo-line-height-s);
-    color: var(--lumo-secondary-text-color);
+    font-family: var(--aura-font-family);
+    font-size: var(--aura-font-size-s);
+    font-weight: var(--aura-font-weight-medium);
+    line-height: var(--aura-line-height-s);
+    color: var(--vaadin-text-color-secondary);
 }
 
 .balance-account-line {
@@ -25,7 +25,7 @@
 }
 
 .balance-total-line {
-    background-color: var(--lumo-contrast-5pct);
+    background-color: var(--vaadin-background-container);
 }
 
 .balance-base-total-line {

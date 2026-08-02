@@ -4,12 +4,11 @@
     <actions>
         <action id="logout" type="logout"/>
     </actions>
-    <appLayout>
+    <appLayout classNames="jmix-main-view-app-layout">
         <navigationBar touchOptimized="false">
             <header id="header" classNames="jmix-main-view-header">
                 <drawerToggle id="drawerToggle"
                               classNames="jmix-main-view-drawer-toggle"
-                              themeNames="contrast"
                               ariaLabel="msg://drawerToggle.ariaLabel"/>
                 <h1 id="viewTitle" classNames="jmix-main-view-title"/>
             </header>
@@ -38,5 +37,7 @@
                 </footer>
             </section>
         </drawerLayout>
+        <initialLayout id="initialLayout" classNames="jmix-initial-layout">
+        </initialLayout>
     </appLayout>
 </mainView>

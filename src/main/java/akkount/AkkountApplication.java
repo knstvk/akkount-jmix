@@ -5,9 +5,9 @@ import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.theme.lumo.Lumo;
+import com.vaadin.flow.theme.aura.Aura;
 import io.jmix.core.JmixSecurityFilterChainOrder;
+import io.jmix.flowui.theme.aura.JmixAura;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +31,12 @@ import org.springframework.web.client.RestTemplate;
 import javax.sql.DataSource;
 
 @Push
-@Theme(value = "akkount")
+@StyleSheet(Aura.STYLESHEET)
+@StyleSheet(JmixAura.STYLESHEET)
+@StyleSheet("themes/akkount-aura/styles.css")
 @PWA(name = "Akkount", shortName = "Akkount", offline = false)
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@StyleSheet(Lumo.UTILITY_STYLESHEET)
 public class AkkountApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
 	@Autowired
