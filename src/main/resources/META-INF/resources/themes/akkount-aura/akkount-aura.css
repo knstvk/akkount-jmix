@@ -6,10 +6,6 @@
     border-color: var(--vaadin-border-color-secondary);
 }
 
-.balance-container {
-    margin-left: 25px;
-}
-
 .balance-line {
     display: flex;
     gap: 1em;
@@ -34,6 +30,10 @@
 
 .balance-account {
     flex-grow: 1;
+}
+
+.calc-button {
+    padding: 0;
 }
 
 /* hbox itself is a vaadin-horizontal-layout with this class */
